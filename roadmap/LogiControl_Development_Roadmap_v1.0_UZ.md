@@ -115,9 +115,9 @@ P07 gate ayniqsa strict: append-only, duplicate posting prevention, concurrency,
 - T082 — Projection rebuild/reconciliation
 
 ## P13 — Clientlar + Production Hardening
-- T083 — Flutter auth/company shell
-- T084 — Flutter active trip + offline expense
-- T085 — Flutter fuel + breakdown
+- T083 — Android auth/company shell (Kotlin + Compose)
+- T084 — Android active trip + offline expense (Room + sync engine)
+- T085 — Android fuel + breakdown (offline queue)
 - T086 — Next.js operator shell + RBAC
 - T087 — Operator work queue’lari
 - T088 — Owner Cockpit UI

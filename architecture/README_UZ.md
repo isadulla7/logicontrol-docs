@@ -1,7 +1,7 @@
 # LogiControl Texnik Arxitekturasi v1.0 — Canonical Engineering Source
 
 ## Baseline
-Java 21, Spring Boot 3.5.x, PostgreSQL, Maven multi-module, Modular Monolith, Clean Architecture, SOLID, DDD principles, Spring Modulith, Flyway, MapStruct, JUnit 5, Testcontainers, ArchUnit, MinIO/S3. Flutter Driver App va React/Next.js Web clientlar.
+Java 21, Spring Boot 3.5.x, PostgreSQL, Maven multi-module, Modular Monolith, Clean Architecture, SOLID, DDD principles, Spring Modulith, Flyway, MapStruct, JUnit 5, Testcontainers, ArchUnit, MinIO/S3. Native Android Driver App (Kotlin + Jetpack Compose, offline-first, ADR-015) va React/Next.js Web clientlar.
 
 ## Architecture style
 V1 — **Modular Monolith**, bitta deployable Spring Boot application, lekin qat’iy bounded module’lar. Microservice/Kafka/Kubernetes faqat measured requirement va yangi ADR bilan. Maqsad big-ball-of-mud monolith emas, executable boundaries bilan professional monolith.

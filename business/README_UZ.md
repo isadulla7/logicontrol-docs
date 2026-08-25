@@ -61,7 +61,7 @@ Muhim action: who/what/when/entity/old/new/reason bilan audit qilinadi. Finance�
 Trip P&L = recognized revenue − approved direct costs. Pending xarajatlar alohida ko‘rsatiladi. Vehicle P&L, Customer profitability va Lane profitability read model/projectionlar orqali hisoblanadi. Driver Score fuel discipline, expense discipline, compliance, evidence, financial balance va operational reliability’dan tushuntiriladigan score beradi. Owner Cockpit active trips, spend, repairs, driver cash exposure, fuel anomaly, compliance, budget va profitability’ni decision-oriented ko‘rsatadi.
 
 ## V1 scope
-Organization/RBAC, Driver, Vehicle, Customer, Trip/TripLeg, Revenue, Expense/Approval/Spend Policy, Multi-currency/FX, Advance/Ledger/Settlement, Fuel, WorkOrder/Warranty, Compliance, Files/Evidence, Alert/Control, Audit, Trip/Vehicle/Customer/Lane analytics, Driver Score, Owner Cockpit, Flutter Driver workflow va operator web backend API.
+Organization/RBAC, Driver, Vehicle, Customer, Trip/TripLeg, Revenue, Expense/Approval/Spend Policy, Multi-currency/FX, Advance/Ledger/Settlement, Fuel, WorkOrder/Warranty, Compliance, Files/Evidence, Alert/Control, Audit, Trip/Vehicle/Customer/Lane analytics, Driver Score, Owner Cockpit, Native Android (Kotlin + Jetpack Compose) Driver workflow va operator web backend API.
 
 ## V1 non-goals
 Live GPS/telematics, full fuel-card/1C/OCR automation, AI Decision Engine, marketplace, insurance/financing, Kafka, Kubernetes va microservice decomposition V1 blocker emas. Faqat real requirement bo‘lsa extension point/ADR orqali qo‘shiladi.
