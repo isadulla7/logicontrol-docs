@@ -38,7 +38,7 @@ The canonical system architecture already defines **React/Next.js web clients**.
 - `DES-001 — Mobile Authentication UX / OPEN-001 Discovery` → Mobile Designer.
 - `DES-002 — Web Platform IA + Organization/Company Foundation` → Web Designer.
 
-These are prepared to run in parallel with backend T012 because they share no implementation files. Web design does not itself authorize creation of the web implementation repository; when that repository is created, it follows the already-canonical React/Next.js architecture unless superseded by a later ADR.
+Both ran in parallel with backend T012 under the Batch 01 clearance, sharing no implementation files, and both have delivered — see "Initial V2 batch" below. Web design does not itself authorize creation of the web implementation repository; when that repository is created, it follows the already-canonical React/Next.js architecture unless superseded by a later ADR.
 
 ## Open decisions
 - **OPEN-001 Authentication UX** — production credential/registration/OTP/trusted-device flow. Resolve in ADR before backend T017/T018 or production Android auth. DES-001 may prepare alternatives but cannot close it.
@@ -49,10 +49,19 @@ Global routing and cross-repository parallelism: `ai/COWORK_V2.md` / ADR-018. Lo
 
 ## Initial V2 batch
 Both preconditions are met: the V2 changes are merged (docs PRs #1–#2, backend PR #9) and the
-Android foundation is merged and green. The batch is **dispatched**:
-1. backend T012 — IN_PROGRESS, branch `feat/T012-company-aggregate`, PR #10;
-2. mobile design DES-001 — IN_PROGRESS, branch `feat/DES-001-mobile-auth-ux`;
-3. web design DES-002 — IN_PROGRESS, branch `feat/DES-002-web-foundation`.
+Android foundation is merged and green. The batch was dispatched and all three lanes have produced
+work:
+1. backend T012 — branch `feat/T012-company-aggregate`, PR #10 (draft). Its lifecycle state lives
+   in `logicontrol-backend/.ai/cowork/tasks/T012.md`, which is authoritative for it; this file does
+   not mirror it, because a mirrored lifecycle token goes stale the moment the task moves.
+2. mobile design DES-001 — delivered, branch `feat/DES-001-mobile-auth-ux`, PR #4, in independent
+   review.
+3. web design DES-002 — delivered, branch `feat/DES-002-web-foundation`, PR #5, in independent
+   review.
+
+The design lanes carry no Cowork lifecycle state: they are PRODUCT/DESIGN lanes in a repository
+with no local Cowork execution protocol, so the `DRAFT -> READY -> IN_PROGRESS -> ...` vocabulary
+is a backend token that does not apply to them and is not borrowed here.
 
 ADR-018 parallel-clearance evidence was recorded before dispatch in `ai/orchestration/BATCH-01.md`
 and in T012's `TASK_READY` event. Task-level execution state stays in each repository; this file

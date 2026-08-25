@@ -55,6 +55,24 @@ None yet.
   before Android feature work queues its first real operation — in practice before roadmap `T084`,
   and before any slice that queues a financial write.
 
+- **OPEN-003 Merge authority under Cowork V2.** `ADR-013`/`ADR-016` Cowork V1.1 section 1 reserves
+  merge to `main` to the human owner, and section 3 makes `APPROVED -> MERGED` a human-only
+  transition. The programme owner has since directed, in session, that the Global Orchestrator may
+  perform the merge itself once every gate is green — CI, independent QA evidence, an Independent
+  Reviewer `APPROVED`, and where triggered a *clearing* Security Reviewer verdict — with R4 tasks
+  still requiring explicit human approval, and with no agent ever merging work it or its own
+  implementing teammate produced.
+
+  That direction is a real decision and it is being followed, but it **amends an accepted ADR**,
+  so it is recorded here as open until it is ratified in an ADR rather than treated as settled by
+  conversation. Recorded from the Independent Reviewer's finding 8 on `logicontrol-docs` PR #3,
+  which caught the Orchestrator asserting the decision in a clearance record while no artefact
+  anywhere carried it.
+
+  An ADR change is R4 and R4 is fully serialized, so ratification waits for a slot with no other
+  lane running. **No ADR number is pre-assigned**; the sequence is allocated when the ADR is
+  written, never reserved in advance.
+
 ## Recorded revisions
 - **ADR-018 extends ADR-013/ADR-016 and ADR-017; it does not replace or weaken repository-local
   Cowork V1.1 controls.** The proven lifecycle, R1–R4 risk model, budgets, exact file leases,

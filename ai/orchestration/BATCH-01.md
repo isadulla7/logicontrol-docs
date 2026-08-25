@@ -148,8 +148,20 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
    The same faulty sentence was written into the `T012-001` `TASK_READY` event in
    `logicontrol-backend/.ai/cowork/tasks/T012.md`. It is corrected there by an appended
    Orchestrator event that discloses the correction, never by a silent rewrite (`COWORK_V1.md`
-   §8). That correction waits only because the task file is currently leased to the implementing
-   agent and two live leases must never intersect.
+   §8).
+
+   **Discharge point: the Orchestrator's next event on T012, before the task reaches `APPROVED`.**
+   The delay is concurrent-write avoidance and nothing more — the implementing agent is actively
+   appending to that log, and two appenders racing would break the strictly increasing
+   `occurredAt` that QA validates. It is *not* a lease constraint: the Orchestrator holds no lease
+   on that file, so there is nothing to intersect, and a lease could not bar a non-holder from
+   appending in any case — `COWORK_V1.md` §8 obliges QA, the Independent Reviewer and the Security
+   Reviewer to append their handoff records to that same file while the implementer's lease
+   stands, so a lease that barred non-holders would make §8 unsatisfiable. The first revision of
+   this paragraph named the wrong rule; the caution was right and the reasoning was not.
+
+   Folded into that same appended event: the packet header at line 8 still reads `status | READY`
+   while the log has reached `IN_QA`.
 
    §5's never-parallel list is separately honoured: T012 is a migration-producing task and runs
    beside no other backend task; the design lanes touch no backend file, no `.ai/`, no
@@ -198,8 +210,16 @@ MAJOR. The reading that mattered is the one that would have falsified clearance:
 R4 (`COWORK_V1.md` §6), R4 is serialized outright with no documentation-only carve-out (§5), and
 `docs/adr/` is named in §5's never-parallel list. Holding an `adr/**` lease while three lanes run
 would therefore have broken condition 6 of the very test this file exists to record. Any ADR this
-batch turns out to need — including the ADR-019 that the merge-authority decision requires — waits
-for a serialized slot after the lanes land.
+batch turns out to need waits for a serialized slot after the lanes land.
+
+That sentence originally named "the ADR-019 that the merge-authority decision requires". The
+Independent Reviewer graded it MAJOR and was right twice over: no merge-authority decision existed
+in any recorded artefact when the clause was written — it had been taken conversationally and
+never written down — and the clause pre-assigned a number from a sequence `OWNERSHIP.md` says is
+never reused. It was a regression introduced by the revision that was supposed to close finding 1.
+`COWORK_V1.md` §8 is explicit that a statement asserting a fact not citable to a recorded artefact
+is never MINOR. The clause is removed, and the underlying question is now recorded properly as
+**OPEN-003** in `ai/DECISIONS_INDEX.md`, with no ADR number assigned to it.
 
 ## 6. Team composition and why it is this small
 
@@ -259,7 +279,36 @@ Neither defect blocks any lane in this batch.
 
 ## 9. Revision history
 
-**Revision 2** — this revision. Answers all six MAJOR findings from the Independent Reviewer's
+**Revision 3** — this revision. Answers the two new MAJOR findings and one MINOR raised by the
+Independent Reviewer's re-review of revision 2
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411083686)), which
+confirmed findings 1–6 genuinely closed. **Both new MAJOR findings were regressions introduced by
+revision 2 itself**, which is worth recording rather than smoothing over: the revision written to
+close six findings opened two more, one of them inside the very paragraph written to close
+finding 1.
+
+7. (MINOR) The T012 correction's delay was justified by the wrong rule — "two live leases must
+   never intersect", when the Orchestrator holds no lease on that file and a lease could not bar a
+   non-holder from appending anyway, since §8 obliges QA and both reviewers to append to it while
+   the implementer's lease stands. Restated as concurrent-write avoidance, and given the discharge
+   point §8 requires: the Orchestrator's next event on T012, before `APPROVED` (§4).
+8. (MAJOR) The clause "the ADR-019 that the merge-authority decision requires" asserted a decision
+   that existed in no recorded artefact, and pre-assigned a number from a sequence that is never
+   reused. Clause removed; the question recorded as **OPEN-003** in `ai/DECISIONS_INDEX.md` with no
+   number assigned (§5).
+9. (MAJOR) `ai/CURRENT_STATE.md` stated `backend T012 — IN_PROGRESS` three minutes after the log
+   recorded `IN_QA`, in the same edit whose §1 is titled "Recovered repository state (not summary
+   state)" — the Android row was recovered properly and the lane rows were not. Fixed, and two
+   adjacent defects with it: the "Product/UI/UX lanes" section still said the lanes were *prepared
+   to run* when both had delivered, and the design lanes were labelled with backend lifecycle
+   tokens that this same record argues do not apply to them. `ai/CURRENT_STATE.md` now records the
+   durable checkpoint and points at each task log as authoritative for lifecycle state, instead of
+   mirroring a value that goes stale the moment the task moves.
+
+Also folded into the queued T012 event: the packet header still reads `status | READY` while its
+log has reached `IN_QA`.
+
+**Revision 2** — `8c67b9f`. Answered all six MAJOR findings from the Independent Reviewer's
 `CHANGES_REQUESTED` verdict on PR #3
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5410963600)), plus
 its three non-blocking observations. Changes, in the Reviewer's numbering:
