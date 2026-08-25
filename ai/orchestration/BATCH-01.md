@@ -1,7 +1,12 @@
 # Cowork V2 — Batch 01 dispatch and parallel-clearance record
 
-Recorded by the Global Orchestrator (`gorc`) on 2026-08-25 before dispatch, as ADR-018 /
-`ai/COWORK_V2.md` section 5 requires. Any condition left unaddressed reads as false.
+Recorded by the Global Orchestrator (`gorc`) on 2026-08-25, as ADR-018 / `ai/COWORK_V2.md`
+section 5 requires. Any condition left unaddressed reads as false.
+
+The clearance argument in §1 and §4 was completed at `12:59Z` and the lanes were dispatched
+immediately after, in that order. Earlier revisions said "before dispatch" while §1 stamps
+`12:59Z` as the moment of dispatch; both could not be literally true, and the sequence above is
+what actually happened.
 
 ## 0. Status of this record
 
@@ -173,17 +178,37 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
    design-readiness (`COWORK_V2.md` §8) and role separation (§11) but names no verdict vocabulary
    and no gating role for a PRODUCT/DESIGN lane.
 
-   For this batch the gate is therefore derived from those two sections rather than invented
-   beyond them, and it is **batch-local**: a design lane merges when an Independent Reviewer who
-   did not write it has returned `APPROVED`, having checked the package against its own task
-   packet and against `COWORK_V2.md` §8's design-ready checklist, with `CHANGES_REQUESTED`
-   returning it to the same author and the same lease. That is `COWORK_V2.md` §11's separation
-   requirement applied to a design artefact, using the Independent Reviewer vocabulary the
-   programme already has.
+   For this batch the gate is therefore **batch-local**: a design lane merges when an Independent
+   Reviewer who did not write it has returned `APPROVED`, having checked the package against its
+   own task packet and against `COWORK_V2.md` §8's design-ready checklist, with
+   `CHANGES_REQUESTED` returning it to the same author and the same lease. **The verdict is
+   recorded as a comment by that reviewer on the lane's pull request, and cited by comment URL in
+   §10** — without a named artefact, half of §5's release condition would be uncheckable.
 
-   This is an orchestration decision for Batch 01, not a new accepted rule. Whether
-   PRODUCT/DESIGN lanes should carry a lifecycle of their own is a real question and it is
-   recorded as **D-4** in §8; deciding it needs an ADR, which is R4 and serialized.
+   **Three of those five elements are derived and two are borrowed by analogy, and the difference
+   is not cosmetic.** The test: *a derivation adds no obligation its source could not already be
+   read to require; an analogy adds one.*
+
+   | Element | Status |
+   |---|---|
+   | A reviewer who did not write it | **Derived** — `COWORK_V2.md` §11, nearly verbatim. |
+   | Checked against its own task packet | **Derived** — both DES packets carry an `## Acceptance` section. |
+   | Checked against §8's design-ready list | **Derived** — §8 *is* that list. |
+   | The `APPROVED` / `CHANGES_REQUESTED` vocabulary | **Borrowed by analogy** from `COWORK_V1.md` §3. |
+   | `CHANGES_REQUESTED` returns it to the same author and the same lease | **Borrowed by analogy** from `COWORK_V1.md` §3. |
+
+   The borrowing is from the very protocol whose non-application to docs lanes condition 5 argues
+   at length. It is legitimate here — batch-local, non-precedential, and routed to **D-4** — but
+   an earlier revision claimed all five were derived, and that was not true: in `ai/COWORK_V2.md`,
+   `APPROVED` and `CHANGES_REQUESTED` appear **zero** times and "Independent Reviewer" appears
+   **once**. Counted rather than judged, at the Independent Reviewer's suggestion.
+
+   The fifth element is load-bearing rather than decorative: §5's release conditions rest on
+   *"delivery is not release, because a `CHANGES_REQUESTED` returns the work to the same author in
+   the same files."* That reasoning borrows its premise. It is the piece D-4's ADR most needs to
+   ratify or replace.
+
+   This is an orchestration decision for Batch 01, not a new accepted rule.
 5. **Repository-local Cowork permits it.** Two repositories run lanes in this batch, so this
    condition must be answered twice. The first revision answered only the backend and was graded
    MAJOR for it.
@@ -264,8 +289,8 @@ inside it.
 | Lane | Lease releases when |
 |---|---|
 | `backend-t012` | The task reaches `MERGED` or `BLOCKED`, per `COWORK_V1.md` §5. That protocol supplies this lane's release condition and this record does not override it. |
-| `mobile-design-auth` | PR #4 is merged or closed, **and** its review verdict is recorded. Until then the lane holds `ai/design/mobile/**` even though it has delivered — delivery is not release, because a `CHANGES_REQUESTED` returns the work to the same author in the same files. |
-| `web-design-org` | PR #5 is merged or closed, and its review verdict is recorded. Same reasoning. |
+| `mobile-design-auth` | PR #4 is merged or closed, **and** its Independent Reviewer verdict is recorded as a comment on PR #4 and cited by URL in §10. Until then the lane holds `ai/design/mobile/**` even though it has delivered — delivery is not release, because a `CHANGES_REQUESTED` returns the work to the same author in the same files. |
+| `web-design-org` | PR #5 is merged or closed, and its Independent Reviewer verdict is recorded as a comment on PR #5 and cited by URL in §10. Same reasoning. |
 | `gorc` | This record reaches `CLOSED` or `ABANDONED` in §0. |
 
 **If a lane is abandoned rather than delivered**, its lease releases when the Orchestrator records
@@ -356,20 +381,73 @@ out-of-lease fix is withdrawn.
 accepted precedence rule between them. Stated in full in section 4, condition 3. Discharged by a
 follow-up change after this batch.
 
-**D-4 (MAJOR, owner: human owner, needs an ADR).** PRODUCT/DESIGN lanes have no lifecycle. They
-have a role definition (`COWORK_V2.md` §7), a readiness checklist (§8) and a separation principle
-(§11), but no states, no verdict vocabulary, no gating role, no lease release condition and no
-defined outcome when a lane is abandoned. Batch 01 supplied all five locally — §0 for status, §4
-condition 4 for the merge gate, §5 for release — which is enough to run one batch honestly and is
-not a substitute for a decision. Every one of those five gaps was found by the Independent
-Reviewer rather than by the Orchestrator that wrote the record, which is itself evidence about how
-visible the gap is from inside. An ADR is R4 and serialized.
+**D-4 (MAJOR, owner: human owner, needs an ADR).** **`logicontrol-docs` has no repository-local
+Cowork execution protocol at all.** Condition 5 establishes this as a fact and treats it as a
+gap in the design lanes' protection; it is wider than that. Every lane that runs in this
+repository is ungoverned, not only the PRODUCT/DESIGN ones — those are simply the lanes running
+there today.
+
+PRODUCT/DESIGN is the instance that forced the finding: it has a role definition
+(`COWORK_V2.md` §7), a readiness checklist (§8) and a separation principle (§11), but no states,
+no verdict vocabulary, no gating role, no lease release condition and no defined outcome when a
+lane is abandoned. Batch 01 supplied all five locally — §0 for status, §4 condition 4 for the
+merge gate, §5 for release — which is enough to run one batch honestly and is not a substitute for
+a decision.
+
+But the `gorc` lane is equally ungoverned, **and so is this pull request**: five revisions and
+four independent review passes, none of which any protocol required, all of which happened because
+the Orchestrator chose to ask. D-4 is being demonstrated by its own container. An ADR scoped only
+to design lanes would define a design lifecycle and leave orchestration work in this repository
+exactly as ungoverned as it is now.
+
+Every one of the five gaps was found by the Independent Reviewer rather than by the Orchestrator
+that wrote the record, and so was this widening — which is itself evidence about how visible the
+gap is from inside. An ADR is R4 and serialized.
 
 None of these defects blocks any lane in this batch.
 
 ## 9. Revision history
 
-**Revision 5** — this revision. Answers findings 12, 13 and 14 from the fourth review pass
+**Revision 6** — this revision. Closes the two MINOR findings the Independent Reviewer recorded
+alongside its `APPROVED` on revision 5
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411341419)), and
+acts on its answers to the two questions put to it.
+
+15. (MINOR) §5's design rows released on a verdict being "recorded" and §4 condition 4 said a
+    reviewer "has returned `APPROVED`" — neither naming **where**. The backend row cites
+    `COWORK_V1.md` §5 and locates its evidence exactly; the design rows located nothing, so half
+    of each conjunction was uncheckable. This is finding 13 surviving into its own fix at one
+    remove: the release condition was added, and then given no artefact. Both now name the
+    reviewer's comment on the lane's PR, cited by URL in §10.
+16. (MINOR) D-4 was scoped to PRODUCT/DESIGN lanes. The gap condition 5 established is wider —
+    `logicontrol-docs` has **no repository-local execution protocol at all**, so the `gorc` lane
+    is equally ungoverned, and so is this pull request: five revisions and four review passes,
+    none of which any protocol required. D-4 widened, with PRODUCT/DESIGN kept as the instance
+    that forced it.
+
+**On the batch-local merge gate — the claim of derivation was too strong.** Asked whether the
+gate was derivation or invention, the reviewer counted instead of judging: in `ai/COWORK_V2.md`,
+`APPROVED` and `CHANGES_REQUESTED` appear **zero** times and "Independent Reviewer" appears
+**once**. Three of the gate's five elements are derived; two are borrowed by analogy from
+`COWORK_V1.md` §3 — the protocol whose non-application to docs lanes condition 5 argues at length.
+§4 condition 4 now splits them with the test that separates them: *a derivation adds no obligation
+its source could not already be read to require; an analogy adds one.* The borrowed routing rule
+is load-bearing, because §5's "delivery is not release" reasoning rests on it, so D-4's ADR must
+ratify or replace it rather than inherit it.
+
+**§10 gains a fourth column: files actually written, against the lease granted.** The reviewer
+verified during review that both design lanes wrote exactly inside their leases with
+`ai/design/foundation/**` untouched, and asked where that belonged. It belongs in §10, not in §4
+condition 3 — by this record's own reading rule, §4 is frozen as the pre-dispatch argument that
+the control *would* hold, and putting post-dispatch evidence inside it would make the clearance
+read as though it rested on evidence that did not exist when granted. In §10 the check becomes
+reproducible rather than asserted, and becomes evidence Batch 02 can cite instead of arguing
+lease-based isolation from first principles again.
+
+Header/§1 timing contradiction folded in: "before dispatch" versus §1's `12:59Z` "moment of
+dispatch" could not both be literally true.
+
+**Revision 5** — `c237e94`. Answered findings 12, 13 and 14 from the fourth review pass
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411239410)), which
 confirmed 10 and 11 closed and independently verified that both design lanes wrote **exactly**
 inside the leases §5 granted, with `ai/design/foundation/**` untouched by either — the mechanism
@@ -494,10 +572,28 @@ did not, in six places.
 
 ## 10. Outcomes
 
-Empty while §0 reads `ACTIVE`. Filled in the same change that sets `CLOSED` or `ABANDONED`, with
-one row per lane: terminal state, the PR and commit it ended at, the review verdicts recorded
-against it, and for an abandoned lane what was left behind and whether it is to be kept, reverted
-or superseded.
+Empty while §0 reads `ACTIVE`. Filled in the same change that sets `CLOSED` or `ABANDONED`, one
+row per lane, with these columns:
+
+| Column | Content |
+|---|---|
+| Terminal state | Merged, closed, or abandoned. |
+| PR and commit | Where it ended. |
+| Verdicts | Every Independent Reviewer verdict, cited by comment URL — the artefact §5's release condition names. |
+| **Files actually written, against the lease granted in §5** | The output of `git diff --name-only origin/main...<branch>`, compared against that lane's lease row. |
+
+That fourth column is the point. It makes the record's central mechanism — lease-based isolation
+between concurrent lanes — **reproducible rather than asserted**: anyone can run the command and
+compare. The Independent Reviewer already ran it for both design lanes during review and found
+both wrote exactly inside their leases, with `ai/design/foundation/**` untouched by either. That
+check belongs here rather than in §4 condition 3, and deliberately so: §4 is frozen as the
+pre-dispatch argument that the control *would* hold, and post-dispatch evidence that it *did*
+would make the clearance read as though it rested on evidence that did not exist when it was
+granted.
+
+The forward reason to keep it: in §10 it becomes evidence for the **next** clearance. Batch 02's
+condition 3 can cite this section as the reason to trust lease-based isolation between concurrent
+docs lanes, instead of arguing it from first principles again.
 
 A record whose §10 is empty and whose §0 says `CLOSED` is malformed; so is one whose §0 says
 `ACTIVE` after every lane has terminated. Either is a defect against this file.
