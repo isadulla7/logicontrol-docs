@@ -8,7 +8,7 @@
 
 ADR-013 established Cowork V1 and ADR-016 amended it to V1.1 with an adversarial Security Reviewer and evidence-led protocol corrections. ADR-017 then split LogiControl into `logicontrol-docs`, `logicontrol-backend`, and `logicontrol-android`, while leaving `logicontrol-ios` as an unfunded placeholder.
 
-The next stage is no longer a single-repository coding workflow. LogiControl is a product with backend, native Android, product/UI/UX design, future web implementation, shared business rules, cross-client contracts, security-sensitive tenancy, and independent quality gates. The agent model therefore needs programme-level orchestration without weakening the proven repository-local Cowork V1.1 lifecycle.
+The next stage is no longer a single-repository coding workflow. LogiControl is a product with backend, native Android, Product/UI/UX design, canonical React/Next.js web clients, shared business rules, cross-client contracts, security-sensitive tenancy, and independent quality gates. The agent model therefore needs programme-level orchestration without weakening the proven repository-local Cowork V1.1 lifecycle.
 
 The human owner also requires backend implementation to follow SOLID, Clean Architecture and LEGO-style modularity: small cohesive replaceable blocks, explicit contracts, high cohesion, low coupling, one-way dependency direction and no cross-module implementation leakage.
 
@@ -46,7 +46,7 @@ Architecture Agent / Security Reviewer / DevOps Agent
 - `logicontrol-backend` owns backend execution, backend-local Cowork state, Java/Spring code, database migrations and backend quality gates.
 - `logicontrol-android` owns native Android execution, Android-local Cowork state, offline-first client code and Android quality gates.
 - `logicontrol-ios` remains dormant. No iOS work starts without a new ADR superseding ADR-015.
-- No web implementation repository exists yet. Web Product/UI/UX design may proceed in the design lane; a web implementation repository and Web Developer role require a later explicit decision.
+- The canonical system architecture already fixes the web client family as **React/Next.js**. No dedicated web implementation repository exists yet. Web Product/UI/UX design may proceed now; introducing a Web Developer execution lane waits only for the web implementation repository to be created/authorized, not for a new stack decision.
 
 ### Persistent and ephemeral roles
 
@@ -74,7 +74,7 @@ Product/UI/UX is a first-class parallel lane and should normally run one or two 
 
 The Mobile Designer designs for the Driver MVP and covers happy paths plus offline, syncing, retry, permission, GPS-disabled, error, empty and degraded states.
 
-The Web Designer designs operator/admin workflows such as organization, fleet, drivers, trips, live tracking, finance, maintenance, compliance, analytics and configuration. Dense desktop workflows, tables, filters, maps and bulk operations are web-specific concerns.
+The Web Designer designs operator/admin workflows for the canonical React/Next.js web clients: organization, fleet, drivers, trips, live tracking, finance, maintenance, compliance, analytics and configuration. Dense desktop workflows, tables, filters, maps and bulk operations are web-specific concerns.
 
 Both designers use one shared LogiControl visual language, but platform components are not forced to be identical. Figma is the preferred visual source of truth when available. Approved design components must map deliberately to implementation design-system components; generated UI is never accepted without platform review.
 
@@ -90,7 +90,7 @@ When backend and client work share a feature, stabilize the contract before para
 - domain-event semantics
 - versioning/backward-compatibility expectations
 
-Once stable, backend, Android and QA work may proceed independently when their file/repository ownership does not overlap.
+Once stable, backend, Android and QA work may proceed independently when their file/repository ownership does not overlap. The same applies to a future React/Next.js implementation lane after its repository exists.
 
 ### Parallelism
 
@@ -140,7 +140,7 @@ QA validates behavior and gates independently. The Independent Reviewer judges t
 After Cowork V2 itself is merged and all repositories are green, the intended first safe production batch is:
 - Backend lane: `P01 / T012 - Company aggregate`.
 - Mobile design lane: `OPEN-001 Authentication UX` product/design exploration, without silently deciding undocumented security/business rules.
-- Web design lane: web platform information architecture and organization/admin foundation.
+- Web design lane: React/Next.js web information architecture and organization/admin foundation.
 
 T012 may proceed while design work runs because those artefacts do not share implementation files. Production identity endpoints and production client authentication remain gated on resolution of OPEN-001.
 
@@ -148,7 +148,7 @@ T012 may proceed while design work runs because those artefacts do not share imp
 
 - LogiControl now behaves like a small product organization rather than a collection of coding agents.
 - Design can run ahead without blocking backend development.
-- Backend, Android and future web implementation can use explicit contracts instead of inferring each other's internals.
+- Backend, Android and future React/Next.js implementation can use explicit contracts instead of inferring each other's internals.
 - Global orchestration adds coordination cost, so it stays deliberately lightweight and repository-local execution remains authoritative for implementation details.
 - Specialist roles are available without forcing every task through every specialist.
 - Cowork observability metadata remains compatible with a future Agent Control Center, but no dashboard is introduced by this ADR.
@@ -158,7 +158,7 @@ T012 may proceed while design work runs because those artefacts do not share imp
 - Do not reintroduce Flutter.
 - Do not introduce Kotlin Multiplatform now.
 - Do not start iOS implementation.
-- Do not create a Web Developer role before a web implementation repository/stack decision exists.
+- Do not create a Web Developer role until a dedicated web implementation repository is created/authorized; when it is created, its stack follows the already-canonical React/Next.js system architecture unless superseded by a new ADR.
 - Do not duplicate canonical documentation into implementation repositories.
 - Do not weaken Cowork V1.1 risk, lease, evidence, QA, review or security-review requirements.
 - Do not use parallelism where contracts, dependencies or ownership are ambiguous.
