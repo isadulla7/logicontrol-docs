@@ -34,6 +34,23 @@ None yet. Next free number is ADR-017.
   biometric-gated secrets) and explicitly does not decide the flow. Tenant and RBAC foundation
   may proceed before it.
 
+- **OPEN-002 Android sync terminal-error policy.** `ADR-015` specifies the sync engine's retry,
+  ordering, batching and idempotency obligations but deliberately does not say what happens when
+  an operation **cannot** succeed: which backend responses are terminal rather than retryable,
+  what the driver is shown when their accepted work will never sync, how a terminal item is
+  recovered or discarded, and who is accountable for the business fact it carried. Recorded from
+  the T093 Independent Reviewer finding REV-2.
+
+  This matters because offline-first means the driver was already told the write succeeded. A
+  terminal failure is therefore not an error path — it is a promise the product has to unmake,
+  and doing that silently would be worse than never accepting the write.
+
+  The Android bootstrap carries a **mechanism** for this (`SyncStatus.FAILED_PERMANENT`, a bounded
+  attempt cap, and the rule that exhausted work surfaces rather than being dropped) but **no
+  policy**. The mechanism is not the decision and must not be read as one. Resolve in an ADR
+  before Android feature work queues its first real operation — in practice before roadmap `T084`,
+  and before any slice that queues a financial write.
+
 ## Recorded revisions
 - **ADR-016 amends ADR-013 and does not supersede it.** ADR-013's Cowork Agent System V1 — the
   lifecycle, the four original roles, R1–R4, file leases and dependency gating — stands unchanged

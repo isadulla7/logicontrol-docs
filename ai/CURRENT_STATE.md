@@ -36,7 +36,13 @@ Native Android per ADR-015, in `logicontrol-android` per ADR-017. Offline-first 
 MVP user is the Driver. Feature implementation is roadmap phase P13 (T083–T085); the Product/UI/UX
 lane may run ahead of it. Client authentication work is gated on `OPEN-001`.
 
-## Open decision
+## Open decisions
+`OPEN-002 Android sync terminal-error policy` — `ADR-015` does not define what happens when a
+queued operation can never succeed: which responses are terminal, what the driver sees when
+accepted work will not sync, and how such an item is recovered. The Android bootstrap has the
+mechanism, not the policy. Needed before Android feature work queues a real operation
+(roadmap `T084`). Recorded from T093 reviewer finding REV-2.
+
 `OPEN-001 Authentication UX` — the production credential, registration, OTP and trusted-device
 flow is not frozen. It must be resolved in an ADR before any production identity endpoint on the
 backend (roadmap T017/T018) or any production authentication work on the client. The tenant and
