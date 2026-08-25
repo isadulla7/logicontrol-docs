@@ -5,7 +5,13 @@ This repository was created by splitting `logicontrol-backend` into three focuse
 - Source repository: `isadulla7/logicontrol-backend`
 - Source baseline commit: `020f40d` (`chore(T093): close the Cowork log at MERGED (#6)`)
 - Migration date: 2026-08-25
-- Recorded in: `adr/ADR-016-three-repository-split.md`
+- Recorded in: `adr/ADR-017-three-repository-split.md`
+
+`ADR-016` (Cowork V1.1 — Security Reviewer) was accepted in `logicontrol-backend` while this
+migration was in flight, taking the number this split ADR had originally used. The split ADR was
+renumbered to **ADR-017** rather than editing an accepted ADR, and `ADR-016` moved here because it
+amends `ADR-013`, which is global — a process decision cannot be authoritative in one
+implementation repository while the protocol it amends is authoritative in another.
 
 ## Git history
 
@@ -26,7 +32,7 @@ documentation removal is an ordinary forward commit.
 | `docs/domain/LogiControl_Domain_Model_ERD_v1.0_UZ.md` | `domain/domain-model-erd-uz.md` |
 | `docs/roadmap/LogiControl_Development_Roadmap_v1.0_UZ.md` | `roadmap/development-roadmap-v1.0-uz.md` |
 | `docs/START_HERE.md` | `START_HERE.md` (rewritten for three repositories) |
-| `docs/adr/ADR-001,003,004,005,008,010,013,014,015` | `adr/` (unchanged content) |
+| `docs/adr/ADR-001,003,004,005,008,010,013,014,015,016` | `adr/` (unchanged content) |
 | `.ai/PROJECT_CONTEXT.md` | `ai/PROJECT_CONTEXT.md` (re-authored for programme scope) |
 | `.ai/DECISIONS_INDEX.md` | `ai/DECISIONS_INDEX.md` (re-authored, adds ADR homes) |
 

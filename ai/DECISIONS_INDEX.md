@@ -12,7 +12,8 @@ Programme-wide. Numbering is one global sequence across all three repositories.
 - ADR-013 Cowork Agent System V1
 - ADR-014 Standard API Error Contract
 - ADR-015 Native Android Mobile Client
-- ADR-016 Three-repository Split
+- ADR-016 Cowork V1.1 — Security Reviewer Role and Evidence-led Protocol Amendments
+- ADR-017 Three-repository Split
 
 ## Backend ADRs — authoritative in `logicontrol-backend/docs/adr/`
 - ADR-002 Clean Architecture Dependency Rule
@@ -34,6 +35,13 @@ None yet. Next free number is ADR-017.
   may proceed before it.
 
 ## Recorded revisions
+- **ADR-016 amends ADR-013 and does not supersede it.** ADR-013's Cowork Agent System V1 — the
+  lifecycle, the four original roles, R1–R4, file leases and dependency gating — stands unchanged
+  and ADR-013 is not edited. ADR-016 adds a fifth, adversarial Security Reviewer role (`sec`) and
+  six evidence-led protocol amendments, each traceable to a finding from the T007 or T093 pilot,
+  plus two additive identifiers in the Cowork event schema (`sec` in the `agentId` pattern,
+  `security-reviewer` in the `agentRole` enum). No field is renamed, removed, retyped or made
+  newly required, and every event already recorded still validates.
 - **ADR-015 supersedes one Context reference in ADR-014.** ADR-014's Context names the Flutter
   Driver App as the mobile client that must handle backend failures programmatically; the mobile
   client is native Android per ADR-015, which was accepted after ADR-014 was written. ADR-014's

@@ -10,9 +10,9 @@ Programme-level state across all three repositories. Each implementation reposit
 - Technical Architecture v1.0: DONE
 - Domain Model + ERD v1.0: DONE
 - Development Roadmap v1.0: DONE
-- ADR baseline ADR-001..ADR-016: DONE
-- Cowork Agent System V1 (ADR-013): DONE
-- Three-repository split (ADR-016): DONE
+- ADR baseline ADR-001..ADR-017: DONE
+- Cowork Agent System V1 (ADR-013): DONE, amended to V1.1 by ADR-016 (Security Reviewer role)
+- Three-repository split (ADR-017): DONE
 
 ## Repositories
 | Repository | State |
@@ -32,7 +32,7 @@ T015 repository tenant scoping, T016 authorization skeleton, T017 closing `OPEN-
 authentication/session vertical slice and T019 security-critical audit.
 
 ## Mobile
-Native Android per ADR-015, in `logicontrol-android` per ADR-016. Offline-first is mandatory. The
+Native Android per ADR-015, in `logicontrol-android` per ADR-017. Offline-first is mandatory. The
 MVP user is the Driver. Feature implementation is roadmap phase P13 (T083–T085); the Product/UI/UX
 lane may run ahead of it. Client authentication work is gated on `OPEN-001`.
 

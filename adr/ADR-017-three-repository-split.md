@@ -1,4 +1,4 @@
-# ADR-016: Three-repository Split
+# ADR-017: Three-repository Split
 
 - Status: Accepted
 - Date: 2026-08-25

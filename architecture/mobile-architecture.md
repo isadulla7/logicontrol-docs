@@ -1,7 +1,7 @@
 # Mobile Architecture — Summary
 
 **Authoritative decision:** [`../adr/ADR-015-native-android-mobile-client.md`](../adr/ADR-015-native-android-mobile-client.md),
-with its `Repository` clause superseded by [`../adr/ADR-016-three-repository-split.md`](../adr/ADR-016-three-repository-split.md).
+with its `Repository` clause superseded by [`../adr/ADR-017-three-repository-split.md`](../adr/ADR-017-three-repository-split.md).
 **Implementation:** [logicontrol-android](https://github.com/isadulla7/logicontrol-android).
 
 This page is a map. It does not restate the ADRs and cannot vary them.
