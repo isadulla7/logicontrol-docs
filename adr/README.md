@@ -17,6 +17,8 @@ strategy, the security and tenancy model, and system boundaries.
 | ADR-015 | Native Android Mobile Client | Accepted |
 | ADR-016 | Cowork V1.1 — Security Reviewer Role and Evidence-led Protocol Amendments | Accepted; amends ADR-013 |
 | ADR-017 | Three-repository Split | Accepted |
+| ADR-018 | Multi-repository Cowork V2 Product Engineering Model | Accepted |
+| ADR-019 | Driver Authentication UX (closes OPEN-001) | Accepted |
 
 ## ADRs owned by implementation repositories
 
@@ -52,6 +54,6 @@ The full mapping of the migration is in [`../PROVENANCE.md`](../PROVENANCE.md).
 
 ## Rules
 - Ownership rules and rationale: [`../OWNERSHIP.md`](../OWNERSHIP.md).
-- The next free ADR number is **ADR-018**, in whichever repository needs it.
+- The next free ADR number is **ADR-020**, in whichever repository needs it.
 - Do not edit an accepted ADR to change a decision. Supersede it and record the supersession in
   [`../ai/DECISIONS_INDEX.md`](../ai/DECISIONS_INDEX.md).

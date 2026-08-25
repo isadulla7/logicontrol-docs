@@ -22,9 +22,9 @@ All fifteen sub-decisions are settled as follows. Option letters refer to `ai/de
 
 | ID | Sub-decision | Decision |
 |---|---|---|
-| D-01 | Driver identifier | **A** — phone number. The office can additionally look a driver up by an internal reference for support. |
+| D-01 | Driver identifier | **A**, with the operator-visible reference lookup from **D** — the driver signs in with a phone number; the office can additionally look a driver up by an internal reference for support. (Citation corrected: the text always described both, and named only A.) |
 | D-02 | Account creation | **A** — the Company provisions the `Driver` and `CompanyMember`; the driver only activates a device. No unauthenticated account-creation surface exists. |
-| D-03 | Primary proof | **B/D hybrid** — a Company-issued one-time activation code, deliverable by SMS *or* read out by an operator, followed by a device-local factor. **No password exists anywhere in the driver flow.** |
+| D-03 | Primary proof | **A composite of B and D**, which `05` does not carry as a single lettered option and which `06` proposed by that name — a Company-issued one-time activation code, deliverable by SMS *or* read out by an operator, followed by a device-local factor. **No password exists anywhere in the driver flow.** |
 | D-04 | Device-local re-entry factor | **C** — biometric with an app-local PIN fallback. The fallback is reachable immediately, not after failed biometric attempts. |
 | D-05 | Company context | **C** — the client asks only when the driver holds more than one active membership. |
 | D-06 | Device trust | **B** — devices are registered and more than one is allowed per driver. A lost device is individually revocable. |
@@ -35,7 +35,7 @@ All fifteen sub-decisions are settled as follows. Option letters refer to `ai/de
 | D-11 | Rate limiting and lockout | **Shape only:** server-enforced; the remaining time is returned to the client and displayed; the local factor's lockout is kept visibly separate from the server's. **Thresholds, durations and scope are left open** — see "Deliberately left open". |
 | D-12 | Account recovery | **C** — both routes, with **operator-mediated re-issuance as the primary route** and self-service OTP to the registered number as the secondary. `AUTH-10` must render and function fully offline. |
 | D-13 | Code delivery channel | **SMS primary, operator voice as the standing fallback.** Push is explicitly **not** a primary channel. |
-| D-14 | Authentication error codes | **Add authentication codes to the `ApiErrorCode` enumeration** in `T017`/`T018`. Which codes the client may surface is settled with them. |
+| D-14 | Authentication error codes | **Add authentication codes to the `ApiErrorCode` enumeration** in `T017`/`T018`, i.e. **before `T018`**. Which codes the client may surface is settled with them. This settles the *authentication* portion of `OPEN-004`, which also covers authorization and business error codes and stays open for those. |
 | D-15 | Pre-authentication language | **D** — explicit choice at first run before the first input field, server-side preference thereafter. |
 
 ### What this means end to end
@@ -66,9 +66,13 @@ A driver never learns, types or resets a password. The office creates their reco
 
 ### Deliberately left open
 
-Two values are not settled here. Both were presented and both were consciously deferred; neither is an oversight.
+These values are not settled here. Each was presented and consciously deferred; none is an oversight. The Context above says this ADR fills the canonical silences `S-01`–`S-16`; that is true of the *mechanisms* and false of the *numbers*, and the list below is the corrected one.
 
-- **D-08 — the number of days in the offline grace window.** The design package declines to invent it because it is a business-risk decision: the window is exactly the maximum latency of revocation on a device that never connects. The *shape* is decided and binding. Until the number is set, offline-boundary work and `T083` cannot be fully closed.
+- **D-08 — the number of days in the offline grace window.** The design package declines to invent it because it is a business-risk decision. The *shape* is decided and binding. Until the number is set, offline-boundary work and `T083` cannot be fully closed.
+
+  **Two bounds govern the number, and whoever sets it must weigh both.** *Bound 1:* the window is the maximum latency of revocation on a device that never connects — so a longer window is a longer period in which a revoked device keeps working. The design package makes this bound **conditional on revocation existing at all** (`A-06`) and instructs that `A-06` be confirmed or denied *before* the number is set. **`A-06` is discharged by `D-06 B` above:** devices are registered and individually revocable, so revocation exists and Bound 1 is live. This connection was implicit in the original text and is now stated, because a reader could not otherwise tell whether the premise had been checked. *Bound 2:* at `GRACE_EXPIRED` the device stops accepting new business writes, enforced entirely client-side. **Bound 2 survives `A-06` being false and Bound 1 does not**, so the two must not be collapsed into one argument. Neither bound points toward a longer window.
+
+- **The numeric policies this ADR does not set.** `S-05` PIN length and composition; `S-06` activation-code length, expiry and resend interval; `S-09` session duration and renewal interval. The *shapes* are decided above; the values are not, and `07` §6 lists them among its acceptance criteria. They are open on the same terms as `D-08` and `D-11`.
 - **D-11 — rate-limit scope, threshold, duration and reset.** The shape is decided and binding, including that the remaining time must reach the driver. The values are a security decision. Note that a whole fleet at one depot may share an IP, so an IP-scoped threshold can lock out a depot.
 
 These two remain open under `OPEN-001`'s successor scope and must be recorded as such in `ai/DECISIONS_INDEX.md`. They do not reopen the fifteen decisions above.

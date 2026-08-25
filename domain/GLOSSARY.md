@@ -92,4 +92,4 @@ transactional source of truth.
 | **R1–R4** | Task risk levels. R4 covers finance posting, tenant and security, architecture rules, the CI gate and ADR changes, and is never auto-approved. |
 | **Task packet** | The specification an Orchestrator writes before a Developer starts, including acceptance criteria and file leases. |
 | **Vertical slice** | One complete task's work across every layer it touches, rather than a horizontal layer across many tasks. |
-| **OPEN-001** | The unresolved production authentication UX decision. |
+| **OPEN-001** | The production authentication UX decision, closed by ADR-019. |
