@@ -14,7 +14,7 @@
 
 This ADR is the human owner's decision on all fifteen. It was taken one sub-decision at a time, with the options, the designer's recommendation and the business/security trade-off presented for each.
 
-The canonical silences this ADR fills are real: `S-01` through `S-16` record that no canonical document names a login identifier, a proof mechanism, a password rule, a PIN policy, a session duration, an offline window, a rate-limit value, a recovery policy, a delivery channel or a language moment. Nothing here contradicts canonical material; it supplies what canonical material never stated.
+The canonical silences this ADR addresses are real: `S-01` through `S-16` record that no canonical document names a login identifier, a proof mechanism, a password rule, a PIN policy, a session duration, an offline window, a rate-limit value, a recovery policy, a delivery channel or a language moment. **This ADR fills the mechanisms and deliberately leaves several of the numbers open** — see "Deliberately left open", which is the authoritative list. Nothing here contradicts canonical material; it supplies what canonical material never stated.
 
 ## Decision
 
@@ -22,9 +22,9 @@ All fifteen sub-decisions are settled as follows. Option letters refer to `ai/de
 
 | ID | Sub-decision | Decision |
 |---|---|---|
-| D-01 | Driver identifier | **A**, with the operator-visible reference lookup from **D** — the driver signs in with a phone number; the office can additionally look a driver up by an internal reference for support. (Citation corrected: the text always described both, and named only A.) |
+| D-01 | Driver identifier | **A**, with the operator-visible reference lookup from **D** — the driver signs in with a phone number; the office can additionally look a driver up by an internal reference for support. |
 | D-02 | Account creation | **A** — the Company provisions the `Driver` and `CompanyMember`; the driver only activates a device. No unauthenticated account-creation surface exists. |
-| D-03 | Primary proof | **A composite of B and D**, which `05` does not carry as a single lettered option and which `06` proposed by that name — a Company-issued one-time activation code, deliverable by SMS *or* read out by an operator, followed by a device-local factor. **No password exists anywhere in the driver flow.** |
+| D-03 | Primary proof | **A composite; `05` carries no single lettered option for it.** **D** supplies the substance — a Company-issued one-time activation code, then a device-local factor. **B** contributes only its SMS *delivery channel*; B's distinguishing property in `05` is an OTP on **every** sign-in, and that property is **not** taken — `D-04` and `D-07` rule it out. Delivery is settled in `D-13`: SMS primary, or the code read out by an operator. **No password exists anywhere in the driver flow.** |
 | D-04 | Device-local re-entry factor | **C** — biometric with an app-local PIN fallback. The fallback is reachable immediately, not after failed biometric attempts. |
 | D-05 | Company context | **C** — the client asks only when the driver holds more than one active membership. |
 | D-06 | Device trust | **B** — devices are registered and more than one is allowed per driver. A lost device is individually revocable. |
@@ -35,7 +35,7 @@ All fifteen sub-decisions are settled as follows. Option letters refer to `ai/de
 | D-11 | Rate limiting and lockout | **Shape only:** server-enforced; the remaining time is returned to the client and displayed; the local factor's lockout is kept visibly separate from the server's. **Thresholds, durations and scope are left open** — see "Deliberately left open". |
 | D-12 | Account recovery | **C** — both routes, with **operator-mediated re-issuance as the primary route** and self-service OTP to the registered number as the secondary. `AUTH-10` must render and function fully offline. |
 | D-13 | Code delivery channel | **SMS primary, operator voice as the standing fallback.** Push is explicitly **not** a primary channel. |
-| D-14 | Authentication error codes | **Add authentication codes to the `ApiErrorCode` enumeration** in `T017`/`T018`, i.e. **before `T018`**. Which codes the client may surface is settled with them. This settles the *authentication* portion of `OPEN-004`, which also covers authorization and business error codes and stays open for those. |
+| D-14 | Authentication error codes | **Add authentication codes to the `ApiErrorCode` enumeration** in `T017`, and no later than `T018`. Which codes the client may surface is settled with them. This settles the *authentication* portion of `OPEN-004`, which also covers authorization and business error codes and stays open for those. |
 | D-15 | Pre-authentication language | **D** — explicit choice at first run before the first input field, server-side preference thereafter. |
 
 ### What this means end to end
@@ -52,7 +52,7 @@ A driver never learns, types or resets a password. The office creates their reco
 
 ### Required work this decision creates
 
-1. **`ApiErrorCode` authentication codes (D-14).** Additive per ADR-014's own rule that adding a code is additive and changing a released one is breaking. Without them, five distinct driver situations — wrong credential, session expired, session revoked, rate-limited, membership suspended — collapse into one message covering four different required driver actions. This must become a fact before `T083`.
+1. **`ApiErrorCode` authentication codes (D-14).** Additive per ADR-014's own rule that adding a code is additive and changing a released one is breaking. Without them, five distinct driver situations — wrong credential, session expired, session revoked, rate-limited, membership suspended — collapse into one message covering four different required driver actions. This must become a fact in `T017`, and no later than `T018`.
 2. **An operator surface.** Three decisions depend on it: D-02 (provisioning), D-06 (device revocation) and D-12 (code re-issuance). **No web implementation repository exists yet.** At pilot, driver provisioning and code re-issuance must therefore happen through a backend-side mechanism. This is a real sequencing dependency between `OPEN-001` and the web lane and is recorded here rather than left implicit.
 3. **A written operator verification procedure.** Under D-12 the operator route is primary, and under D-03 an operator may read a code aloud. That makes the operator procedure a security control, not an operational convenience — see the residual risk below.
 4. **The `EMP` state must not present as a credential error.** An identity with zero active memberships authenticates successfully and has nowhere to go, and because `CompanyMember` carries status, a *suspended* driver reaches exactly this state. Showing it as a sign-in failure would send that driver into a retry loop and then into a lockout.
@@ -66,16 +66,22 @@ A driver never learns, types or resets a password. The office creates their reco
 
 ### Deliberately left open
 
-These values are not settled here. Each was presented and consciously deferred; none is an oversight. The Context above says this ADR fills the canonical silences `S-01`–`S-16`; that is true of the *mechanisms* and false of the *numbers*, and the list below is the corrected one.
+These values are not settled here. Each was presented and consciously deferred; none is an oversight. This list is authoritative for what remains open.
 
 - **D-08 — the number of days in the offline grace window.** The design package declines to invent it because it is a business-risk decision. The *shape* is decided and binding. Until the number is set, offline-boundary work and `T083` cannot be fully closed.
 
-  **Two bounds govern the number, and whoever sets it must weigh both.** *Bound 1:* the window is the maximum latency of revocation on a device that never connects — so a longer window is a longer period in which a revoked device keeps working. The design package makes this bound **conditional on revocation existing at all** (`A-06`) and instructs that `A-06` be confirmed or denied *before* the number is set. **`A-06` is discharged by `D-06 B` above:** devices are registered and individually revocable, so revocation exists and Bound 1 is live. This connection was implicit in the original text and is now stated, because a reader could not otherwise tell whether the premise had been checked. *Bound 2:* at `GRACE_EXPIRED` the device stops accepting new business writes, enforced entirely client-side. **Bound 2 survives `A-06` being false and Bound 1 does not**, so the two must not be collapsed into one argument. Neither bound points toward a longer window.
+  **Two bounds govern the number, and whoever sets it must weigh both.** *Bound 1:* the window is the maximum latency of revocation on a device that never connects — so a longer window is a longer period in which a revoked device keeps working. The design package makes this bound **conditional on revocation existing at all** (`A-06`) and instructs that `A-06` be confirmed or denied *before* the number is set. **`ADR-019` decides `A-06`.** It is not derived from the package: `05`'s option B *rests on* `A-06` — its own text reads "Lost devices are individually revocable (**ASSUMPTION** A-06)" — so citing option B as the source of the discharge would be circular. What happened is stronger. `D-06 B` requires a lost device to be individually revocable, and that option was taken with that property, which makes server-side revocation a **requirement on `T018`** rather than an assumption. Bound 1 is live on that basis. **That discharge covers the device leg only.** `A-06` as written also covers a driver who leaves the company and a suspended `CompanyMember`, and `D-06 B` delivers neither; nothing in this ADR says that suspending a membership terminates a live session. Session termination on membership suspension is therefore itself a **`T018` requirement**, to be settled there together with the departing-driver case. Consequences item 4 and the SIM-swap residual risk both lean on that membership leg.
 
-- **The numeric policies this ADR does not set.** `S-05` PIN length and composition; `S-06` activation-code length, expiry and resend interval; `S-09` session duration and renewal interval. The *shapes* are decided above; the values are not, and `07` §6 lists them among its acceptance criteria. They are open on the same terms as `D-08` and `D-11`.
+  *Bound 2 — **PROPOSAL, not decided here.*** The design package proposes that at `GRACE_EXPIRED` the device stops accepting new business writes, enforced entirely client-side; `03` §2 carries it tagged `PROPOSAL` and states that the ADR may draw the line elsewhere, but that drawing no line at all is not an option. **This ADR does not take it.** It was put to the programme owner during review and no preference was expressed, so it stays a proposal rather than being settled by anyone else. The first draft of this paragraph stated it as fact, which was an overreach the Independent Reviewer caught.
+
+  It is recorded here because of what it does to Bound 1: **if adopted, Bound 2 survives `A-06` being false where Bound 1 does not**, so the two must never be collapsed into a single argument. Whoever sets the `D-08` number has to know which bounds are actually in force. Neither bound, where in force, points toward a longer window.
+
+  **Owed before `T083`**, which builds against whatever line is drawn: either the device stops accepting new business writes at `GRACE_EXPIRED`, or it does not and a revoked device carries no client-side bound at all.
+
+- **The numeric policies this ADR does not set.** `S-05` PIN length and composition; `S-06` activation-code length, expiry and resend interval; `S-09` session duration, renewal interval **and absolute maximum lifetime** — under `D-07 B`'s long session the absolute maximum is a distinct value from the renewal interval. The *shapes* are decided above; the values are not, and `07` §6 lists them among its acceptance criteria. They are open on the same terms as `D-08` and `D-11`.
 - **D-11 — rate-limit scope, threshold, duration and reset.** The shape is decided and binding, including that the remaining time must reach the driver. The values are a security decision. Note that a whole fleet at one depot may share an IP, so an IP-scoped threshold can lock out a depot.
 
-These two remain open under `OPEN-001`'s successor scope and must be recorded as such in `ai/DECISIONS_INDEX.md`. They do not reopen the fifteen decisions above.
+These remain open under `OPEN-001`'s successor scope and must be recorded as such in `ai/DECISIONS_INDEX.md`. They do not reopen the fifteen decisions above.
 
 ### Not covered
 

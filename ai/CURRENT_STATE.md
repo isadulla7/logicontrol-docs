@@ -24,7 +24,7 @@ Programme-level state across authoritative repositories. Each implementation rep
 | `logicontrol-ios` | Dormant placeholder only; no implementation authorized. |
 
 ## Backend
-P00 is complete. P01 runs T012 Company aggregate, T013 CompanyMember/RBAC, T014 tenant context, T015 repository tenant scoping, T016 authorization skeleton, T017 identity endpoints under ADR-019, T018 authentication/session and T019 security-critical audit.
+P00 is complete. P01 runs T012 Company aggregate, T013 CompanyMember/RBAC, T014 tenant context, T015 repository tenant scoping, T016 authorization skeleton, T017 production authentication UX closure (ADR-019), T018 authentication/session and T019 security-critical audit.
 
 Backend V2 engineering standard: **SOLID + pragmatic Clean Architecture + LEGO-style modularity + Spring Modulith boundaries**, independently checked by QA/Reviewer; Security Reviewer remains mandatory under V1.1 subject triggers.
 

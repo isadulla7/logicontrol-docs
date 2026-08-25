@@ -41,7 +41,7 @@ None yet.
   anywhere in the driver flow. Backend `T017`/`T018` and Android production authentication are
   no longer gated on this decision.
 
-  **Two values remain open inside the closed decision, and are deliberately deferred, not
+  **Several values remain open inside the closed decision, and are deliberately deferred, not
   overlooked.** They do not reopen `D-01`–`D-15`; each is bounded by a shape that ADR-019 fixes
   as binding.
   - **`D-08` — the number of days in the offline grace window.** The shape is decided (bounded,
@@ -53,8 +53,13 @@ None yet.
     (server-enforced, remaining time returned to and displayed by the client, local lockout kept
     separate from the server's). The values are a security decision. Note that a whole fleet at
     one depot may share an IP, so an IP-scoped threshold can lock out a depot.
+  - **The numeric policies ADR-019 does not set:** `S-05` PIN length and composition; `S-06`
+    activation-code length, expiry and resend interval; `S-09` session duration, renewal interval
+    and absolute maximum lifetime. The shapes are decided; the values are not, and
+    `ai/design/mobile/auth/07-adr-decision-brief.md` §6 lists all eight numeric policies among its
+    acceptance criteria.
 
-  Neither value has been given its own `OPEN-` identifier; if the programme wants them tracked
+  None of these has been given its own `OPEN-` identifier; if the programme wants them tracked
   as first-class open decisions rather than as residue of a closed one, that numbering is the
   owner's to assign.
 
@@ -76,6 +81,13 @@ None yet.
   and before any slice that queues a financial write.
 
 ## Recorded revisions
+- **ADR-019 `D-01`: option-letter citation corrected before merge; the decision is unchanged.** The
+  `D-01` row originally cited option **A** alone while its text described both the phone-number
+  identifier and the office-visible internal-reference lookup — which is option **D** in
+  `ai/design/mobile/auth/05-open-001-decision-alternatives.md`, not part of A. The row now reads
+  "**A**, with the operator-visible reference lookup from **D**". The text always described both;
+  only the citation was wrong, so no sub-decision was reopened. Recorded here because review
+  history does not belong in the ADR's binding decision table.
 - **ADR-018 extends ADR-013/ADR-016 and ADR-017; it does not replace or weaken repository-local
   Cowork V1.1 controls.** The proven lifecycle, R1–R4 risk model, budgets, exact file leases,
   dependency gating, independent QA, Independent Reviewer, Security Reviewer evidence rules and
