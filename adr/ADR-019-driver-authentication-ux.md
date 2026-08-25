@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-25
-- Human approval: explicit owner decision, taken sub-decision by sub-decision against the DES-001 package
+- Human approval: explicit owner decision, taken sub-decision by sub-decision against the DES-001 package. `D-08`'s grace-expiry write boundary was a fourth property added later, decided by the owner during independent review of this ADR and recorded in "`D-08` — where the line falls at grace expiry".
 - Closes: `OPEN-001 Authentication UX`
 - Does not close: `OPEN-002 Android sync terminal-error policy`
 
@@ -42,7 +42,9 @@ All fifteen sub-decisions are settled as follows. Option letters refer to `ai/de
 
 The fourth property in the `D-08` row is a **decision**, not a proposal. `03-offline-boundaries.md` §2 marks the `GRACE_EXPIRED` row's capture and business-write cells **PROPOSAL** and says the dividing line between the two is the ADR's to draw — *"what must not happen is drawing no line at all"*. This ADR draws it at **the queue**: plain capture is not a business write; an operation that enters the sync queue for the office is. The `PROPOSAL` tag is discharged by this decision rather than carried forward.
 
-**The alternative that was rejected, and why.** The position taken first was to let the device keep accepting business writes without limit after expiry. It was reversed once the consequence was put alongside it: those writes are still subject to server-side authorization when they sync, so a driver on a revoked or suspended membership could work for days or weeks and then have the entire queue rejected on reconnect. That trades a bounded client-side stop for an unbounded server-side rejection whose handling is `OPEN-002`, which is unresolved. The client-side stop is what keeps the failure visible to the driver at the moment it happens instead of weeks later. It **reduces but does not remove** the `OPEN-002` dependency: it shrinks the population of operations that can ever be permanently rejected, and `OPEN-002` still governs what happens to the ones that are.
+**Who decided this, and when.** The boundary was **not** part of the original fifteen. It was raised during independent review of this ADR, put to the programme owner, and **decided by the owner** — first left to stand without limit, then reversed by them once the consequence below was set beside it. It is recorded with its actor because a decision written without the party who took it is precisely the defect that produced the first draft of this section, in which the Orchestrator stated the design package's proposal as settled fact and the Independent Reviewer caught it.
+
+**The alternative that was rejected, and why.** The position taken first was to let the device keep accepting business writes without limit after expiry. The owner reversed it once the consequence was put alongside it: those writes are still subject to server-side authorization when they sync, so a driver on a revoked or suspended membership could work for days or weeks and then have the entire queue rejected on reconnect. That trades a bounded client-side stop for an unbounded server-side rejection whose handling is `OPEN-002`, which is unresolved. The client-side stop is what keeps the failure visible to the driver at the moment it happens instead of weeks later. It **reduces but does not remove** the `OPEN-002` dependency: it shrinks the population of operations that can ever be permanently rejected, and `OPEN-002` still governs what happens to the ones that are.
 
 **Two bounds govern the number of days, which is still open, and whoever sets it must weigh both.** They must not be collapsed into one argument.
 
