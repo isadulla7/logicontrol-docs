@@ -12,13 +12,19 @@ building.**
 
 `[C]` The canonical technology direction is **React/Next.js** and has been since the system
 architecture v1.0 (`architecture/system-architecture-uz.md` § Baseline). It is not this design's to
-change and not yours either — a change needs a superseding ADR (`OWNERSHIP.md`).
+change and not yours either — `[C]` "when that repository is created, it follows the
+already-canonical React/Next.js architecture unless superseded by a later ADR"
+(`ai/CURRENT_STATE.md` § Product/UI/UX lanes), and `[C]` superseding is the only route available: a
+decision that changes an accepted ADR supersedes it or records an explicit revision with rationale,
+and never edits it silently (`ai/DECISIONS_INDEX.md` § Rule).
 
 `[C]` `ai/CURRENT_STATE.md` § Web: "A dedicated web implementation repository has not yet been
 created, so no Web Developer execution lane is active yet." `[C]` `ai/COWORK_V2.md` § 3 lists the
 `WEB` task class as existing "only after the web implementation repository is created", and § 13
-confirms that when the repository is created it follows the already-canonical React/Next.js
-architecture unless a later ADR supersedes it.
+adds that for web implementation "canonical technology is React/Next.js, but no dedicated
+implementation repository exists yet. Design may proceed; Web Developer execution starts after that
+repository is created/authorized." The superseding-ADR rule is not in § 13 — it is the
+`ai/CURRENT_STATE.md` sentence quoted above.
 
 `[C]` So: your task packet comes from the Global Orchestrator, your lifecycle is your repository's
 local Cowork protocol, and the cross-repository contract gate in `ai/COWORK_V2.md` § 9 applies to you
@@ -82,10 +88,12 @@ Each item is marked, and **most of them turn out to be `[DERIVED]` rather than `
 
 ## 3. What is assumed
 
-[06](06-api-assumptions.md) is the register — 21 assumptions with risk and fallback for each. The
+[06](06-api-assumptions.md) is the register — 22 assumptions with risk and fallback for each. The
 ones that will shape your first sprint are `A-06` (server-declared actions), `A-21` (a denial
 carries a renderable reason — really the tail of `A-06`, and it should be decided with it), `A-04`
-(a business error-code catalogue) and `A-08` (idempotency for web writes).
+(a business error-code catalogue) and `A-08` (idempotency for web writes). `A-22` (the server omits
+what the viewer may not read, below workspace level) cannot be answered before `T013`, so take it to
+the gate as a `T013`/`T016` design input rather than as a question with an answer waiting.
 
 `[A-RBAC]` The role names in [01](01-roles-and-workspaces.md) § 4 are placeholders. So are the
 capability names in [05](05-permission-aware-states.md) § 7. Do not put either in code.
@@ -164,7 +172,7 @@ tasks are `T086 Next.js operator shell + RBAC`, `T087 Operator work queues`, `T0
 | 1 | `AppShell` + rail + company scope + routing, with the rail statically configured | proves the shell and the URL model with no backend dependency beyond one read | `T012` |
 | 2 | `DataTable` + toolbar + paginator + all state components | everything later is this | `A-01`, `A-02`, `A-03` |
 | 3 | Organization: ORG-04, ORG-05, ORG-14 | the smallest real workspace, and it exercises `S-CONFLICT` and audit | `T012`, `A-07`, `A-17` |
-| 4 | Rail driven by the server manifest; the degradation ladder | the point where the product becomes permission-aware | `T013`, `A-05` |
+| 4 | Rail driven by the server manifest; the degradation ladder | the point where the product becomes permission-aware | `T013`, `A-05`, `A-22` |
 | 5 | Organization: ORG-08..ORG-13 | membership administration | `T013`, `A-15` |
 | 6 | Trips list + Trip detail with the panel model | the first hub; validates rule IA-5 against a real backend | `T025`–`T029`, `A-11` |
 | 7 | Expense approvals as the first split-layout queue with bulk operations | the highest-value operator surface, and the one that stresses `A-06` and `A-08` hardest | `T039`–`T044`, `A-06`, `A-08` |
@@ -193,7 +201,7 @@ for the first contract gate.
 | accessibility | [04](04-operational-patterns.md) § 13; [07](07-responsive-behavior.md) § 4 | Complete |
 | responsive / adaptive | [07](07-responsive-behavior.md) | Complete |
 | terminology source | [README](README.md); `domain/GLOSSARY.md` | Complete |
-| API assumptions | [06](06-api-assumptions.md) | Complete, 21 registered with fallbacks |
+| API assumptions | [06](06-api-assumptions.md) | Complete, 22 registered with fallbacks |
 | unresolved decisions | [10](10-decisions-required.md) | Complete, 14 registered, including one canonical inconsistency (`Q-14`) |
 
 `[C]` And the rule that governs your side of it: "Implementation agents never infer missing business

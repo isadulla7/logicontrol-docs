@@ -122,15 +122,28 @@ UI can render. Which is why [06](06-api-assumptions.md) argues the two should be
 |---|---|---|
 | Rail item for a workspace not held | **L1** | no reason to advertise a workspace's existence |
 | Sub-section not held | **L1** | same |
-| Hub panel from an unreadable module | **L1** | the panel model (rule IA-5) makes each panel independently gated; a Trip renders with three of its eight panels |
-| Table column carrying restricted data | **L1** column absent; **L4** if the column must remain for alignment | prefer removing the column outright |
-| Row the viewer may not open | **L1** — not returned by the server at all | `[C]` tenant-scoped queries; the client never filters rows it received |
+| Hub panel from an unreadable module | **L1** | the panel model (rule IA-5) makes each panel independently gated; a Trip renders with three of its eight panels. `[A-RBAC]` `A-22` — the panel is absent because the server omitted it |
+| Table column carrying restricted data | **L1** column absent; **L4** if the column must remain for alignment | prefer removing the column outright. `[A-RBAC]` `A-22` — the column is absent because the server omitted the field, not because the client hid it |
+| Row the viewer may not open | **L1** — not returned by the server at all | `[C]` A row belonging to **another company** is already absent: repository contracts require company scope and knowing a UUID is never authorization (`adr/ADR-010`; `architecture/system-architecture-uz.md` § Multi-tenancy/security). `[A-RBAC]` That a row the viewer may not open **inside their own company** is likewise absent is `A-22`, not tenancy — § 1 says RBAC does not exist yet. `[D]` Either way the client never filters rows it received |
 | Record-level action not held | **L2** | the viewer is already looking at the object |
 | Whole record read-only | **L3** | one explanation, not thirty |
 | Restricted field on a visible record | **L4** | explicit, never blank |
 | Any refused write | **L5** | keep the work |
 | Bulk operation, partially refused | **L5 per item** | [04](04-operational-patterns.md) § 10 — per-item reporting |
-| Overview composition | **L1 per region** | regions the viewer cannot source simply do not appear; the screen is one screen with server-driven composition |
+| Overview composition | **L1 per region** | regions the viewer cannot source simply do not appear; the screen is one screen with server-driven composition. `[A-RBAC]` `A-22` |
+
+`[A-RBAC]` **Four of these treatments depend on unbuilt server behaviour, registered as `A-22`.**
+Panel-level, column-level, row-level and Overview-region L1 all need the server to compose its
+responses permission-awarely **below workspace level**. That is finer than `A-05`, which lists
+workspaces and sub-sections, and different in kind from `A-06`, which declares what may be *done* to
+a representation the caller already holds rather than whether the caller receives it at all. Neither
+reaches panels, columns, rows or regions, so the dependency is its own row in
+[06](06-api-assumptions.md) with its own fallback.
+
+`[D]` It is registered rather than designed around because the client cannot supply it. Filtering
+what the server already sent is the one thing rule P-1 and § 5 forbid outright, so if the server
+does not omit, the design does not get L1 here — it gets whatever the server returned, and the
+fallback in `A-22` says so plainly instead of pretending otherwise.
 
 `[D]` **Rule P-3 — never dead-end.** Every denial states what was denied and offers at least one
 route onward: back to where the user was, or to a surface they do hold. `[D]` Where the copy suggests

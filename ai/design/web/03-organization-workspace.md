@@ -60,7 +60,7 @@ the shell must establish company scope before rendering any workspace.
 
 - **One membership** → redirect straight to `/c/:companyId/overview`. No interstitial, no click.
 - **Several memberships** `[?]` → ORG-02.
-- **No memberships** → a terminal explanatory state, § 4 `S-NO-SCOPE`.
+- **No memberships** → a terminal explanatory state, § 3 `S-NO-SCOPE`.
 
 `[D]` Last-used company is remembered locally and used as the redirect target on a subsequent visit,
 with the switcher in the global bar as the escape. A user who works in one company all day should
@@ -142,7 +142,7 @@ reload and can be linked.
   burying them among name fields would be a design error.
 - **Concurrency** `[C]`: the aggregate carries an optimistic `version` and conflicts are explicit.
   The form submits the version it loaded `[A-API]` and handles rejection as state `S-CONFLICT`
-  (§ 4). This is not an edge case worth deferring: two administrators editing a company profile is
+  (§ 3). This is not an edge case worth deferring: two administrators editing a company profile is
   exactly the situation optimistic locking exists for, and a UI that responds to it with a generic
   error teaches users that the product loses their work.
 - **Validation** `[C]`: field-level errors come from the `fieldErrors` array of the `ADR-014`
@@ -309,8 +309,16 @@ entry is always visible, are `T019`/`T073` questions. See [10](10-decisions-requ
 
 ## 3. State inventory
 
-Every screen above is specified against this list. A screen is not design-ready until each
-applicable row is answered; screens that answer "n/a" say why.
+`[D]` **This is a global vocabulary that every screen in § 2 inherits, not a per-screen checklist.**
+A screen names a state explicitly only where that state is load-bearing for it — which is why ORG-01
+names `S-NO-SCOPE` and ORG-05 names `S-CONFLICT`, and the other twelve name none. Table-shaped screens inherit a second time, from the
+table states in [04](04-operational-patterns.md) § 11.
+
+`[D]` Specifying a first workspace this way is deliberate. Fourteen per-screen state tables would
+restate one vocabulary fourteen times and then drift apart, and the states that actually vary by
+screen are few. The cost is real and worth naming: **this file does not tell you which rows are
+inapplicable to a given screen**, and it does not claim to. [09](09-handoff.md) § 7 records the same
+boundary from the other side — "Complete for Organization; state vocabulary is global".
 
 | State | Trigger | Treatment `[D]` |
 |---|---|---|

@@ -62,6 +62,27 @@ degraded; **Medium** = a surface is degraded; **Low** = cosmetic or deferrable.
 | A-19 | Bulk operations are **N individual calls**, not a batch endpoint | [04](04-operational-patterns.md) § 10 | Low | if a batch endpoint exists it must still report **per-item** outcomes; a batch that succeeds or fails as a unit cannot express what Spend Policy will actually do to a mixed selection |
 | A-20 | There is an authenticated principal and a resolved company context per request | everything | — | not an assumption so much as the `[C]` canonical chain; the **mechanism** is `OPEN-001` and is deliberately untouched here |
 | A-21 | **A denial carries a machine-readable reason the UI can render** | [05](05-permission-aware-states.md) § 3 L5; [03](03-organization-workspace.md) § 3 `S-DENIED`; **and it is A-06's own fallback** | High | generic denial copy with no server-supplied reason. Entered data is still kept and a route back is still offered, but the UI cannot say *what* was denied |
+| A-22 `[A-RBAC]` | **The server composes responses permission-awarely below workspace level** — it omits a hub panel, a column, a row or an Overview region the viewer may not read **within their own company**, rather than returning it for the client to hide | [05](05-permission-aware-states.md) § 4 — the panel-level, column-level, row-level and Overview-region **L1** treatments | High | none of those four surfaces gets L1. The client renders exactly what the server returned and omits nothing itself, because `[C]` business rules are not thrown to the frontend (non-negotiable #12) and `[DERIVED]` a client deciding which rows or fields it may show is exactly that; rule P-1 forbids it independently. Panels fall back to **L5** on entry, scoped to the panel by rule IA-5; columns, rows and regions show whatever arrives. The consequence is that a viewer may see, within their own company, data a finer-grained model would have withheld — a server-side gap the UI cannot close, which is why it is registered here rather than papered over |
+
+**A-22 is the register's one row that cannot be answered before `T013`.** `[C]` The authorization
+chain `Authentication → Principal → Company Context → RBAC → business authorization` is canonical
+(`architecture/system-architecture-uz.md` § Multi-tenancy/security), and `[C]` `T013
+CompanyMember/RBAC` and `T016 Authorization skeleton` are unstarted
+(`roadmap/development-roadmap-v1.0-uz.md` § P01; `ai/CURRENT_STATE.md` § Backend). `[DERIVED]` So
+there is no permission model yet whose responses could be composed permission-awarely: the
+assumption is not that a designed behaviour will be built, but that when RBAC is designed it will be
+applied at composition time on the server rather than left to callers. That is a `T013`/`T016`
+design input, and it is recorded here so it arrives as one instead of being discovered by a web
+implementer.
+
+**Do not read `A-22` as a tenancy claim.** `[C]` Tenant scoping is a **company** boundary —
+tenant-owned rows carry `company_id`, repository contracts require company scope, and knowing a UUID
+is never authorization (`adr/ADR-010`). `[DERIVED]` It therefore warrants the cross-company half of
+every L1 treatment in [05](05-permission-aware-states.md) § 4 and none of the within-company half;
+whether a viewer may open a row inside their own company is an RBAC question and canon does not
+answer it. Warranting a within-company permission behaviour with a cross-company tenancy fact is the
+failure `README` rule M-1 was written against, and `A-22` exists so that the remaining half has
+somewhere honest to sit.
 
 **A-21 needs stating plainly because `ADR-014` currently points the other way.** `[C]` The advice
 rethrows `AccessDeniedException` unchanged rather than mapping it, deliberately, because Spring

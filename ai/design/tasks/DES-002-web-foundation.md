@@ -42,10 +42,10 @@ Canonical terminology; no endpoint/security rule invented as accepted; operation
 |---|---|---|
 | 1. Role-to-workspace map | `ai/design/web/01-roles-and-workspaces.md` | Done — nine duty areas grounded in canon; role names kept separate and marked as RBAC assumptions |
 | 2. Web IA/navigation | `ai/design/web/02-information-architecture.md` | Done |
-| 3. Company/Organization screens + states | `ai/design/web/03-organization-workspace.md` | Done — 14 screens, 16-state inventory |
+| 3. Company/Organization screens + states | `ai/design/web/03-organization-workspace.md` | Done — 14 screens, 17-state inventory |
 | 4. Table/filter/search/master-detail patterns | `ai/design/web/04-operational-patterns.md` | Done |
 | 5. Permission treatment without inventing RBAC | `ai/design/web/05-permission-aware-states.md` | Done |
-| 6. API assumptions marked explicitly | `ai/design/web/06-api-assumptions.md` | Done — 21 assumptions, each with risk and a fallback |
+| 6. API assumptions marked explicitly | `ai/design/web/06-api-assumptions.md` | Done — 22 assumptions, each with risk and a fallback |
 | 7. Figma reference if available | — | **Not available.** No Figma MCP tooling was exposed to this session. Delivered as Markdown specification; artboard list recorded in `09-handoff.md` § 9 |
 | 8. Handoff package | `ai/design/web/09-handoff.md` | Done |
 | Supporting: responsive behavior | `ai/design/web/07-responsive-behavior.md` | Done |
@@ -236,3 +236,32 @@ Two partial mitigations, both from the round-3 review, recorded because they are
 
 `[?]` The general case remains unreachable. `[DERIVED]` made the inference visible; only the
 instruction to re-derive it got it checked.
+
+## Reopened round-2 findings — the second review of `006e324`
+
+**Two independent reviews of commit `006e324` were posted six minutes apart and reached different
+verdicts:** an `APPROVED` at 13:47 (`review-des002`) and a `CHANGES_REQUESTED` at 13:53
+(`review-DES-002`) carrying one MAJOR and five MINOR. Every later pass anchored to the `APPROVED`
+one and was scoped elsewhere, so the six were never picked back up. `review-docs-design` verified
+five of them still open at `80a5f65` and ruled PR #5 **NOT-CLEARED** on `ADR-020` gate element 5.
+Only finding 3 had been closed, incidentally, by `d721546`. All five remaining are closed here.
+
+| # | Sev | Finding | Resolution |
+|---|---|---|---|
+| 1 | **MAJOR** | `05` § 4: four L1 treatments below workspace level are an unregistered backend dependency, and the row-level cell warranted a **within-company** permission behaviour with a **cross-company** tenancy fact | Registered as `A-22` in `06` — the server omits a panel, column, row or Overview region the viewer may not read within their own company — High risk, with a fallback that gives up L1 rather than moving the decision into the client. The row-level cell is split into three clauses per rule M-1: `[C]` cross-company absence from `ADR-010`, `[A-RBAC]` the within-company half as `A-22`, `[D]` the client never filters what it received. The other three L1 rows now point at `A-22` at the point of use |
+| 2 | MINOR | `03` lines 63 and 145 point at § 4 for `S-NO-SCOPE` and `S-CONFLICT`; both are § 3 rows | Both corrected to § 3 |
+| 4 | MINOR | `09` § 1 cites `OWNERSHIP.md` `[C]` for the superseding-ADR rule, which `OWNERSHIP.md` states only for iOS/ADR-015 | Re-cited to the sources that carry it for web. **The reviewer's suggested pointer was off by one section** — the sentence is under `ai/CURRENT_STATE.md` § Product/UI/UX lanes, not § Web — and the paragraph below had the same defect, attributing the rule to `ai/COWORK_V2.md` § 13, which does not state it. Both corrected, and § 13 is now quoted for what it does say |
+| 5 | MINOR | `03` § 3 promises a per-screen design-readiness answer the file does not give | Restated as the global vocabulary every screen inherits, with the reason for specifying a first workspace that way and an explicit statement of what the file therefore does **not** tell you. Matches what `09` § 7 already said from the other side |
+| 6 | MINOR | Packet Progress table says "16-state inventory"; `03` § 3 has 17 rows | Corrected to 17. The assumption count moved 21 → 22 with `A-22` and was swept in the same pass — `09` § 3, `09` § 7 and this table |
+
+Nothing else was touched. No screen, rule or decision changed; `ai/DECISIONS_INDEX.md`,
+`ai/CURRENT_STATE.md` and `adr/**` are untouched, and the round-3 MINOR on `01` § 2 `DA-5` was
+already closed by `80a5f65`.
+
+**The gate observation is worth keeping, because it is not about anyone's care.** A
+`CHANGES_REQUESTED` drifted out of view behind later approvals each correctly scoped to a different
+question, and each of those passes said "`APPROVED` stands" while re-checking only its own scope.
+`ADR-020` element 6 stops an approval drifting **forward** onto commits it never saw; this was the
+same failure arriving from the other direction. The cheap countermeasure `review-docs-design`
+proposes — a pass scoped to a subset must state what it did **not** re-check — would have caught it,
+and it costs one sentence per review.
