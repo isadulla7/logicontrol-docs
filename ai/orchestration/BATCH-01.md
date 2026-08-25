@@ -40,10 +40,11 @@ frozen/live split only works if the live half is actually written, and for one r
   `adr/ADR-020-orchestrator-merge-authority.md` on this branch, ratifying `OPEN-003`; both
   Independent Reviewers graded that MAJOR, because `adr/**` is read-only for every lane in this
   batch **including this one** and §5 commits any ADR the batch needs to a serialized slot after
-  the lanes land. It is reverted in `320c243`. The decision itself is not withdrawn: its text is
-  preserved as a draft at `ai/orchestration/ADR-020.draft.md`, which grants nothing, and it lands
-  in its own serialized pull request where the findings raised against it are owed. Until that
-  pull request is accepted, nothing in this batch merges except by the human owner.
+  the lanes land. It is reverted in `320c243`. The decision itself is not withdrawn and its text is
+  not lost: it is recoverable from commit `8fba279` on this branch, and what is owed is recorded as
+  **D-7** in §8. It was **not** relocated to `ai/orchestration/` — see D-7 for why a lease line
+  cannot confer a home on an R4 artefact. Until an ADR carries the decision, nothing in this batch
+  merges except by the human owner.
 - **`ai/orchestration/REVIEW-NOTES-01.md` was added by this batch** (`4cb7287`) — what independent
   review actually caught across Batch 01 and with which question. It is a companion to this record
   and not part of the clearance argument; §7 of it and §8/§9 here must agree on the counts, and
@@ -598,7 +599,63 @@ serialized. Recorded here so the two are fixed together: they are the same defec
 protocol that encodes an assumption about its own runtime, and gives an agent no honest way to say
 so.
 
-None of these defects blocks any lane in this batch.
+**D-7 (MAJOR, owner: human owner, needs an ADR — open).** **A merge-authority ADR is owed and is
+not yet accepted.** `OPEN-003` remains open in `ai/DECISIONS_INDEX.md`, and until an accepted ADR
+carries it, `ADR-013`/`ADR-016` §1 and §3 govern: only the human owner merges to `main`. Nothing
+below is in force.
+
+**What the ADR is proposed to decide**, stated as a proposal and not as a rule: that the Global
+Orchestrator may merge a pull request when, and only when, every element of a complete gate is
+satisfied **and citable** — repository quality gate green at the head being merged; independent QA
+evidence where the repository-local protocol requires QA, from an agent that did not implement the
+work; an Independent Reviewer that did not produce the work having returned `APPROVED` as an
+artefact; a *clearing* Security Reviewer verdict where the trigger applies; every routed `MINOR`
+ruled on with no finding of any severity open; and the approval actually covering the head being
+merged. Any element unsatisfied means escalate, naming the element. R4 and ADR acceptance stay with
+the human owner unconditionally, `OPEN` decisions and scope stay with them, and the separation rule
+is untouched — no agent merges work it or its own implementing teammate produced.
+
+**Why it is waiting.** An ADR change is R4 (`COWORK_V1.md` §6). `COWORK_V1.md` §5 serializes R4
+outright — *"there is no documentation-only carve-out"* — and names `docs/adr/` in its
+never-parallel list. §5 of this record makes `adr/**` read-only for every lane in this batch
+including the Orchestrator's own, and commits any ADR the batch needs to a serialized slot after
+the lanes land. The programme owner's instruction to proceed supplied the R4 **approval** §6
+requires; it was not asked to waive **serialization**, which is a separate requirement, and reading
+a conversational instruction as lifting a tier-1 rule is the generalisation `OPEN-003` was written
+to forbid.
+
+**Where the draft text lives.** Commit `8fba279` on this branch, at the path
+`adr/ADR-020-orchestrator-merge-authority.md` as it stood there. Recoverable with
+`git show 8fba279:adr/ADR-020-orchestrator-merge-authority.md`, and in force nowhere.
+
+**Relocation was considered and refused.** Moving the text to `ai/orchestration/`, which §5 does
+lease to this lane, would have satisfied the lease line while defeating the serialization rule the
+revert exists to honour — the letter-satisfied-intent-missed move in its purest form. A lease
+answers *may this lane write to this path*; it does not answer *may this content live at this
+path*, and R4 attaches to what an artefact governs, not to the folder it sits in. It would also
+leave a governing decision in a folder where nobody looks for governing decisions. A pointer is
+what is left behind instead.
+
+**Owed by the serialized ADR-020 pull request, by finding number, so they do not evaporate when
+the ADR leaves this one:**
+
+- **`review-docs-pr3` finding 2 (MAJOR).** The ADR's Context asserts that Batch 01's four pull
+  requests each carried an independent reviewer's `APPROVED` and *"all four then stopped, because
+  nothing in the protocol let anyone but the human move them."* False against an artefact fifteen
+  minutes older: backend PR #10's head carried `T012-014`, an `ESCALATED` event at
+  `2026-08-25T14:36:00Z` with two MAJOR findings open and routed to the human owner, so that
+  lane's `APPROVED` was contested and it stopped because a gate returned findings, not because a
+  button was unavailable. The true version is better for the decision than the false one.
+- **`review-docs-pr3` finding 3 (MAJOR).** Three of the six gate elements are undefined outside
+  `logicontrol-backend`, and only one of the three is disclosed. Element 1 has nothing to be green
+  in `logicontrol-docs`, which has no `.github/` directory (§1 records this); element 4's
+  *clearing* is defined in `logicontrol-backend/.ai/COWORK_V1.md` §9a, which governs one of three
+  repositories; element 2's gap is the one the ADR does disclose, via **D-4**. A reader is
+  entitled to conclude that the elements not flagged are sound.
+
+None of these defects blocks a lane's work. **D-7 constrains the merge step rather than any lane:**
+until an accepted ADR carries the decision, only the human owner merges — which is the rule that
+was already in force when this batch was cleared, so nothing changes and nothing is waiting on it.
 
 ## 9. Revision history
 
@@ -624,8 +681,17 @@ A. / 17. (MAJOR) **`adr/ADR-020-orchestrator-merge-authority.md` was written int
    a new commit, not a rewrite; `8fba279` stays in the log with `320c243` pointing at it. The
    `OPEN-003` entry returns to open in `ai/DECISIONS_INDEX.md`, which makes §4 condition 4 true
    again at head rather than merely unrewritten — recorded in §0 rather than left to be inferred.
-   ADR-020's text is preserved byte-for-byte at `ai/orchestration/ADR-020.draft.md`, inside the
-   `gorc` lease, holding no authority until its own serialized pull request accepts it.
+   ADR-020's text is **not** relocated. A first pass at this revision did move it to
+   `ai/orchestration/ADR-020.draft.md`, which §5 does lease to this lane, and pushed it at
+   `7df7f46`; it is removed again in the commit that adds D-7, and that is recorded here rather
+   than tidied away. The lease answers *may this lane write to this path* and not *may this
+   content live at this path*, and R4 attaches to what an artefact governs rather than to the
+   folder it sits in — so relocating it would have satisfied §5's lease line while defeating the
+   serialization rule the revert exists to honour, and would have left a governing decision where
+   nobody looks for one. What is left behind instead is **D-7** in §8: a pointer recording that
+   the ADR is owed, what it proposes, why it waits, and that its text is recoverable from
+   `8fba279`. D-7 also carries findings B/2 and C/3 by number, as owed by the serialized ADR-020
+   pull request.
 
 B. / C. / 5. / 18. / 19. / 20. **Travel with ADR-020.** The Context paragraph that was false
    against `T012-014` fifteen minutes before it was written; the three gate elements undefined
@@ -633,7 +699,9 @@ B. / C. / 5. / 18. / 19. / 20. **Travel with ADR-020.** The Context paragraph th
    their satisfaction is recorded; element 1 being vacuous in the repository the Orchestrator
    writes in; and element 3's independence test not excluding a reviewer that *specified* the
    work. All six are edits to a document that is no longer on this branch, and all six are owed in
-   the change that lands it. They are not closed and are not dropped.
+   the change that lands it. They are not closed and are not dropped. **B and C are additionally
+   written out in full in §8's D-7**, by finding number, so that the next author inherits them
+   from this record rather than from a review comment.
 
 D. (MAJOR) **This record carried none of revision 7's substance.** It did not contain the strings
    `ADR-020`, `REVIEW-NOTES-01.md` or `OPEN-004`; §9's revision-7 entry covered one of its seven

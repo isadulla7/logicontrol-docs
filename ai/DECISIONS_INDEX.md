@@ -29,9 +29,10 @@ None yet.
 
 **Next free ADR number is ADR-021.** Neither 019 nor 020 is on `main` yet and neither is listed
 above, but both are written, and a number is claimed when the ADR is written rather than when it
-merges: ADR-019 is on `docs/ADR-019-driver-authentication-ux` (PR #6), and ADR-020's text is held
-on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized change that lands it.
-`OWNERSHIP.md` states the sequence is global and a number is never reused.
+merges: ADR-019 is on `docs/ADR-019-driver-authentication-ux` (PR #6), and ADR-020's draft text is
+recoverable from commit `8fba279` on `chore/gorc-batch01-parallel-clearance`, pending the
+serialized change that lands it — see `ai/orchestration/BATCH-01.md` §8, **D-7**. `OWNERSHIP.md`
+states the sequence is global and a number is never reused.
 
 ## Open decisions
 - **OPEN-001 Authentication UX.** The production credential, registration, OTP and trusted-device
