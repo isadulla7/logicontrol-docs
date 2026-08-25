@@ -49,7 +49,9 @@ repository when it constrains only that repository's internal implementation.
 | ADR-013 Cowork Agent System V1 | docs | Programme-wide development process |
 | ADR-014 Standard API Error Contract | docs | Backend↔client API contract |
 | ADR-015 Native Android Mobile Client | docs | Product-wide client technology decision |
+| ADR-016 Cowork V1.1 — Security Reviewer Role | docs | Programme-wide development process; amends ADR-013 |
 | ADR-017 Three-repository Split | docs | Repository boundaries and ownership |
+| ADR-018 Multi-repository Cowork V2 | docs | Programme-wide development process across all three repositories |
 
 ADR numbering is a single global sequence shared by all three repositories. A number is never
 reused. A backend or mobile ADR that depends on a global decision links to it here rather than
