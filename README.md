@@ -18,6 +18,8 @@ roadmap va ADR'lar shu yerda yashaydi. Implementation repolari (`logicontrol-bac
 | [`architecture/system.md`](architecture/system.md) | Tizim arxitekturasi |
 | [`adr/`](adr/) | Qabul qilingan arxitektura qarorlari |
 | [`roadmap/v2.md`](roadmap/v2.md) | Rivojlantirish yo'l xaritasi v2 |
+| [`roadmap/tasks.md`](roadmap/tasks.md) | Task doskasi — kam bog'liqlikli to'lqinlar |
+| [`ai/MASTER_PROMPT.md`](ai/MASTER_PROMPT.md) | Muhandislik master prompti (V2) |
 | [`decisions.md`](decisions.md) | Ochiq qarorlar registri (`OPEN-*`) |
 
 ## Qoidalar
