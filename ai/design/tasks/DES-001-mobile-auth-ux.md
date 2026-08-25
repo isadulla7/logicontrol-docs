@@ -227,10 +227,12 @@ in owner-facing files.
    existence of revocation push it short. Both are canonical." Revocation is **A-06**, which this
    package's own register marks *"implied, never stated"* — an assumption presented as canon, in the
    file the owner reads, on the number the package calls the most consequential in `OPEN-001`. Now
-   split by standing, with the consequence made explicit: **a grace window is the maximum latency of
-   revocation, so if `A-06` is false there is no revocation to accelerate and the entire case for a
-   short window collapses.** The brief now instructs the ADR author to confirm or deny `A-06`
-   *before* setting the number.
+   split by standing, and the brief instructs the ADR author to confirm or deny `A-06` *before*
+   setting the number.
+
+   *(Corrected in a third pass, 2026-08-25 — see the note below. The v2 wording recorded here said
+   that if `A-06` is false "the entire case for a short window collapses". That was wrong and is
+   withdrawn.)*
 
 3. **Three blanket rules still encoded the pre-`DERIVED` binary** — `08`'s header, `03` section 2
    and `02` section 8 each said a statement is a `PROPOSAL` *"unless/except it cites a fact"*, which
@@ -261,3 +263,47 @@ never got a chance at either. That is the sharper finding, and it confirms the w
 from the opposite side: **markers make derivations reviewable, but a derivation that was never
 marked is invisible to marker discipline entirely.** A tagging scheme is necessary and not
 sufficient; the standing check has to be the question applied to prose, not an audit of the tags.
+
+**2026-08-25 — third pass on `07` section 3.2, and what the three rounds show.**
+
+Five of six closures from the confirmation pass were clean. `07` section 3.2 was wrong for the
+third consecutive round, in a third distinct way, and this time the error would have moved the
+owner's decision.
+
+**The defect.** v2 said that if `A-06` is false, "shortening the window buys nothing at all". That
+is refuted by this package's own capability table two files away: at `GRACE_EXPIRED` the device
+stops accepting new business writes, and **that bound is enforced entirely client-side** — no
+revocation, no server mechanism, no knowledge that anything is wrong. The window therefore enforces
+**two** bounds, and only one of them depends on `A-06`.
+
+**Why it was not a wording fix.** If `A-06` is false the company has *no revocation lever at all*,
+which makes the window not redundant but the **only** control it has over a device it cannot reach.
+An owner reading "buys nothing" in that branch would **lengthen** the window — removing the last
+remaining bound, in exactly the branch where the mistake is least recoverable. The v2 text inverted
+the recommendation in its own worst case.
+
+**The fix.** `07` section 3.2 now separates bound 1 (revocation latency, live only if `A-06` holds)
+from bound 2 (unverified writes, client-side, unaffected), sets the two branches out in a table, and
+states that neither points toward a longer window. The premise and the instruction the reviewer
+asked to keep are unchanged. The lead-in diagram was updated so it no longer under-describes the
+table beneath it, and `03` section 4 — which named only the revocation reason — now names both, so
+the two files agree rather than diverging.
+
+**The pattern, which is worth more than the fix.** From the reviewer, recorded verbatim because it
+is the sharpest statement of this class of defect produced in the batch:
+
+> This paragraph has now been wrong three rounds running, three different ways — and the failure
+> mode migrates under correction: mis-citation, then correct citation with an overstated conclusion,
+> then uncited novel inference. It got harder to catch each time it was fixed.
+
+Round 1 was findable by checking a citation. Round 2 was findable by checking a citation against
+what its source states. **Round 3 carried no identifier at all, contradicted no sentence anywhere,
+and was wrong only against the mechanism** — findable only by re-deriving the claim from the
+capability table. A lane corrected for over-citing produces its next defect as uncited reasoning,
+because that is where the correction pushes it.
+
+The operational consequence, and the last thing this lane has to offer the next briefing: **the
+standing check cannot be "verify the citations", and it cannot only be "does the source state
+this".** For a claim about what the design itself does, the question is *"does the mechanism do
+this?"* — and the only way to answer it is to go and read the mechanism. Three rounds of review
+found this paragraph three times, and each round needed a different question to find it.

@@ -85,14 +85,18 @@ and how much a driver types. Everything else in J1 is downstream.
 
 ### 3.2 D-08 — the offline grace window
 
-The single dial that sets the boundary between offline-first continuity and revocation latency.
+The single dial that bounds how long a device keeps operating on an unconfirmed session.
 
 ```
 too short                                                        too long
 |--------------------------------------------------------------------|
-a driver is blocked mid-trip              a revoked driver keeps recording
-through no fault of their own             company facts for that long, offline
+a driver is blocked mid-trip              a device the company cannot reach
+through no fault of their own             keeps recording company facts,
+                                          and a revoked session keeps working
 ```
+
+The long-side cost has two parts, and they do not stand or fall together — see the branch table
+below.
 
 **The two sides of this dial do not have equal standing, and an earlier draft said they did.**
 
@@ -105,15 +109,37 @@ package's own register marks *"implied, never stated"*. An earlier draft of this
 sides canonical — an assumption presented as canon, on the number the package calls the most
 consequential in `OPEN-001`.
 
-That is not only bookkeeping. A grace window is exactly the maximum latency of revocation on a
-device that never connects. **If `A-06` is false and no revocation mechanism exists, shortening the
-window buys nothing at all** — there is no revocation for it to accelerate — and the entire case
-for a short window collapses into pure cost to the driver. `A-06`'s own "if it turns out false"
-entry says this changes the risk calculus of every option here.
+That is not only bookkeeping. But the consequence is **not** that the short side collapses — an
+earlier draft of this brief said it did, which was wrong and pointed the owner the wrong way. **The
+window enforces two separate bounds, and only one of them depends on `A-06`.**
 
-**Confirm or deny `A-06` before setting this number.** It is cheap to check and it determines which
-end of the dial is even arguable. The balance point between the two, once `A-06` is settled, remains
-a business risk judgement only the owner can make.
+**Bound 1 — revocation latency. Exists only if `A-06` is true.** A grace window is exactly the
+maximum latency of revocation on a device that never connects: a revoked session keeps working until
+the window expires.
+
+**Bound 2 — unverified writes. Exists either way, and is enforced entirely by the client.** At
+`GRACE_EXPIRED` the device stops accepting new business writes. That is a local timer. It needs no
+revocation, no server mechanism, and no knowledge that anything is wrong. The claim is checkable —
+or refutable — against the capability table in
+[`03-offline-boundaries.md`](03-offline-boundaries.md) section 2, which is the mechanism it rests
+on.
+
+The two branches therefore read differently, and **neither points toward a longer window**:
+
+| | Bound 1 — revocation latency | Bound 2 — unverified writes | What the window is |
+|---|---|---|---|
+| **`A-06` true** | Live. Shortening accelerates revocation. | Live. | One of two controls over a device the company no longer trusts. |
+| **`A-06` false** | Does not exist. Shortening accelerates nothing. | **Unchanged.** | **The only control that exists.** There is no revocation to fall back on. |
+
+The branch where `A-06` is false is the branch where this number carries **more** weight, not less:
+it is then the whole of the company's control surface over a device it cannot reach. An owner who
+reads that branch as licence to lengthen the window has removed the last bound and put nothing in
+its place.
+
+**Confirm or deny `A-06` before setting this number.** It is cheap to check, and it determines
+*which argument sets the number* — revocation latency together with write-bounding, or
+write-bounding alone. It does not determine whether a number is needed. The balance against driver
+continuity, in either branch, remains a business risk judgement only the owner can make.
 
 Proposed properties regardless of the number: **warn before expiry**, and **expiry never signs out,
 never wipes local data, never empties the queue**.

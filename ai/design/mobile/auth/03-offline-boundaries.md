@@ -170,8 +170,22 @@ revocation takes effect fast                revocation is slow
 ```
 
 **FACT** F-19 and **FACT** F-18 push it long: offline is normal and a driver must not be blocked by
-the network. **ASSUMPTION** A-06 — that revocation exists at all — is what pushes it short: a grace
-window is exactly the maximum latency of revocation on a device that never connects.
+the network.
+
+**Two distinct things push it short, and an earlier version named only the first.** They do not
+stand or fall together, which matters because one of them rests on an assumption and the other does
+not:
+
+1. **Revocation latency — rests on `ASSUMPTION` A-06.** If server-side revocation exists, a grace
+   window is exactly its maximum latency on a device that never connects.
+2. **Unverified writes — rests on nothing external.** At `GRACE_EXPIRED` the device stops accepting
+   new business writes (section 2 above). That bound is a client-side timer: it holds with no
+   revocation, no server mechanism and no knowledge that anything is wrong.
+
+If `A-06` turns out to be false, reason 1 disappears and reason 2 is untouched — which makes the
+window the *only* control the company has over a device it cannot reach, not a redundant one. The
+branch table in [`07-adr-decision-brief.md`](07-adr-decision-brief.md) section 3.2 sets this out for
+the ADR author.
 
 **No number is proposed here.** **S-10** records that no canonical document states one.
 What this package does give the ADR author is the shape of the choice:
