@@ -31,11 +31,14 @@ Backend V2 engineering standard: **SOLID + pragmatic Clean Architecture + LEGO-s
 ## Mobile
 Native Android per ADR-015, offline-first, Driver MVP. Product/UI/UX may run 1–2 phases ahead. Production authentication remains gated on OPEN-001. A real queued feature operation is also gated by resolution of OPEN-002 terminal-sync policy.
 
+## Web
+The canonical system architecture already defines **React/Next.js web clients**. Product/UI/UX design may run now. A dedicated web implementation repository has not yet been created, so no Web Developer execution lane is active yet.
+
 ## Product/UI/UX lanes
 - `DES-001 — Mobile Authentication UX / OPEN-001 Discovery` → Mobile Designer.
 - `DES-002 — Web Platform IA + Organization/Company Foundation` → Web Designer.
 
-These are prepared to run in parallel with backend T012 because they share no implementation files. Web design does not imply a web implementation repo/stack decision.
+These are prepared to run in parallel with backend T012 because they share no implementation files. Web design does not itself authorize creation of the web implementation repository; when that repository is created, it follows the already-canonical React/Next.js architecture unless superseded by a later ADR.
 
 ## Open decisions
 - **OPEN-001 Authentication UX** — production credential/registration/OTP/trusted-device flow. Resolve in ADR before backend T017/T018 or production Android auth. DES-001 may prepare alternatives but cannot close it.
