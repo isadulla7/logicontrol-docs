@@ -1,23 +1,37 @@
 # LogiControl Documentation Map
 
-## Development-time compact context
-Normal Claude/Codex/developer sessions start from `.ai/` to minimize context cost:
-1. `.ai/CURRENT_STATE.md`
-2. `.ai/ARCHITECTURE_RULES.md`
-3. `.ai/MODULE_INDEX.md`
-4. `.ai/DECISIONS_INDEX.md`
-5. relevant task/ADR only
+## Who reads what
 
-Multi-agent (Cowork) sessions additionally read `.ai/COWORK_V1.md` for the role, lifecycle,
-handoff and review protocol. It coordinates work only; it never overrides the foundation.
+**Product / UI / UX work** starts here:
+1. `product/business-rules-uz.md`
+2. `domain/domain-model-erd-uz.md` and `domain/GLOSSARY.md`
+3. `architecture/mobile-architecture.md`
+4. `roadmap/development-roadmap-v1.0-uz.md`
+5. `ai/DECISIONS_INDEX.md` — especially `OPEN-001`
 
-## Canonical version-controlled foundation
-- `docs/business/README_UZ.md`
-- `docs/architecture/README_UZ.md`
-- `docs/domain/LogiControl_Domain_Model_ERD_v1.0_UZ.md`
-- `docs/roadmap/LogiControl_Development_Roadmap_v1.0_UZ.md`
-- `docs/adr/`
+**Backend development** does not start here. It starts in
+[`logicontrol-backend/.ai/`](https://github.com/isadulla7/logicontrol-backend/tree/main/.ai),
+which carries the compact backend execution context and the backend task state. Read this
+repository only when the backend's compact context is insufficient, ambiguous or in conflict
+with a global decision.
 
-Detailed creative PDF renderings are release/document artifacts generated from the foundation and are not required by the runtime build. The Git source documents and ADRs are the engineering source of truth.
+**Mobile development** does not start here either. It starts in
+[`logicontrol-android/.ai/`](https://github.com/isadulla7/logicontrol-android/tree/main/.ai).
 
-If compact context conflicts with a canonical source or ADR, stop and resolve the inconsistency instead of guessing.
+## Canonical foundation in this repository
+- `product/business-rules-uz.md` — product vision, V1 scope, business rules
+- `architecture/system-architecture-uz.md` — cross-system architecture
+- `domain/domain-model-erd-uz.md` — domain model and ERD
+- `domain/GLOSSARY.md` — shared terminology
+- `roadmap/development-roadmap-v1.0-uz.md` — programme roadmap
+- `adr/` — global ADRs
+
+## Compact programme context
+- `ai/PROJECT_CONTEXT.md` — one-page product context
+- `ai/CURRENT_STATE.md` — programme-level state across the three repositories
+- `ai/DECISIONS_INDEX.md` — every ADR, where it lives, and the open decisions
+
+## Rule
+If a compact context conflicts with a canonical source or an ADR, stop and resolve the
+inconsistency instead of guessing. Do not silently change an accepted decision — supersede it
+with a new ADR.
