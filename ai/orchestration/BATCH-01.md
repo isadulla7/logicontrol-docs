@@ -125,7 +125,18 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
 4. **Integration/merge order known.** The three lanes are independent and merge in any order;
    none rebases onto another. Order within `logicontrol-docs`: this clearance record, then
    DES-001 and DES-002 in completion order, each as its own PR. Backend T012 merges independently.
-   Only the human owner merges.
+
+   **Only the human owner merges.** This stands unchanged. `ai/DECISIONS_INDEX.md` `OPEN-003`
+   records a direction that would let the Global Orchestrator merge once every gate is green, but
+   that direction amends ADR-013/ADR-016 §1 and §3, it is recorded as open, and it is not acted on
+   until an ADR ratifies it. Until then tier 1 governs and this condition is unaffected.
+
+   The Independent Reviewer's finding 10 caught these two files asserting opposite things in the
+   same commit: this condition said only the human merges while `OPEN-003`, added by the same
+   change, said the Orchestrator may merge and that the direction "is being followed". They could
+   not both be true, and this is one of the six conditions the record exists to establish. Writing
+   the decision down to close finding 8 is what surfaced the conflict the deleted clause had been
+   hiding — the fix working, one step short of finished.
 5. **Repository-local Cowork permits it.** Two repositories run lanes in this batch, so this
    condition must be answered twice. The first revision answered only the backend and was graded
    MAJOR for it.
@@ -279,7 +290,34 @@ Neither defect blocks any lane in this batch.
 
 ## 9. Revision history
 
-**Revision 3** — this revision. Answers the two new MAJOR findings and one MINOR raised by the
+**Revision 4** — this revision. Answers findings 10 and 11 from the third review pass
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411169190)), which
+confirmed 7, 8 and 9 closed.
+
+10. (MAJOR) Condition 4 said *"Only the human owner merges"* while `OPEN-003`, added by the same
+    commit to close finding 8, said the Orchestrator may merge and that the direction "is being
+    followed". Contradictory, in one commit, on one of the six clearance conditions. Resolved in
+    favour of tier 1, as `ai/COWORK_V2.md` §1 requires: ADR-013/ADR-016 §1 and §3 are unamended,
+    `OPEN-003` is open by its own words, so the accepted rule governs the interim, condition 4
+    stands, and `OPEN-003` now states plainly that the direction **is not acted on until
+    ratified**. "It is being followed" was also simply false — no merge had been performed.
+    `OPEN-003` additionally now distinguishes its own sense of "open" from OPEN-001's and
+    OPEN-002's, so that no agent generalises from a change-of-authority decision to a decision
+    that gates work.
+11. (MINOR) `ai/CURRENT_STATE.md` stated the no-mirrored-process-state principle, applied it to
+    T012, and two lines later mirrored *"in independent review"* for the other two lanes — a claim
+    that goes stale the moment a review returns and that no artefact supported. The reviewer named
+    the pattern correctly, and it is the third instance of it: recover the thing the reviewer asked
+    about, assert its neighbours. Review status is now recorded nowhere in that file.
+
+**Still owed before this record merges.** The T012 base-currency amendment (Orchestrator amendment
+1) is not recorded here, deliberately: as of this revision it exists in no artefact in any
+repository, and adding it would repeat finding 8 exactly. It lands as **D-3** in §8 once the T012
+log carries the amendment event, cited by event id, together with the correction to §2's claim
+that the design lanes *"consume canonical documents, not backend code"* — no longer true of
+DES-002, which read the live T012 branch and found the defect there.
+
+**Revision 3** — `41a2e98`. Answered the two new MAJOR findings and one MINOR raised by the
 Independent Reviewer's re-review of revision 2
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411083686)), which
 confirmed findings 1–6 genuinely closed. **Both new MAJOR findings were regressions introduced by

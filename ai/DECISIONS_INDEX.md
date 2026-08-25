@@ -63,11 +63,25 @@ None yet.
   still requiring explicit human approval, and with no agent ever merging work it or its own
   implementing teammate produced.
 
-  That direction is a real decision and it is being followed, but it **amends an accepted ADR**,
-  so it is recorded here as open until it is ratified in an ADR rather than treated as settled by
-  conversation. Recorded from the Independent Reviewer's finding 8 on `logicontrol-docs` PR #3,
-  which caught the Orchestrator asserting the decision in a clearance record while no artefact
-  anywhere carried it.
+  That direction is a real decision, but it **amends an accepted ADR**, so it is recorded here as
+  open until it is ratified in an ADR rather than treated as settled by conversation. Recorded
+  from the Independent Reviewer's finding 8 on `logicontrol-docs` PR #3, which caught the
+  Orchestrator asserting the decision in a clearance record while no artefact anywhere carried it.
+
+  **The direction is not acted on until it is ratified.** `ai/COWORK_V2.md` §1 ranks accepted ADRs
+  above every other source and forbids silently reconciling them; ADR-013/ADR-016 §1 and §3 are
+  unamended, and this entry is by its own words open. So in the interim the accepted rule governs
+  and only the human owner merges to `main`. No merge has been performed under the new direction,
+  and none will be until an ADR carries it. Recorded from the same reviewer's finding 10, which
+  caught the first revision of this entry claiming the direction was already being followed while
+  the clearance record two files away still said only the human owner merges.
+
+  **This entry is open in a different sense from OPEN-001 and OPEN-002, and the difference must
+  not be generalised.** Those two block work: nothing proceeds on the decisions they gate until
+  they are resolved. This one blocks only a change of authority — normal work continues under the
+  *existing* accepted rule, which is why the interim is safe. Nothing here licenses treating any
+  other open decision as settled by conversation, and OPEN-001 in particular is closed by ADR
+  alone.
 
   An ADR change is R4 and R4 is fully serialized, so ratification waits for a slot with no other
   lane running. **No ADR number is pre-assigned**; the sequence is allocated when the ADR is

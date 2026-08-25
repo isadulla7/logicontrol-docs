@@ -54,10 +54,11 @@ work:
 1. backend T012 — branch `feat/T012-company-aggregate`, PR #10 (draft). Its lifecycle state lives
    in `logicontrol-backend/.ai/cowork/tasks/T012.md`, which is authoritative for it; this file does
    not mirror it, because a mirrored lifecycle token goes stale the moment the task moves.
-2. mobile design DES-001 — delivered, branch `feat/DES-001-mobile-auth-ux`, PR #4, in independent
-   review.
-3. web design DES-002 — delivered, branch `feat/DES-002-web-foundation`, PR #5, in independent
-   review.
+2. mobile design DES-001 — delivered, branch `feat/DES-001-mobile-auth-ux`, PR #4.
+3. web design DES-002 — delivered, branch `feat/DES-002-web-foundation`, PR #5.
+
+Review status is deliberately not recorded here for any of the three. It is process state that
+changes without this file changing, and each PR carries it directly.
 
 The design lanes carry no Cowork lifecycle state: they are PRODUCT/DESIGN lanes in a repository
 with no local Cowork execution protocol, so the `DRAFT -> READY -> IN_PROGRESS -> ...` vocabulary
