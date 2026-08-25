@@ -30,6 +30,11 @@ that authorised the dispatch. Everything else is live and revised. Where a froze
 something that has since changed, that is not staleness — it is the record doing its job. §10 and
 §0 carry current state.
 
+The frozen rule covers **the clearance argument and the evidence it rested on**. Where a correction
+that argument tracked is later discharged, the discharge is noted in place and marked as such,
+because a tracker that never closes is the same defect as a lease that never releases. The argument
+itself is never revised to fit later events.
+
 ## 1. Recovered repository state at dispatch (not summary state) — FROZEN
 
 **As of 2026-08-25T12:59Z, the moment of dispatch.** Not maintained since; see §0 and §10.
@@ -93,7 +98,13 @@ Edges that matter for this batch:
   (*"Tenant and RBAC foundation may proceed before it"*), restated in
   `logicontrol-backend/.ai/CURRENT_STATE.md`.
 - DES-001 and DES-002 have no edge to T012. They consume canonical documents, not backend code,
-  and T012 publishes no REST or client contract (see section 3).
+  and T012 publishes no REST or client contract (see section 3). DES-002 did reason about T012's
+  subject matter — `Q-05`, whether a company's base currency may change — but derived it from canon
+  (`ADR-004`, business non-negotiable #8, the domain model's Finance section) and named T012 as the
+  owner of the answer. That is a **feedback** edge into the backend lane, recorded as **D-3** in
+  section 8. It is not a dependency edge: nothing in DES-002 waited on T012, and no backend source
+  was read. The Independent Reviewer suggested this bullet was no longer accurate for DES-002; on
+  the artefacts it is, and what it was missing was the feedback edge, not the removal of the claim.
 - Android implementation has an unsatisfied edge to OPEN-001 **and** OPEN-002. Both are open.
 - Web implementation has an unsatisfied edge: no web implementation repository exists and none
   is authorised by this batch.
@@ -243,8 +254,15 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
    stands, so a lease that barred non-holders would make §8 unsatisfiable. The first revision of
    this paragraph named the wrong rule; the caution was right and the reasoning was not.
 
-   Folded into that same appended event: the packet header at line 8 still reads `status | READY`
-   while the log has reached `IN_QA`.
+   **Discharged.** The correction was appended as event `T012-006` (`occurredAt`
+   `2026-08-25T13:40:00Z`, backend commit `42148b4` on `feat/T012-company-aggregate`, the head of
+   backend PR #10), before T012 reached `APPROVED` as the discharge point required. It corrects
+   `T012-001` by disclosure rather than rewrite, carries the same treatment to the observation that
+   `T012-001` claimed the cross-repository clearance was recorded at `12:55:00Z` while the record
+   landed at `12:59:49Z`, and advances the packet header from `status | READY` to `IN_QA`. Until
+   this revision the paragraph above still said that header *"still reads `status | READY`"*, which
+   `42148b4` had made false. This note records a discharge; the clearance argument itself is
+   unchanged.
 
    §5's never-parallel list is separately honoured: T012 is a migration-producing task and runs
    beside no other backend task; the design lanes touch no backend file, no `.ai/`, no
@@ -381,6 +399,42 @@ out-of-lease fix is withdrawn.
 accepted precedence rule between them. Stated in full in section 4, condition 3. Discharged by a
 follow-up change after this batch.
 
+**D-3 (MAJOR, owner: Orchestrator — corrected in `logicontrol-backend`, recorded here).** The
+`T012` packet, which the Orchestrator wrote, required the company base currency to be changeable on
+the update path — packet Business behavior, acceptance criterion 4 and a required test all
+specified it, and the implementer built exactly that. `ADR-004` fixes the FX rate at transaction
+time and canonical business non-negotiable #8 forbids silently rewriting financial history, so
+every base amount the system stores is denominated in the base currency in force when it was
+written. A mutable base currency leaves those stored figures unchanged and their meaning changed,
+which defeats `ADR-004` without textually violating it, in the one place that is unrecoverable once
+production financial data exists behind it.
+
+Raised by the parallel `DES-002` lane as `Q-05` in `ai/design/web/10-decisions-required.md`
+(commit `d9c670b`, authored `2026-08-25T13:23:33Z`), with the UI consequence specified at
+`ai/design/web/03-organization-workspace.md` § ORG-06. Corrected as **Orchestrator amendment 1**:
+implemented in backend commit `f758fd0` (`Backend CI` run `32853990151` green) and formally
+recorded in event `T012-006` (backend commit `42148b4`, head of backend PR #10), which amends the
+packet's Business behavior, acceptance criterion 4 and required tests to match, pins the
+immutability with a domain test, and records the change as an Orchestrator-caused scope reduction
+consuming no implement→QA cycle.
+
+It is recorded here because §8 is this record's defect inventory and an incomplete inventory reads
+as a complete one — and because it is evidence about the decision this file exists to justify. The
+parallelism cleared in §4 did not merely stay safe: a design lane in one repository caught a defect
+in an Orchestrator-authored backend packet while that packet was being implemented, before it
+reached the data model. Of the four defects here it is the most serious; D-1, D-2 and D-4 are
+governance and documentation gaps, and this one would have shipped into the schema's semantics.
+
+**One correction owed on it, of the class this record keeps grading itself on.** The amendment note
+in `logicontrol-backend/.ai/cowork/tasks/T012.md` states that DES-002 *"read this branch while it
+was in flight"*, and no artefact supports that. DES-002's Required inputs are canonical documents
+only, and `Q-05` derives from `product/business-rules-uz.md`, business non-negotiable #8, the
+domain model's Finance section and `ADR-004` — not from backend source. What is citable is that the
+lane reasoned about T012's subject matter from canon while T012 was in flight and named T012 as the
+owner of the answer. **Discharge: the Orchestrator's next event on T012, before the task reaches
+`APPROVED`**, appended and disclosed rather than rewritten. That file is outside this PR and
+outside the `gorc` lease, which is why it is not corrected here.
+
 **D-4 (MAJOR, owner: human owner, needs an ADR).** **`logicontrol-docs` has no repository-local
 Cowork execution protocol at all.** Condition 5 establishes this as a fact and treats it as a
 gap in the design lanes' protection; it is wider than that. Every lane that runs in this
@@ -404,12 +458,13 @@ Every one of the five gaps was found by the Independent Reviewer rather than by 
 that wrote the record, and so was this widening — which is itself evidence about how visible the
 gap is from inside. An ADR is R4 and serialized.
 
-None of these defects blocks any lane in this batch.
+None of these defects blocks any lane in this batch. D-3 is already corrected in
+`logicontrol-backend`; D-1, D-2 and D-4 remain open with the owners and discharges stated above.
 
 ## 9. Revision history
 
-**Revision 6** — this revision. Closes the two MINOR findings the Independent Reviewer recorded
-alongside its `APPROVED` on revision 5
+**Revision 6** — this revision, two commits: `eee225d` and the one carrying this entry. Closes the
+two MINOR findings the Independent Reviewer recorded alongside its `APPROVED` on revision 5
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411341419)), and
 acts on its answers to the two questions put to it.
 
@@ -446,6 +501,36 @@ lease-based isolation from first principles again.
 
 Header/§1 timing contradiction folded in: "before dispatch" versus §1's `12:59Z` "moment of
 dispatch" could not both be literally true.
+
+**Second commit — the debt revision 4 set as a non-merge condition falls due.** The T012
+base-currency amendment now exists in an artefact, so the reason for keeping it out of this record
+is gone. Three changes follow from that, and none of them is a new finding:
+
+- **D-3 recorded in §8**, cited to event `T012-006` (backend commit `42148b4`, head of backend
+  PR #10), the implementation at `f758fd0`, and `DES-002`'s `Q-05` at `d9c670b`. It is the most
+  serious defect in §8 and the strongest evidence in the file for the decision the file exists to
+  justify.
+- **§4 condition 5's queued T012 correction marked discharged**, by that same event. The paragraph
+  said the packet header *"still reads `status | READY`"*; `42148b4` advanced it to `IN_QA`, so the
+  sentence had become false and is replaced by the discharge record. §0's reading rule is extended
+  by one clause to say what was already intended: the frozen rule protects the clearance argument,
+  not the trackers attached to it, and a tracker that never closes is the same defect as a lease
+  that never releases.
+- **§2's design-lane bullet corrected** — but not in the direction suggested. The reviewer's
+  non-blocking note said *"they consume canonical documents, not backend code"* is no longer
+  accurate for DES-002. On the artefacts it is still accurate: DES-002's Required inputs are
+  canonical documents, and `Q-05` derives from `product/business-rules-uz.md`, business
+  non-negotiable #8, the domain model's Finance section and `ADR-004`. What the bullet was missing
+  is the **feedback** edge — a design lane raising a question the backend lane owned and answered —
+  and that is what has been added.
+
+**Correction by disclosure to the revision 4 entry below.** It says D-3 lands together with the §2
+correction, *"no longer true of DES-002, which read the live T012 branch and found the defect
+there."* DES-002 did not read the branch, and no artefact says it did; the derivation is from canon,
+as set out above. The same over-claim is carried by the amendment note in
+`logicontrol-backend/.ai/cowork/tasks/T012.md` and is queued for correction there, with the
+discharge named in §8. The revision 4 entry is left as written, because §9 is a log and this
+programme corrects by disclosure rather than by rewriting what it already recorded.
 
 **Revision 5** — `c237e94`. Answered findings 12, 13 and 14 from the fourth review pass
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411239410)), which
@@ -515,6 +600,8 @@ repository, and adding it would repeat finding 8 exactly. It lands as **D-3** in
 log carries the amendment event, cited by event id, together with the correction to §2's claim
 that the design lanes *"consume canonical documents, not backend code"* — no longer true of
 DES-002, which read the live T012 branch and found the defect there.
+*(Discharged in revision 6. The clause about DES-002 reading the branch is wrong and is corrected
+in the revision 6 entry above; this paragraph is left as written because §9 is a log.)*
 
 **Revision 3** — `41a2e98`. Answered the two new MAJOR findings and one MINOR raised by the
 Independent Reviewer's re-review of revision 2
