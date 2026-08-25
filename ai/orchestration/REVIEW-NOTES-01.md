@@ -130,13 +130,46 @@ table would be the old error again — that table can only abstain on whether ot
 
 ## 7. What this cost, and whether it was worth it
 
-Four review agents, thirteen review passes across four pull requests, and one paragraph that needed
-three rounds and a different question each time. Against that: a false premise under a package's
-strongest structural rule, an invalid derivation that had reached the recommendation the programme
-owner reads, an assumption asserted as canon on the most consequential number in an open decision,
-and a conditional that inverted its own advice in the branch where acting on it is least
-recoverable — each found by someone who did not write it.
+**The counting rule first, because the earlier figures here stated none and were not reachable from
+any population.** One *review pass* is one comment on a `logicontrol-docs` pull request, written by
+a reviewer that did not write the work under review, returning a verdict or a verification result
+against a named commit or range. The author's own responses to a review are excluded. The
+population is the four `logicontrol-docs` pull requests this batch produced or answered — #3, #4,
+#5 and #6.
 
-The Orchestrator's own record needed seven revisions and was corrected on sixteen findings, none of
-which it found itself. That is the strongest evidence in the batch for independent review as a
-control rather than a formality.
+On that rule, at `2026-08-25T15:40Z`: **twenty-seven review passes** — seven on PR #3, six on
+PR #4, eight on PR #5, six on PR #6. Anyone can re-derive it with
+`gh api repos/isadulla7/logicontrol-docs/issues/<n>/comments` and subtract the author responses,
+which are one each on #3, #5 and #6 and none on #4.
+
+Backend PR #10 is deliberately outside that population rather than being the fourth pull request:
+it carries **zero** pull-request comments, and its verdicts are events in
+`logicontrol-backend/.ai/cowork/tasks/T012.md` — a different artefact under a different rule, and
+the reason a single "four pull requests" figure could not be made to add up. Counted the same way,
+that log carries its own independent QA, Independent Reviewer and Security Reviewer passes.
+
+**The number of review agents is not stated, because it is not derivable from the artefacts.** Four
+reviewer identities name themselves in their comments — `review-batch01`, `review-docs-pr3`,
+`review-des002` and `review-docs-design` — and the DES-001 and ADR-019 reviewers do not name
+themselves at all. Every comment is authored by the same GitHub account, so the account is not
+diagnostic either; this is the same limit `BATCH-01.md` §8's `D-5` records about commit authorship.
+Any total would be a guess, and a note whose first line is that every claim here is attributed
+cannot carry one.
+
+The earlier wording — *"four review agents, thirteen review passes across four pull requests"* —
+stated neither rule nor population, and thirteen is not reachable from either reading. It is
+recorded rather than quietly replaced, because it is the one claim in this note that was not
+checkable, in the note about provenance.
+
+Against that cost: a false premise under a package's strongest structural rule, an invalid
+derivation that had reached the recommendation the programme owner reads, an assumption asserted as
+canon on the most consequential number in an open decision, and a conditional that inverted its own
+advice in the branch where acting on it is least recoverable — each found by someone who did not
+write it. And one paragraph that needed three rounds and a different question each time.
+
+The Orchestrator's own record needed **eight revisions** and drew **thirty-one findings** across the
+**seven independent review passes** on PR #3 — sixteen from `review-batch01` over revisions 1–5,
+eleven from `review-docs-pr3` on revision 7, and four more from `review-batch01` over
+`c237e94..8fba279`. Not one of the thirty-one was found by the Orchestrator that wrote the record.
+That is the strongest evidence in the batch for independent review as a control rather than a
+formality.
