@@ -1,6 +1,6 @@
 # 09 — Handoff Package for a Future React/Next.js Developer
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 This is written for someone who will pick this up months from now, after a web implementation
 repository exists, without the chance to ask its author anything.
@@ -36,37 +36,49 @@ suit a design nobody has committed to.
 them are canon-derived, and the distinction matters to you more than anywhere else in this package,
 because this is the list you will read to learn what you may not change.
 
-Each item is marked. `[C]` means reversing it makes the product **wrong** — it contradicts a
-canonical rule or an architectural constraint, and changing it needs a change to the canonical
-source. `[D]` means reversing it makes the product **different** — it is this lane's proposal,
-argued from a stated user model, and a later designer or a product owner may legitimately overrule
-it.
+Each item is marked, and **most of them turn out to be `[DERIVED]` rather than `[C]`** — see
+[README](README.md) § Why `[DERIVED]` exists. That distinction is the whole value of this table:
+
+- `[C]` — the source **states** it. Reversing it makes the product **wrong**, and changing it takes
+  a change to the canonical source or a superseding ADR.
+- `[DERIVED]` — the source **supports** it and this lane took the last step. Reversing it means one
+  of two things: my inference was wrong, or canon does not reach this conclusion at all. Either way
+  it is a conversation with the Orchestrator, not a call you make alone. **The inference is written
+  out in the Warrant column so you can check it rather than trust it.**
+- `[D]` — reversing it makes the product **different**. My proposal, argued from a stated user
+  model; a later designer or product owner may legitimately overrule it.
 
 | # | Decision | Where | Warrant |
 |---|---|---|---|
-| 1 | Navigation mirrors module ownership; nine rail items in three groups | [02](02-information-architecture.md) § 3 | `[D]`, but the *no-cross-module-graph* constraint behind it is `[C]` |
-| 2 | Company scope is explicit in the URL, and is an addressing device, never a security mechanism | [02](02-information-architecture.md) § 4 | `[D]` for the URL shape; `[C]` that it confers no authorization (`ADR-010`) |
+| 1 | Navigation mirrors module ownership; nine rail items in three groups | [02](02-information-architecture.md) § 3 | `[DERIVED]` for the principle: canon forbids cross-module graphs, so a navigation implying one cannot be served. `[D]` for the nine items and their grouping |
+| 2 | Company scope is explicit in the URL, and is an addressing device, never a security mechanism | [02](02-information-architecture.md) § 4 | `[D]` for the URL shape; `[C]` that it confers no authorization — `ADR-010` states knowing a UUID is never authorization |
 | 3 | All list state lives in the URL | [02](02-information-architecture.md) § 4 | `[D]` |
-| 4 | Hub screens load related data as independent panels; no cross-module object graph | [02](02-information-architecture.md) § 5 | **`[C]`** — the backend is structurally forbidden to serve one |
-| 5 | Trip operational and financial status are always two separate things, at every breakpoint | [02](02-information-architecture.md) § 6 IA-6 | **`[C]`** — business non-negotiable #4 |
-| 6 | The client never derives an available action from a status value | [02](02-information-architecture.md) § 6 IA-7 | **`[C]`** — business non-negotiable #12 |
-| 7 | Money always carries its currency; no mixed-currency sum; converted figures marked and expose their FX basis | [04](04-operational-patterns.md) § 3 | **`[C]`** — `ADR-004` and the Money model |
-| 8 | The ledger has no edit or delete affordance; reversed entries stay visible | [02](02-information-architecture.md) § 6 IA-9 | **`[C]`** — `ADR-003`, non-negotiables #3 and #8 |
-| 9 | Every list is paginated, sorted and filtered server-side | [04](04-operational-patterns.md) §§ 5–8 | **`[C]`** that lists are bounded; `[D]` that the client never does it locally — though doing it locally is a correctness bug, not a preference |
+| 4 | Hub screens load related data as independent panels; no cross-module object graph | [02](02-information-architecture.md) § 5 | `[DERIVED]` — canon states the **backend** may not serve a cross-module graph; that the **UI** must therefore not be designed around one is my step |
+| 5 | Trip operational and financial status are always two separate things, at every breakpoint | [02](02-information-architecture.md) § 6 IA-6 | `[C]` that the two lifecycles are separate and that completion is not financial closure (non-negotiable #4); `[DERIVED]` that they must render as two distinct tokens everywhere a Trip appears |
+| 6 | The client never derives an available action from a status value | [02](02-information-architecture.md) § 6 IA-7 | `[DERIVED]` — non-negotiable #12 forbids business rules in the frontend; that deriving an action from a status *is* such a rule is my step. A tight one, but mine |
+| 7 | Money always carries its currency; no mixed-currency sum; converted figures marked and expose their FX basis | [04](04-operational-patterns.md) § 3 | `[C]` that Money is amount + currency and that FX snapshots are preserved and never rewritten; `[DERIVED]` for all three display rules |
+| 8 | The ledger has no edit or delete affordance; reversed entries stay visible | [02](02-information-architecture.md) § 6 IA-9 | `[DERIVED]` — `ADR-003` states the ledger is append-only and a posted entry is never updated or deleted. It says nothing about UI affordances; that a surface offering one contradicts it is my step |
+| 9 | Every list is paginated, sorted and filtered server-side | [04](04-operational-patterns.md) §§ 5–8 | `[C]` that pagination and bounded queries are mandatory; `[DERIVED]` that client-side sort or filter over a paginated set is therefore wrong — it sorts the page, not the data |
 | 10 | Four distinct empty states; refetch never clears the table; failures scope to the smallest region | [04](04-operational-patterns.md) § 11 | `[D]` |
-| 11 | Error copy comes from `code`, never from `message`; `correlationId` always copyable | [04](04-operational-patterns.md) § 11 | **`[C]`** — `ADR-014` states `message` is not a contract |
-| 12 | Version conflict is a first-class state that never loses user input | [03](03-organization-workspace.md) § 3 | **`[C]`** that conflict is explicit; `[D]` for the treatment |
-| 13 | Bulk operations are N idempotent per-item calls with per-item results; "select all matching" is a separate act; no bulk delete | [04](04-operational-patterns.md) § 10 | `[D]` for the pattern; **`[C]`** that no bulk delete can exist over append-only data |
-| 14 | The client holds no role names, no permission names and no role→permission table | [05](05-permission-aware-states.md) § 2 | `[D]` as a rule, but it is the reason this package could be written before `T013`; reversing it re-couples the web client to an undecided model |
-| 15 | The UI never distinguishes "not found" from "another company's" | [05](05-permission-aware-states.md) § 5 | **`[C]`** — `ADR-014` non-disclosure, `ADR-010` |
+| 11 | Error copy comes from `code`, never from `message`; `correlationId` always copyable | [04](04-operational-patterns.md) § 11 | `[C]` — `ADR-014` states clients branch on `code` and that `title` and `message` are not a contract |
+| 12 | Version conflict is a first-class state that never loses user input | [03](03-organization-workspace.md) § 3 | `[C]` that conflict is explicit and never silent last-write-wins; `[D]` for the treatment |
+| 13 | Bulk operations are N idempotent per-item calls with per-item results; "select all matching" is a separate act; no bulk delete | [04](04-operational-patterns.md) § 10 | `[D]` for the pattern; `[DERIVED]` that no bulk delete can exist — canon gives append-only financial and audit data plus lifecycle cancellation states rather than deletion, so a bulk delete would have nothing correct to do |
+| 14 | The client holds no role names, no permission names and no role→permission table | [05](05-permission-aware-states.md) § 2 | `[D]`, and the reason this package could be written before `T013` at all; reversing it re-couples the web client to an undecided model |
+| 15 | The UI never distinguishes "not found" from "another company's" | [05](05-permission-aware-states.md) § 5 | `[DERIVED]` — `ADR-014` states not-found responses are byte-identical so that UUID knowledge cannot probe another company's data; that UI copy must preserve the same property is my step, and it is the step most likely to be lost in implementation |
 | 16 | Compact density is the operational default; density is a user preference; no hover-only affordances | [04](04-operational-patterns.md) §§ 2, 4 | `[D]` |
 | 17 | Full keyboard operation of every queue | [04](04-operational-patterns.md) § 12 | `[D]` |
 | 18 | Desktop and tablet only; below 768 px explicitly unsupported | [07](07-responsive-behavior.md) § 1 | `[D]` — and explicitly revisitable: [07](07-responsive-behavior.md) § 1 and [10](10-decisions-required.md) `Q-13` both frame it as a product decision, not a technical one |
 
-`[D]` If you deviate from any of these, say so in your task's evidence and say why. For the `[C]`
-rows — 4, 5, 6, 7, 8, 11 and 15, plus the canonical halves of 2, 9, 12 and 13 — "why" needs to be a
-change to the canonical source or a superseding ADR, not a judgement call. For the `[D]` rows it can
-be a better argument than mine.
+`[D]` If you deviate from any of these, say so in your task's evidence and say why.
+
+- For the `[C]` warrants — 11, plus the canonical halves of 2, 5, 7, 9 and 12 — "why" has to be a
+  change to the canonical source or a superseding ADR.
+- For the `[DERIVED]` warrants — 1, 4, 6, 8, 13, 15 and the derived halves of 5, 7 and 9 — "why" is
+  an argument that my inference does not follow. That is a legitimate thing to find, and you should
+  raise it rather than quietly working around it: a broken inference here means either this design
+  is wrong or canon does not say what I read it as saying, and both matter more than the screen you
+  were building when you noticed.
+- For the `[D]` rows, a better argument than mine is enough.
 
 ## 3. What is assumed
 
@@ -191,22 +203,31 @@ it.
 
 ## 8. Things not to do
 
-`[D]` Each of these is a plausible, well-intentioned decision that would break something canonical.
+`[D]` Each of these is a plausible, well-intentioned decision that would break something. Where the
+warrant is `[DERIVED]`, the inference is named so you can disagree with the reasoning rather than
+with the instruction.
 
-- **Do not compute an available action from a status.** Rule IA-7; `[C]` non-negotiable #12.
-- **Do not sum a mixed-currency column**, not even "just for the page total".
+- **Do not compute an available action from a status.** `[DERIVED]` from non-negotiable #12: canon
+  forbids business rules in the frontend, and such a computation is one. Rule IA-7.
+- **Do not sum a mixed-currency column**, not even "just for the page total". `[DERIVED]` from the
+  Money model: an amount is meaningless without its currency, so their sum is too.
 - **Do not add an edit or delete affordance to the ledger or the audit log**, not even disabled.
-  `[C]` `ADR-003`.
-- **Do not hide a reversed ledger entry** to tidy the list. `[C]` That is the property `ADR-003`
-  exists to protect.
-- **Do not tell a user that a record belongs to another company.** `[C]` `ADR-014` non-disclosure.
-- **Do not put a role name in a conditional.** [05](05-permission-aware-states.md) rule P-1.
+  `[DERIVED]` from `ADR-003` and the append-only audit rule, which state that entries are never
+  updated or deleted but say nothing about UI.
+- **Do not hide a reversed ledger entry** to tidy the list. `[DERIVED]` — `ADR-003` states
+  corrections are made by reversal plus a correcting entry, so hiding the reversed entry removes the
+  evidence that the correction happened.
+- **Do not tell a user that a record belongs to another company.** `[DERIVED]` from `ADR-014`'s
+  byte-identical not-found rule: the guarantee is worthless if the UI restores the distinction the
+  API removed.
+- **Do not put a role name in a conditional.** [05](05-permission-aware-states.md) rule P-1, `[D]`.
 - **Do not filter or sort a paginated set on the client.** It sorts the page, not the data.
 - **Do not merge "no results" with "nothing here yet".**
-- **Do not build a phone layout.** [07](07-responsive-behavior.md) § 1 — this is a decision, and
-  reversing it is a product call, not a CSS call.
-- **Do not introduce offline queueing, `SYNCED`, or pending-sync states.** `[C]` Those are the Driver
-  app's semantics and importing them would make promises the web client cannot keep.
+- **Do not build a phone layout.** [07](07-responsive-behavior.md) § 1 — `[D]`, and reversing it is
+  a product call, not a CSS call.
+- **Do not introduce offline queueing, `SYNCED`, or pending-sync states.** `[C]` that these are the
+  Driver app's semantics; `[DERIVED]` that importing them into an online-only client would make
+  promises it cannot keep.
 - **Do not bootstrap or restructure a repository on this design's authority.** It has none.
 
 ## 9. Figma

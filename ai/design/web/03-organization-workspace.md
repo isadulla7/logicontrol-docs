@@ -1,6 +1,6 @@
 # 03 — Organization Workspace: Screen and State Inventory
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 This is the first concrete workspace, chosen because it is the one that lines up with backend
 `P01 / T012 — Company aggregate`, currently in implementation. It is also the workspace that

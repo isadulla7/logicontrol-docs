@@ -1,6 +1,6 @@
 # 06 — API Assumptions
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 **Nothing in this file is agreed.** No endpoint below has been designed, reviewed or built, and no
 backend agent has seen it. It exists so a backend reader can check the whole design's dependency

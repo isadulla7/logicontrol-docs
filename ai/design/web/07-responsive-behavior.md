@@ -1,6 +1,6 @@
 # 07 — Desktop and Tablet Behavior
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 `[D]` This is an operational tool used at a desk for hours. It is optimised for information density,
 scanning speed and keyboard efficiency. It is **not** a responsive marketing site that happens to

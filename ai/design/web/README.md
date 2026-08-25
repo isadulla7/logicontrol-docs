@@ -11,12 +11,13 @@ never speak to its author.
 
 ## Evidence marking — read this before anything else
 
-Every load-bearing statement in this package carries one of five markers. If a statement has no
+Every load-bearing statement in this package carries one of six markers. If a statement has no
 marker it is editorial connective tissue and decides nothing.
 
 | Marker | Meaning | How a reader should treat it |
 |---|---|---|
-| `[C]` | **Canonical fact.** Cited to a file and section in this repository. | Binding. Changing it requires changing the canonical source or a superseding ADR. |
+| `[C]` | **Canonical fact.** Cited to a file and section in this repository, and **stated there** — not inferred from it. | Binding. Changing it requires changing the canonical source or a superseding ADR. |
+| `[DERIVED]` | **A conclusion this lane reasoned out of cited canonical facts.** The facts are canonical; the step from them to this statement is mine. | Check the reasoning, not only the citation. If the inference is wrong the design changes. If canon supports no such inference at all, that is a canon gap and it escalates. |
 | `[D]` | **Design proposal.** Mine, arguable, not agreed by anyone. | Challengeable. Disagree freely; nothing downstream breaks. |
 | `[A-API]` | **API assumption.** A backend behaviour this design needs that has not been designed, agreed or built. | Must be confirmed or refuted before implementation. Collected in [06](06-api-assumptions.md). |
 | `[A-RBAC]` | **RBAC assumption.** A permission or role property this design needs. RBAC does not exist yet. | Must be confirmed or refuted. Never quote one as an agreed rule. |
@@ -26,23 +27,39 @@ marker it is editorial connective tissue and decides nothing.
 is agreed.** Where one appears, it appears as `[A-API]` or `[A-RBAC]` with a placeholder name whose
 only purpose is to make a screen discussable.
 
-### Where this convention fails, and the two rules that stop it
+### Why `[DERIVED]` exists, and the three rules that keep the marking honest
 
-A marking convention is only worth the trust it asks for, and this one has a predictable failure
-mode: independent review found it six times across two rounds, always in the same shape. These two
-rules exist because a convention that fails in one identifiable place deserves a rule in the
-document that defines it, rather than vigilance.
+`[DERIVED]` was not in the original scheme. It was added after review, and the reason is worth
+recording, because it is a property of the instrument rather than of anyone's care.
+
+**A scheme with no slot for a derivation manufactures mis-marking.** A conclusion reasoned out of
+canonical facts has to be tagged *something*. With `[C]` and `[D]` as the only candidates, it goes
+to whichever the author was feeling: `[C]`, because the sentence is built out of facts and every
+citation in it is real; or `[D]`, because the author knows they did the reasoning themselves. This
+package did **both, for the same claim**. "The ledger surface has no edit affordance" is a
+conclusion from `ADR-003`; it was marked `[D]` in [02](02-information-architecture.md) § 6 and
+`[C]` in [09](09-handoff.md) § 2 and § 8. Each file was internally consistent, which is why neither
+of two review rounds saw it.
+
+**And the usual check cannot detect it.** A citation spot-check asks whether the cited source says
+what it is cited for — and for a derivation it always does, because the facts are real. The defect
+lives in the gap between what the facts state and what the sentence concludes, which no amount of
+citation verification reaches. *(Root cause identified by the DES-001 mobile lane, which found the
+same gap in a four-tag scheme of its own and fixed it the same way.)*
+
+Hence the review question that does reach it: **"does the cited source state this, or does it merely
+support it?"** Merely support means `[DERIVED]`.
 
 **Rule M-1 — a marker attaches to a claim about the world, never to a claim about this package; and
 where a sentence carries a canonical clause inside a non-canonical one, the marker goes on the
 clause.** *(Formulation taken from the DES-002 independent review.)*
 
-What it catches: a marker leading a sentence that is doing **summary work** — summarising canon, or
+What it catches: a marker leading a sentence doing **summary work** — summarising canon, or
 summarising this package's own earlier proposals — where it reads as a warrant for the summary
 rather than for anything inside it. Both directions failed in practice: a `[C]` heading a mixed list
 whose three items had three different warrants, and a `[C]` on a cross-reference to this package's
-own `[D]` pattern. The corollary follows from the same idea: **if the items of a list have different
-warrants, mark the items, not the list.**
+own `[D]` pattern. Corollary: **if the items of a list have different warrants, mark the items, not
+the list.**
 
 **Rule M-2 — a marker names where a claim comes from, so an absence of canon is `[?]`, never an
 assumption.**
@@ -50,9 +67,22 @@ assumption.**
 `[A-API]` and `[A-RBAC]` mean *this design is relying on something unbuilt*. "Canonical material
 does not contain this" is the opposite: nothing is being relied on, and there is nothing for a
 backend reader to confirm or refute. Marking an absence as an assumption puts a phantom into the
-register in [06](06-api-assumptions.md), where every row is supposed to be a real dependency with a
-real fallback. M-1 does not catch this one, because the mis-marked claim is about the world — it is
-the marker's *type* that is wrong, not where it sits.
+register in [06](06-api-assumptions.md), where every row is meant to be a real dependency with a
+real fallback. M-1 does not catch this one, because the mis-marked claim *is* about the world — the
+marker's **type** is wrong, not its placement.
+
+**Rule M-3 — `[C]` is for what a source states; `[DERIVED]` is for what this lane concluded from
+it.** Mark a sentence `[C]` only if you could quote the source and the quote would carry the whole
+claim. If the quote gets you most of the way and your own reasoning covers the rest, it is
+`[DERIVED]`, and the sentence should say what the reasoning was — a derivation whose inference is
+not written down is unreviewable.
+
+**Where these fail is predictable: summary documents.** All of it concentrates where compression
+happens — [09](09-handoff.md) most of all, then the rule statements in
+[02](02-information-architecture.md) § 6 and the "what is canonical" restatements in
+[06](06-api-assumptions.md) § 1. Option tables, screen inventories and state specifications were
+checked and are clean, in this package and in the mobile lane's. If you are auditing this package or
+writing the next one, spend the time on the summaries.
 
 ## Contents
 

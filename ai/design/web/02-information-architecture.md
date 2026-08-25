@@ -1,6 +1,6 @@
 # 02 — Information Architecture and Global Navigation
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 This is the spine of the web product. Everything after it is cheaper if this is right and expensive
 if it is wrong, so the reasoning is written out rather than asserted.
@@ -20,7 +20,7 @@ like to click.
 forbidden; cross-module references go through typed UUID IDs, small public APIs or immutable events
 (`architecture/system-architecture-uz.md` § Cross-module constraints).
 
-`[D]` **Rule IA-1 — navigation mirrors module ownership.** A workspace maps to one owning module.
+`[DERIVED]` **Rule IA-1 — navigation mirrors module ownership.** A workspace maps to one owning module.
 A screen that would need to own another module's data instead *references* it and loads it
 separately. This is not architectural piety: it is the cheapest way to guarantee that every screen
 in this design can actually be served, because the backend is structurally incapable of returning a
@@ -196,7 +196,7 @@ double-counting and ORM graph coupling).
 `[C]` "Dashboard/P&L transaction graph yuklamaydi" — dashboards and P&L do not load the transaction
 graph (`domain/domain-model-erd-uz.md` § Transaction boundaries).
 
-`[D]` **Rule IA-5 — the Trip detail screen is a hub of independently loaded panels.** Trip detail
+`[DERIVED]` **Rule IA-5 — the Trip detail screen is a hub of independently loaded panels.** Trip detail
 renders the Trip aggregate (route, legs, dates, distance, both statuses, the three typed references)
 from the trip module, and then a set of **related panels**, each of which:
 
@@ -236,7 +236,7 @@ the same panel mechanism with a different key.
 `[C]` Trip operational status and Trip financial status are separate, and a completed trip is not a
 financially closed one (`product/business-rules-uz.md` § Trip — this is business non-negotiable #4).
 
-`[D]` Every surface where a Trip appears — table row, detail header, cockpit tile, search result —
+`[DERIVED]` Every surface where a Trip appears — table row, detail header, cockpit tile, search result —
 shows **two status tokens with two different visual treatments**, never one merged "state". A single
 combined status column would encode a falsehood the business rules explicitly forbid. In tables the
 two are separate, separately sortable, separately filterable columns.
@@ -248,7 +248,7 @@ two are separate, separately sortable, separately filterable columns.
 explicitly not hardcoded (§ Spend Policy). `[C]` Compliance may block or warn before trip start
 (§ Compliance).
 
-`[D]` **The web client never derives an available action from a status value.** It does not compute
+`[DERIVED]` **The web client never derives an available action from a status value.** It does not compute
 whether a Trip may start, whether an Expense needs a second approval, whether a document blocks
 departure, or whether a variance is out of tolerance. It renders the set of transitions the server
 declares for that record, with the server's own reason attached when one is refused `[A-API]`
@@ -273,7 +273,7 @@ error response. The design still works. It just wastes the user's time.
 currency; the transaction-time FX snapshot is preserved and never rewritten by later rates
 (`product/business-rules-uz.md` § Money va multi-currency; `adr/ADR-004`).
 
-`[D]` Therefore: every displayed amount carries its currency; a converted base-currency amount is
+`[DERIVED]` Therefore: every displayed amount carries its currency; a converted base-currency amount is
 always visually marked as converted and always exposes its FX snapshot (rate, source, effective
 time) on demand; and **no column, tile or total ever sums values of different currencies**. Where a
 total over mixed currencies is genuinely needed, it is presented as a base-currency total explicitly
@@ -287,16 +287,17 @@ reversal plus a corrected entry; a closed settlement is immutable; financial his
 silently overwritten (`product/business-rules-uz.md` § Advance, Ledger, Settlement and
 non-negotiables #3 and #8; `adr/ADR-003`).
 
-`[D]` Therefore the ledger surface has **no edit affordance and no delete affordance anywhere** —
+`[DERIVED]` Therefore the ledger surface has **no edit affordance and no delete affordance anywhere** —
 not disabled, absent. Correction is a distinct, explicitly named action that visibly creates new
-entries, and a reversed entry remains visible, marked, linked to its reversal. A UI that hides a
-reversed entry to make the list look tidy destroys exactly the property `ADR-003` exists to protect.
+entries, and a reversed entry remains visible, marked, linked to its reversal. The inference: canon
+says a correction *is* a reversal plus a correcting entry, so a UI that hides the reversed entry to
+make the list look tidy removes the evidence that the correction happened at all.
 
 ### IA-10 — Every list is bounded
 
 `[C]` "Pagination va bounded querylar majburiy" (`architecture/system-architecture-uz.md` § API).
 
-`[D]` No screen in this design contains an unbounded list, an infinite scroll that accumulates
+`[DERIVED]` No screen in this design contains an unbounded list, an infinite scroll that accumulates
 without limit, or a client-side "load everything then filter". Panels on hub screens show a bounded
 window with an explicit link to the full workspace view.
 
@@ -306,9 +307,10 @@ window with an explicit link to the full workspace view.
 reconciled against source data (`domain/GLOSSARY.md` § Control and insight;
 `domain/domain-model-erd-uz.md` § Analytics).
 
-`[D]` Every Insights and Cockpit surface shows an "as of" timestamp for the projection it renders,
-and a figure disagreeing with a transactional screen is a reconciliation question, not a bug the
-user should be silently exposed to. `[?]` Whether projection freshness is exposed to the client at
+`[D]` Every Insights and Cockpit surface shows an "as of" timestamp for the projection it renders.
+`[DERIVED]` And a projection figure disagreeing with a transactional screen is a reconciliation
+question rather than a bug — canon says projections are reconciled against source data, so
+disagreement is a known state of the system and not something the user should meet unexplained. `[?]` Whether projection freshness is exposed to the client at
 all is an API question — [06](06-api-assumptions.md) `A-14`.
 
 ## 7. Overview: the decision surface

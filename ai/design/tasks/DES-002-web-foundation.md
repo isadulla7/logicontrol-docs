@@ -90,8 +90,8 @@ pattern, and an offered rule. All addressed in one pass; nothing restructured.
 | README `one of four markers` (the table lists five) | Corrected to five |
 | Offered rule for the README | Taken, and extended — see below |
 
-**The marking rule is now in the README** (`README.md` § Where this convention fails), as two rules
-rather than one:
+**The marking rule is now in the README** (`README.md` § Why `[DERIVED]` exists), initially as two
+rules; a third was added in the pass recorded in the next section:
 
 - **M-1**, the reviewer's formulation taken verbatim and credited: a marker attaches to a claim about
   the world, never to a claim about this package; and where a sentence carries a canonical clause
@@ -111,3 +111,58 @@ broader statement.
 
 Two items explicitly left alone per the reviewer: `A-21`'s flat High risk score, and the four
 round-1 taste items.
+
+## Marking scheme — root cause and the `[DERIVED]` marker
+
+Relayed from the DES-001 mobile lane, which swept its own package on the hypothesis in this lane's
+round-2 note and found five further instances beyond the one its reviewer caught. Their root cause
+is better than this lane's diagnosis and it applies here unchanged.
+
+**A marking scheme with no slot for a derivation manufactures mis-marking.** A conclusion reasoned
+out of canonical facts has to be tagged something; with no correct option it takes an incorrect one.
+And the usual defence cannot see it: a citation spot-check asks whether the cited source says what
+it is cited for, and for a derivation it always does. The defect lives in the gap between what the
+facts state and what the sentence concludes.
+
+**This package had the same gap, and made the error in both directions.** The mobile lane's four-tag
+scheme pushed derivations onto FACT. This lane's five markers pushed them onto `[C]` in the summary
+documents and onto `[D]` in the rule statements — and the *same claim* was marked both ways.
+"The ledger surface has no edit affordance" is a conclusion from `ADR-003`; it was `[D]` in
+`02` § 6 IA-9 and `[C]` in `09` § 2 item 8 and `09` § 8. Each file was internally consistent, which
+is why neither review round saw it. That is evidence the slot was missing rather than that the
+marking was careless.
+
+**Fix: a sixth marker, `[DERIVED]`.** Name adopted from the mobile lane deliberately rather than
+inventing a second name for the same slot — the Orchestrator is carrying this into how design lanes
+are briefed, and two lanes with two names for one concept would fail exactly the reader it is meant
+to serve. Definition: a conclusion this lane reasoned out of cited canonical facts; the facts are
+canonical, the inference is the designer's and is arguable. A `[DERIVED]` statement must **write out
+its inference**, because a derivation whose reasoning is not stated cannot be reviewed.
+
+Also added, as **M-3**: `[C]` is for what a source states, `[DERIVED]` for what this lane concluded
+from it — mark `[C]` only if a quotation from the source would carry the whole claim. And the review
+question that reaches this defect, from the mobile lane: **"does the cited source state this, or does
+it merely support it?"**
+
+### Coverage of the re-tagging sweep
+
+Swept, because the defect concentrates where compression happens:
+
+| File | Result |
+|---|---|
+| `09-handoff.md` | § 2 decided-list rewritten — 9 of 18 warrants were derivations marked `[C]`; § 8 "things not to do" — 5 of 11 the same. Both now name the inference per item |
+| `02-information-architecture.md` | IA-1, IA-5, IA-6, IA-7, IA-8, IA-9, IA-10 and IA-11's conclusion re-marked `[DERIVED]` — these were the under-claiming half, marked `[D]` |
+| `05-permission-aware-states.md` | Rule P-4 re-marked `[DERIVED]` with its inference written out |
+| `06-api-assumptions.md` § 1 | Checked, clean — all nine bullets are genuine restatements of what the sources state |
+
+Not swept: `01`, `03`, `04`, `07`, `08`, `10`. These are duty-area evidence, screen inventories,
+state specifications, option tables and question entries — the shapes the mobile lane found clean in
+its own package, where a fact is cited next to the thing it warrants and no compression happens.
+The boundary is recorded rather than claimed: a later reader should treat `[C]` markers in those six
+files as unaudited against M-3, and the cheapest audit is the review question above.
+
+`[?]` One finding from the mobile lane worth carrying into any future audit of this package: their
+`06` D-04 was not mis-tagged but **factually wrong** — a claim that one option was the only one
+surviving two constraints, contradicted by their own earlier file. Mis-marking is the visible
+failure; a derivation that is simply invalid is the same defect at full strength, and no marker
+catches it. Only re-reading the inference does.

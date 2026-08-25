@@ -1,6 +1,6 @@
 # 08 — Shared Design Foundation: Implications from the Web Lane
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 **Scope note.** `ai/design/foundation/**` is written by neither design lane in this batch. This file
 records what the *web* lane needs from a shared foundation, and what it believes must stay

@@ -1,6 +1,6 @@
 # 04 — Core Operational Patterns
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 These patterns are used by every workspace in the product. They are specified once, here, in
 implementable detail. A later screen specification says "standard table" and adds only what is

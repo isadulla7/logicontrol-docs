@@ -1,6 +1,6 @@
 # 05 — Permission-aware States Without Inventing RBAC
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 ## 1. The problem this file solves
 
@@ -148,9 +148,13 @@ separately and forcefully.
 that UUID knowledge cannot be used to probe another company's data (`adr/ADR-014` § Non-disclosure;
 `adr/ADR-010`). Knowing a UUID is never authorization (`domain/GLOSSARY.md` § Tenancy and identity).
 
-`[D]` **Rule P-4 — the UI must never distinguish "does not exist" from "belongs to another
+`[DERIVED]` **Rule P-4 — the UI must never distinguish "does not exist" from "belongs to another
 company".** A direct URL to another tenant's trip renders exactly the state a genuinely missing trip
-renders, with exactly the same words.
+renders, with exactly the same words. The inference: canon makes the *API* responses byte-identical
+to stop UUID knowledge probing another company's data; a UI that restores the distinction in its
+copy hands back precisely what the API withheld. Canon states the API property — the UI consequence
+is this lane's step, and it is the one most likely to be lost in implementation, because helpful
+error copy is the natural instinct.
 
 Forbidden copy, all of which confirms existence:
 

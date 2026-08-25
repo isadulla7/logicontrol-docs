@@ -1,6 +1,6 @@
 # 10 — Decisions Required
 
-Markers: `[C]` canonical · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
+Markers: `[C]` canonical · `[DERIVED]` reasoned from canon · `[D]` proposal · `[A-API]` API assumption · `[A-RBAC]` RBAC assumption · `[?]` open question. See [README](README.md).
 
 Every question this lane hit that canonical material does not answer and that this lane cannot
 decide. Each states what is blocked, what the lane recommends, and who owns the answer.
