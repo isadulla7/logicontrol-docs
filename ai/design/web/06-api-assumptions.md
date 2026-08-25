@@ -125,8 +125,18 @@ is only that web callers may use them.
 
 - No WebSocket, SSE or push channel. Live updating is not assumed anywhere; where freshness matters
   the design uses explicit refresh and an "as of" marker.
-- No GraphQL or any composite query. `[C]` Cross-module composition is forbidden in the backend, and
-  rule IA-5 is built so the client never needs it.
+- No GraphQL or any composite query. **Not because canon forbids one.** `[C]` What canon forbids is
+  cross-module *coupling* — cross-module repositories, JPA entities, internal service imports and
+  JPA relationships — while explicitly sanctioning a "small public API/snapshot" for immediate
+  cross-module information, with `logicontrol-app` as the composition root
+  (`architecture/system-architecture-uz.md` § Cross-module constraints, § Module topology). A
+  backend adapter composing a response from two public APIs is therefore **permitted**.
+  `[DERIVED]` This design still does not assume one, on narrower ground: canon says a Trip does not
+  own Expense, Fuel, WorkOrder or Document collections, and that dashboards and P&L do not load the
+  transaction graph — so the *object graph* a composite query would most naturally return is the
+  thing ruled out, not the composition. `[D]` And rule IA-5 wants independent panels for its own
+  reasons anyway (independent loading, failure and permission gating), so the client never needs
+  one.
 - No client-side aggregation of financial figures. Every total the UI shows is a total the server
   computed. `[D]` A client that sums a page of expenses will eventually show a number that
   contradicts a projection, and the user will believe the wrong one.

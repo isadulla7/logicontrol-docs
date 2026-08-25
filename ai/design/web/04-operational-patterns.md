@@ -101,10 +101,10 @@ order number, document number. UUIDs live in a record's metadata region, truncat
 
 ### Dates and times
 
-`[D]` `[C]` The model distinguishes `TIMESTAMPTZ` from business `DATE`, and the UI keeps the
-distinction absolutely: a business date renders with no time and no timezone. Rendering a business
-date as a local midnight shifts it across a border, which in a cross-border logistics product means
-showing the wrong day.
+`[C]` The model distinguishes `TIMESTAMPTZ` from business `DATE`. `[DERIVED]` So the UI keeps the
+distinction absolutely and a business date renders with no time and no timezone: rendering a
+business date as a local midnight shifts it across a border, which in a cross-border logistics
+product means showing the wrong day.
 
 `[D]` Timestamps render absolute with the timezone stated. Relative time may accompany, never
 replace. Sortable columns sort on the underlying instant, not the rendered string.
@@ -117,8 +117,10 @@ from the server's enumeration and the client maps it to product copy and a seman
 **unrecognised value renders as a neutral token showing the raw value** — forward-compatible, so a
 new backend status does not break a deployed web client.
 
-`[C]` Where the entity is a Trip, operational and financial status are two separate tokens with
-different visual treatments (rule IA-6).
+`[C]` A Trip carries two separate lifecycles and completion is not financial closure.
+`[DERIVED]` So wherever a Trip appears it renders as **two** tokens with different visual
+treatments: canon states the lifecycle separation and says nothing about tokens or visual treatment,
+so the rendering rule is this lane's step (rule IA-6).
 
 ## 4. Table anatomy
 
@@ -226,8 +228,9 @@ selector; reference → typeahead over that entity; boolean → toggle).
   filters one page and is forbidden for the same reason client-side sort is.
 - **Date filters state whether they filter a business date or a timestamp**, because `[C]` the model
   distinguishes them and the answers differ.
-- **Money filters require a currency.** `[C]` A cross-currency amount range is not a meaningful
-  query against a model where every amount carries its own currency. The editor requires a currency
+- **Money filters require a currency.** `[DERIVED]` A cross-currency amount range is not a
+  meaningful query against a model where every amount carries its own currency — canon fixes the
+  Money model; the query consequence is this lane's step. The editor requires a currency
   or offers "base currency, converted" explicitly labelled `[A-API]`.
 - **Empty results are `S-EMPTY-FILTER`**, never `S-EMPTY-FIRST`.
 - **A default filter is visible as a chip.** A queue landing pre-filtered to `SUBMITTED` shows that
@@ -314,9 +317,12 @@ backend dependency it takes. If a renewal workflow is later defined (plausibly a
 expiry detection), it enters through [06](06-api-assumptions.md) as a registered assumption like
 everything else.
 
-`[D]` **No bulk delete exists anywhere in this product.** `[C]` The financial model is append-only
-and audit is append-only; the operational entities have lifecycles with cancellation states rather
-than deletion. A bulk delete would have nothing correct to do.
+`[D]` **No bulk delete exists anywhere in this product.** The warrant is not uniform, so it is stated
+in two parts. `[DERIVED]` For financial, audit and lifecycle entities: canon makes finance and audit
+append-only and gives the operational entities cancellation states rather than deletion, so a delete
+has nothing correct to do. `[?]` For master data — Vehicle, Driver, Customer — canon is **silent**:
+each carries a `status`, and nothing anywhere prohibits deleting them. Offering no bulk delete there
+is `[D]`, a design choice consistent with the rest, not a canonical consequence.
 
 ## 11. States
 
@@ -398,9 +404,9 @@ both compact and comfortable modes; asynchronous outcomes announced through a po
 in touch contexts ([07](07-responsive-behavior.md) § 4).
 
 `[D]` One product-specific rule: **severity and variance must never be encoded by colour alone**.
-`[C]` Alerts carry severity and fuel variance carries a signed percentage; both are the numbers on
-which people act, and a red cell alone is unreadable to a colour-blind operator and unquotable over
-a phone call.
+`[C]` Alerts carry severity and fuel variance carries a signed percentage. `[D]` Both are the numbers
+on which people act, and a red cell alone is unreadable to a colour-blind operator and unquotable
+over a phone call.
 
 ## 14. Forms and writes
 
@@ -417,9 +423,10 @@ prediction over the server.
 naming an unknown field renders at form level rather than being dropped.
 
 `[D]` Every write carries an idempotency key `[A-API]` so a double submission, a retry or a flaky
-connection cannot create two records. `[C]` This is exactly the guarantee `ADR-008` already defines
-for the mobile client, and the same reasoning applies to a browser tab with a slow network and an
-impatient user.
+connection cannot create two records. `[C]` `ADR-008` defines exactly this guarantee
+for the mobile client. `[D]` That the same reasoning applies to a browser tab with a slow network and
+an impatient user is this lane's argument — canon does not extend the guarantee to web callers, and
+that extension is registered as `A-08`.
 
 `[D]` Unsaved-change protection on navigation away, and `S-SAVING` never hides the form.
 `S-SUCCESS` is in-place and does not steal focus.

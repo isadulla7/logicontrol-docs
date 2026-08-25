@@ -294,8 +294,9 @@ editor. See [10](10-decisions-required.md) `Q-06`.
   changed fields only, with an "show unchanged" toggle.
 - **Filters** `[D]`: time range, actor, action, entity type, entity id, free-text on reason.
 - **No edit, no delete, no bulk operation.** `[C]` Audit is an append-only record
-  (`domain/GLOSSARY.md` § Control and insight).
-- `[C]` **A caution that belongs on this screen:** in Finance, generic audit does not replace the
+  (`domain/GLOSSARY.md` § Control and insight); `[DERIVED]` that the *surface* therefore carries no
+  mutation affordance at all — canon constrains the record, not the screen.
+- **A caution that belongs on this screen:** `[C]` in Finance, generic audit does not replace the
   Ledger, and financial history is itself immutable (`product/business-rules-uz.md` § Audit). `[D]`
   The audit log therefore must not be presented as the place to investigate money. A financial
   question resolves in the ledger and settlement surfaces. `[D]` Where an audit entry concerns a
@@ -325,9 +326,9 @@ applicable row is answered; screens that answer "n/a" say why.
 | `S-ERROR-ACTION` | write failed | the form keeps every entered value, the error appears next to the action, nothing is cleared. `fieldErrors` map to fields; a non-field error appears at form level |
 | `S-CONFLICT` | version conflict `[C]` | a first-class state, not an error: "this record changed while you were editing", showing which fields changed and by whom if the server says `[A-API]`, and offering Reload-and-reapply or Discard. **User input is never silently overwritten or silently discarded** |
 | `S-DENIED` | 403 on an attempted action | keeps entered data and offers a way back — always. Explains what was denied in the server's own terms **where the server supplies a reason** `[A-API]` (`A-21`); `[C]` `ADR-014` rethrows `AccessDeniedException` unmapped, so a 403 may carry no body, in which case the copy is generic. Never a redirect to a generic page — a redirect loses the work |
-| `S-NOT-FOUND` | 404 | identical copy whether the record is absent or belongs to another company `[C]` (`ADR-014` non-disclosure) |
+| `S-NOT-FOUND` | 404 | identical copy whether the record is absent or belongs to another company. `[C]` `ADR-014` makes the *responses* byte-identical; `[DERIVED]` that the UI's own copy must preserve that property, since restoring the distinction in prose gives back what the API withheld |
 | `S-SESSION-END` | session no longer valid | [05](05-permission-aware-states.md) § 6. Work in progress is preserved across re-authentication |
-| `S-SAVING` | write in flight | the submit control is busy and idempotent against double submission `[C]` (`ADR-008` idempotency semantics); the form stays visible and readable |
+| `S-SAVING` | write in flight | the submit control is busy and idempotent against double submission. `[C]` `ADR-008` defines those idempotency semantics **for offline mobile commands**; `[A-API]` that web callers may use the same mechanism is `A-08`, not something canon states |
 | `S-SUCCESS` | write succeeded | in-place confirmation on the affected record. **No modal, no toast that steals focus**; a keyboard user must not lose position |
 | `S-NO-SCOPE` | no company membership | terminal explanatory state; the shell renders no workspace. Does not say whether any company exists |
 
@@ -343,9 +344,9 @@ applicable row is answered; screens that answer "n/a" say why.
 - **Timestamp** — absolute, with the timezone stated. Relative time ("2 h ago") may accompany it but
   never replaces it. `[?]` Which timezone — company, viewer or UTC — is undecided and matters in a
   cross-border product; see [10](10-decisions-required.md) `Q-10`.
-- **Business date vs timestamp** — `[C]` the model distinguishes `DATE` from `TIMESTAMPTZ`. The UI
-  keeps the distinction: a business date has no time and no timezone, and rendering it as midnight
-  local time invents information and shifts dates across borders.
+- **Business date vs timestamp** — `[C]` the model distinguishes `DATE` from `TIMESTAMPTZ`.
+  `[DERIVED]` The UI keeps the distinction: a business date has no time and no timezone, and
+  rendering it as midnight local time invents information and shifts dates across borders.
 - **Status** — a token whose value comes from the server's enumeration, with colour carried by a
   semantic mapping the client owns and a text label always present. **Colour is never the only
   carrier of state.** An unknown status value renders as a neutral token with its raw value rather

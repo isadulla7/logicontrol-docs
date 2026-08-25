@@ -155,14 +155,47 @@ Swept, because the defect concentrates where compression happens:
 | `05-permission-aware-states.md` | Rule P-4 re-marked `[DERIVED]` with its inference written out |
 | `06-api-assumptions.md` § 1 | Checked, clean — all nine bullets are genuine restatements of what the sources state |
 
-Not swept: `01`, `03`, `04`, `07`, `08`, `10`. These are duty-area evidence, screen inventories,
-state specifications, option tables and question entries — the shapes the mobile lane found clean in
-its own package, where a fact is cited next to the thing it warrants and no compression happens.
-The boundary is recorded rather than claimed: a later reader should treat `[C]` markers in those six
-files as unaudited against M-3, and the cheapest audit is the review question above.
+**Superseded — the six remaining files were swept in round 3; see below.** At the time this section
+was written they were not, on the estimate that the defect lived only in the summary documents. That
+estimate was right about concentration and wrong about exclusivity.
 
 `[?]` One finding from the mobile lane worth carrying into any future audit of this package: their
 `06` D-04 was not mis-tagged but **factually wrong** — a claim that one option was the only one
 surviving two constraints, contradicted by their own earlier file. Mis-marking is the visible
 failure; a derivation that is simply invalid is the same defect at full strength, and no marker
 catches it. Only re-reading the inference does.
+
+## Review round 3 — rescoped pass `d9c670b..b9b757c`
+
+Three MAJOR and two MINOR. `APPROVED` on `d721546` stands for the scope it covered and does **not**
+extend to the branch tip; the branch was `CHANGES_REQUESTED` until this commit. All five addressed.
+
+| # | Finding | Resolution |
+|---|---|---|
+| 1 | MAJOR — `06` § 4 asserted `[C]` "cross-module composition is forbidden in the backend". **Canon does not say that.** It forbids cross-module repositories, JPA entities, internal service imports and JPA relationships, and in the next sentence sanctions a "small public API/snapshot"; `logicontrol-app` is the composition root. The false premise propagated into `09` § 2 items 1 and 4 | Verified against the source and confirmed. `06` § 4 restated to what canon forbids, and now says plainly that a composed endpoint **is permitted**. `02` § 1 IA-1 and `02` § 5 IA-5 corrected at source, since that is where the premise originated. `09` items 1 and 4 re-warranted onto aggregate ownership plus "dashboards and P&L do not load the transaction graph", with the `[D]` UX argument stated separately so the rule does not stand or fall with the premise |
+| 2 | MAJOR — the README claimed screen inventories and state specifications "were checked and are clean" when `03` and `04` had not been examined | Rewritten. It now records the false claim, why it happened (generalised from the mobile lane's sweep), and what review found when the files were actually checked. States the current coverage |
+| 3 | MAJOR — `04` § 3 carried `[C]` on "two separate tokens with different visual treatments", the exact claim `09` § 2 item 5 splits into `[C]` + `[DERIVED]`. The one-claim-two-markers defect, live in an unswept file, found first look | Fixed, and **all six remaining files swept** — see coverage below |
+| 4 | MINOR — `09` item 13's no-bulk-delete warrant generalised append-only finance/audit across the whole product; canon is silent on master-data deletion | Warrant split: `[DERIVED]` for append-only and lifecycle entities, `[?]` for Vehicle/Driver/Customer where canon says nothing. Same fix applied at source in `04` § 10 |
+| 5 | MINOR — `09` item 2 cited `ADR-010` for "knowing a UUID is never authorization"; ADR-010 contains no such sentence | Re-cited to `domain/GLOSSARY.md` § Tenancy and identity and `architecture/system-architecture-uz.md` § Multi-tenancy/security, which do state it |
+
+### Coverage after round 3 — all eleven files swept against M-3
+
+| File | Result |
+|---|---|
+| `01` | Clean. Every `[C]` is a restatement of cited canonical content; this file is evidence-gathering, and the marker sits next to the source throughout |
+| `02` | IA-1 and IA-5 premises corrected (finding 1); IA-6..IA-11 already re-marked in round 2 |
+| `03` | Four fixed: the audit-surface mutation rule, `S-NOT-FOUND`, `S-SAVING` (was `[C]` on `ADR-008` extended to web — that is `A-08`, an assumption), and business-date rendering |
+| `04` | Six fixed, including finding 3 and the no-bulk-delete warrant |
+| `05` | P-4 re-marked in round 2; no further instances |
+| `06` | § 4 corrected (finding 1); § 1 restatements clean |
+| `07` | Two fixed, both the Trip-status column rule |
+| `08` | One fixed: the motion row mixed a canonical driver-brief quote with this lane's web rule under a single `[C]` |
+| `09` | §§ 2 and 8 rewritten in round 2; items 1, 2, 4, 13 re-warranted here |
+| `10` | Two fixed: the `Q-14` cost-attribution conclusion, and an `[C]` leading a claim about `A-06`'s consequences |
+| `README` | Coverage claim corrected (finding 2) |
+
+`[?]` What no marker catches, carried from the mobile lane's `D-04`: a derivation that is simply
+**invalid**. Finding 1 was exactly that — a false premise under a correct conclusion — and it was
+found only because `[DERIVED]` made the inference visible enough to check. The marker makes
+derivations reviewable; it does not make them true. Any future audit of this package should re-read
+the inferences rather than the markers.

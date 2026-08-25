@@ -20,12 +20,23 @@ like to click.
 forbidden; cross-module references go through typed UUID IDs, small public APIs or immutable events
 (`architecture/system-architecture-uz.md` § Cross-module constraints).
 
-`[DERIVED]` **Rule IA-1 — navigation mirrors module ownership.** A workspace maps to one owning module.
-A screen that would need to own another module's data instead *references* it and loads it
-separately. This is not architectural piety: it is the cheapest way to guarantee that every screen
-in this design can actually be served, because the backend is structurally incapable of returning a
-single object graph that spans modules. A UI designed against a graph that cannot exist produces a
-handoff that quietly demands the backend break its own rules.
+`[DERIVED]` **Rule IA-1 — navigation mirrors module ownership.** A workspace maps to one owning
+module. A screen that would need to own another module's data instead *references* it and loads it
+separately.
+
+The inference, stated precisely because an earlier draft of this package overstated it: canon does
+**not** forbid a backend adapter from composing a response out of two modules' public APIs. The
+sentence immediately after the prohibition above sanctions exactly that — a "small public API /
+snapshot" for immediate cross-module information — and `logicontrol-app` exists as the composition
+root. What canon forbids is the **coupling** and the **object graph**: cross-module repositories,
+JPA entities, internal service imports and ORM relationships (above), a Trip owning other modules'
+collections (§ 5), and dashboards or P&L loading the transaction graph (§ 5).
+
+So a navigation organised along module ownership is not the only servable one. It is the one that
+never *tempts* a screen into demanding the graph that is ruled out, and that keeps every screen's
+data need expressible as reads of the module that owns it. `[D]` It is also the arrangement that
+lets each part of a screen load, fail and be permission-gated independently — a UX argument that
+would stand even if the architecture were silent on all of this.
 
 `[D]` The product chain in `ai/PROJECT_CONTEXT.md` — `Trip → Money → Fleet → Control → Compliance →
 Intelligence → Ecosystem` — is used as the **ordering** of the navigation, so the shell reads in the
@@ -221,10 +232,17 @@ WorkOrder genuinely carries no `tripId`, this panel must key on the Trip's `vehi
 window — a different and materially weaker query, since it would show work orders for that vehicle
 during that period rather than work arising from that trip.
 
-This is the most consequential structural rule in the package for an implementer, because it is the
-difference between a screen that can be served and one that cannot. It also produces genuinely
-better UX: a compliance panel that is slow or forbidden does not stop a dispatcher seeing that the
-truck is `ACTIVE`.
+This is the most consequential structural rule in the package for an implementer, and it is worth
+being exact about what it does and does not rest on. It does **not** rest on a composed endpoint
+being impossible — canon permits an adapter to compose from public APIs (§ 1). It rests on two
+things canon does say: the Trip aggregate does not own those collections, and dashboards and P&L do
+not load the transaction graph. A screen designed as one object graph pushes against both.
+
+`[D]` And it produces better UX independently of any of that: a compliance panel that is slow or
+forbidden does not stop a dispatcher seeing that the truck is `ACTIVE`. If someone later builds a
+composed read endpoint for a hub screen, this rule is not thereby void — the panels would still want
+independent failure and permission states, which a single composed response makes harder, not
+easier.
 
 `[D]` The same rule applies to Vehicle detail, Driver detail and Customer detail. They are hubs over
 the same panel mechanism with a different key.

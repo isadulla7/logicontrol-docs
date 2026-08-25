@@ -77,12 +77,21 @@ claim. If the quote gets you most of the way and your own reasoning covers the r
 `[DERIVED]`, and the sentence should say what the reasoning was — a derivation whose inference is
 not written down is unreviewable.
 
-**Where these fail is predictable: summary documents.** All of it concentrates where compression
-happens — [09](09-handoff.md) most of all, then the rule statements in
-[02](02-information-architecture.md) § 6 and the "what is canonical" restatements in
-[06](06-api-assumptions.md) § 1. Option tables, screen inventories and state specifications were
-checked and are clean, in this package and in the mobile lane's. If you are auditing this package or
-writing the next one, spend the time on the summaries.
+**Where these fail is not only where it was first assumed.** The defect *concentrates* where
+compression happens — [09](09-handoff.md) most of all, then the rule statements in
+[02](02-information-architecture.md) § 6 and the restatements in [06](06-api-assumptions.md) § 1.
+
+An earlier revision of this section went further and said option tables, screen inventories and
+state specifications "were checked and are clean". That was wrong twice over: it generalised from
+the mobile lane's sweep, and at the time this package's own screen inventory
+([03](03-organization-workspace.md)) and state specifications
+([04](04-operational-patterns.md)) had not been examined at all. When they were, review found a live
+instance in [04](04-operational-patterns.md) § 3 on the first look — the same claim carrying `[C]`
+there and `[DERIVED]` in [09](09-handoff.md).
+
+**Concentration is not exclusivity, and a claim about audit coverage is itself a claim that needs a
+warrant.** Every file in this package has now been swept against M-3. If you are auditing this
+package or writing the next one, start with the summaries — and do not stop there.
 
 ## Contents
 

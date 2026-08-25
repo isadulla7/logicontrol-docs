@@ -242,9 +242,10 @@ assumption `A-11`. It is the one panel of eight that is not servable as specifie
 `[D]` The consequence if WorkOrder genuinely carries no `tripId`: the panel must key on the Trip's
 `vehicleId` plus the trip's date window, which answers a different question — "what work was done on
 this vehicle around then" rather than "what work arose from this trip" — and it cannot support
-per-trip attribution of the work order itself. `[C]` Note that trip-level *cost* attribution survives
-either way, because canon recognises WorkOrder economic cost through a linked Finance Expense and
-Expense does carry `tripId`. What does not survive is attributing the operational work order to the
+per-trip attribution of the work order itself. `[DERIVED]` Trip-level *cost* attribution nonetheless
+survives either way: `[C]` canon recognises WorkOrder economic cost through a linked Finance Expense,
+and Expense does carry `tripId`, so the cost reaches the trip by the finance path even when the work
+order itself does not. What does not survive is attributing the **operational** work order to the
 trip.
 
 `[D]` This lane takes no position on which side is right. Either the glossary and ERD § Trip overstate
@@ -282,8 +283,8 @@ the WorkOrder aggregate, because after that it is a schema change rather than a 
 2. **`Q-10` — display timezone.** Every timestamp, on both clients, with financial-period
    consequences.
 3. **A decision on `A-06`** — whether the backend will declare available actions per resource. Not a
-   product question but an architecture one, and it determines whether the client can satisfy
-   `[C]` non-negotiable #12 literally or only approximately. It should go through the
+   product question but an architecture one, and `[DERIVED]` it determines whether the client can
+   satisfy non-negotiable #12 literally or only approximately. It should go through the
    `ai/COWORK_V2.md` § 9 contract gate before the first queue screen is built, which by
    [09](09-handoff.md) § 6 means before step 7.
 

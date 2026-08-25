@@ -74,7 +74,7 @@ making.
 | Column | Priority |
 |---|---|
 | Selection, Reference | P1 |
-| Operational status, Financial status | P1 — `[C]` both, always, per rule IA-6; a breakpoint may not merge them |
+| Operational status, Financial status | P1 — `[DERIVED]` both, always; a breakpoint may not merge them (rule IA-6) |
 | Customer, Route, Driver | P2 |
 | Vehicle, Planned departure | P2 |
 | Distance, Actual dates, Legs count, Updated | P3 |
@@ -84,8 +84,10 @@ detail. Sorting or filtering by a dropped column is still possible from the filt
 that vanishes with a column would make a shared URL behave differently on two machines, which is a
 worse bug than a missing column.
 
-`[D]` `[C]` The two Trip statuses are jointly P1. They are the one place where a breakpoint might be
-tempted into a "combined state" column, and business non-negotiable #4 forbids it at every width.
+`[DERIVED]` The two Trip statuses are jointly P1. They are the one place where a breakpoint might be
+tempted into a "combined state" column. `[C]` Business non-negotiable #4 separates the two
+lifecycles; `[DERIVED]` that a merged column would misrepresent them, at any width, is this lane's
+step — canon speaks about the lifecycles, not about columns.
 
 ## 4. Touch
 
