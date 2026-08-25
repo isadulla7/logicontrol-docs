@@ -20,7 +20,7 @@ Programme-level state across authoritative repositories. Each implementation rep
 |---|---|
 | `logicontrol-docs` | Canonical product/business/domain/global architecture + Global Cowork V2 + Product/UI/UX task state. |
 | `logicontrol-backend` | P00 COMPLETE. Next `P01 / T012 — Company aggregate`. Cowork V1.1 is the local execution base, extended by V2 specialist routing. |
-| `logicontrol-android` | Android foundation exists on its bootstrap PR and must be green/merged before Android Cowork V2/feature execution is based on it. No Driver feature is implemented yet. |
+| `logicontrol-android` | Android foundation **merged and green**: bootstrap PR #1 merged 2026-08-25, `Android CI` run `32849118280` success on `main` `e517fbe`. The baseline gate is satisfied. No Driver feature is implemented yet, and a green baseline is not a work authorisation — Android feature work stays gated on OPEN-001 and OPEN-002. |
 | `logicontrol-ios` | Dormant placeholder only; no implementation authorized. |
 
 ## Backend
@@ -48,9 +48,12 @@ These are prepared to run in parallel with backend T012 because they share no im
 Global routing and cross-repository parallelism: `ai/COWORK_V2.md` / ADR-018. Local lifecycle, risk, leases, budgets, evidence, QA/review and security review remain owned by each implementation repo's Cowork protocol.
 
 ## Initial V2 batch
-After the V2 changes and Android foundation are green/merged:
-1. backend T012;
-2. mobile design DES-001;
-3. web design DES-002.
+Both preconditions are met: the V2 changes are merged (docs PRs #1–#2, backend PR #9) and the
+Android foundation is merged and green. The batch is **dispatched**:
+1. backend T012 — IN_PROGRESS, branch `feat/T012-company-aggregate`, PR #10;
+2. mobile design DES-001 — IN_PROGRESS, branch `feat/DES-001-mobile-auth-ux`;
+3. web design DES-002 — IN_PROGRESS, branch `feat/DES-002-web-foundation`.
 
-Global Orchestrator must still record ADR-018 parallel-clearance evidence before dispatch.
+ADR-018 parallel-clearance evidence was recorded before dispatch in `ai/orchestration/BATCH-01.md`
+and in T012's `TASK_READY` event. Task-level execution state stays in each repository; this file
+records only the programme-level checkpoint.
