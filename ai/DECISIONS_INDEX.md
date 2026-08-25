@@ -41,6 +41,13 @@ None yet.
   anywhere in the driver flow. Backend `T017`/`T018` and Android production authentication are
   no longer gated on this decision.
 
+  **A sixteenth decision, `D-16`, was added after the fifteen.** It was raised by security
+  review of the ADR and decided by the owner: on a company-context switch with unsent work the
+  app sends the queue first and switches once it has drained, and offline the switch is refused
+  and the count of unsent items is shown. The separate server-side invariant it depends on —
+  the server rejects any operation whose payload `company_id` does not match the company
+  context resolved for that request — is a `T018` requirement, not a client behaviour.
+
   **Several values remain open inside the closed decision, and are deliberately deferred, not
   overlooked.** They do not reopen `D-01`–`D-15`; each is bounded by a shape that ADR-019 fixes
   as binding.
@@ -59,6 +66,12 @@ None yet.
     and absolute maximum lifetime. The shapes are decided; the values are not, and
     `ai/design/mobile/auth/07-adr-decision-brief.md` §6 lists all eight numeric policies among its
     acceptance criteria.
+
+  **Two canonical files still assert the `OPEN-001` gate in the present tense and are owed a
+  follow-up:** `ai/COWORK_V2.md`:107 (and its §12 lane entry, "proposals only, not silent
+  closure", which is spent) and `architecture/mobile-architecture.md`:65. Neither is in the
+  file set ADR-019's PR was scoped to reconcile and neither changes what ADR-019 decides;
+  they should land with the `chore/gorc-batch01-parallel-clearance` reconciliation.
 
   None of these has been given its own `OPEN-` identifier; if the programme wants them tracked
   as first-class open decisions rather than as residue of a closed one, that numbering is the
@@ -82,6 +95,13 @@ None yet.
   bounded stop into an unbounded server-side rejection landing squarely in `OPEN-002`. What
   happens to the operations that are still rejected remains `OPEN-002`'s to decide.
 
+  **`D-16` closes one path into this decision that nobody had chosen.** A company-context switch
+  with a non-empty queue would have sent operations carrying one company's `company_id` into a
+  session resolving another, producing either a mass terminal failure on work the driver was
+  told was accepted — arriving here, at a moment the driver has no reason to connect to the
+  switch — or a cross-tenant write. `D-16` requires the queue to drain first, or the switch to
+  be refused offline with the count shown.
+
   The Android bootstrap carries a **mechanism** for this (`SyncStatus.FAILED_PERMANENT`, a bounded
   attempt cap, and the rule that exhausted work surfaces rather than being dropped) but **no
   policy**. The mechanism is not the decision and must not be read as one. Resolve in an ADR
@@ -89,6 +109,23 @@ None yet.
   and before any slice that queues a financial write.
 
 ## Recorded revisions
+- **ADR-019: two commit messages mis-state the owner's position on the `D-08` write boundary.
+  Disclosed here rather than corrected by rewriting history.** `23b8a20` states *"It was put to
+  the programme owner, who expressed no preference. No preference is not a decision, so it stays
+  a proposal rather than being settled by me"*, and `045284c` repeats it: *"no preference had
+  been expressed and the decision was not mine"*. **Both statements are false.** The owner did
+  express a position on that boundary: they first let the device keep accepting business writes
+  without limit after expiry, then reversed once told those writes remain subject to server-side
+  authorization at sync. `adr/ADR-019-driver-authentication-ux.md` records that sequence and it
+  governs; the commit messages do not.
+
+  **Why it was written.** A second session, working the same branch concurrently, asked the owner
+  separately and was told no preference, while the owner had already decided otherwise elsewhere. The
+  claim was therefore true of what that session could see and false of the world. `045284c` was
+  superseded by `cf22b6f`, which added the attribution, and the boundary has been recorded as the
+  owner's decision from `045284c` onward. **No commit was rewritten.** The programme's standard is
+  disclosure rather than a rewritten record, and this entry is that disclosure. Any merge message
+  for this branch must tell the sequence as the ADR does and must not repeat "no preference".
 - **ADR-019 `D-01`: option-letter citation corrected before merge; the decision is unchanged.** The
   `D-01` row originally cited option **A** alone while its text described both the phone-number
   identifier and the office-visible internal-reference lookup — which is option **D** in

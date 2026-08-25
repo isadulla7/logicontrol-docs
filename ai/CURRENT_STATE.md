@@ -41,7 +41,7 @@ The canonical system architecture already defines **React/Next.js web clients**.
 These are prepared to run in parallel with backend T012 because they share no implementation files. Web design does not itself authorize creation of the web implementation repository; when that repository is created, it follows the already-canonical React/Next.js architecture unless superseded by a later ADR.
 
 ## Open decisions
-- **OPEN-001 Authentication UX** — CLOSED by ADR-019. The fifteen sub-decisions are settled; the numeric policies ADR-019 deliberately left open (grace-window days, rate-limit values, PIN and code parameters, session duration) are recorded there and still owed.
+- **OPEN-001 Authentication UX** — CLOSED by ADR-019. The fifteen sub-decisions are settled, plus `D-16` (company-context switch with unsent work), added by the owner during security review of the ADR; the numeric policies ADR-019 deliberately left open (grace-window days, rate-limit values, PIN and code parameters, session duration) are recorded there and still owed.
 - **OPEN-002 Android sync terminal-error policy** — define terminal vs retryable failures, Driver-visible outcome/recovery and business accountability before a real Android feature queues operations (practically before T084 / any financial write queue).
 
 ## Multi-agent development
