@@ -38,6 +38,18 @@ None yet.
   may proceed before it. Cowork V2 task `ai/design/tasks/DES-001-mobile-auth-ux.md` may prepare
   alternatives, recommendations and UX evidence, but it cannot close OPEN-001 itself.
 
+  **Dependency, recorded from `DES-001`: `OPEN-004` should be closed with this decision or as a
+  companion to it.** The client error codes for authentication failure are currently invisible
+  inside `ADR-014`'s own text, which defers them to this decision — so closing OPEN-001 without
+  them leaves the client unable to act differently on outcomes that need different driver actions.
+
+  **`DES-001` delivered fifteen sub-decisions (`D-01`–`D-15`) with options, trade-offs and field
+  cost, in `ai/design/mobile/auth/`.** All fifteen remain open. Three of them constrain the rest
+  and would unblock most downstream work on their own: `D-03` primary proof, `D-08` offline grace
+  window, `D-14` authentication error codes. One ordering constraint is recorded there and matters
+  to the answer rather than to confidence: a grace window is the maximum latency of revocation, so
+  whether revocation exists at all (`A-06`) must be settled **before** the window is numbered.
+
 - **OPEN-002 Android sync terminal-error policy.** `ADR-015` specifies the sync engine's retry,
   ordering, batching and idempotency obligations but deliberately does not say what happens when
   an operation **cannot** succeed: which backend responses are terminal rather than retryable,
@@ -86,6 +98,62 @@ None yet.
   An ADR change is R4 and R4 is fully serialized, so ratification waits for a slot with no other
   lane running. **No ADR number is pre-assigned**; the sequence is allocated when the ADR is
   written, never reserved in advance.
+
+- **OPEN-004 Client error codes for authentication, authorization and business failures.**
+  `ADR-014` fixes the `application/problem+json` body and requires clients to branch on `code`
+  rather than prose. But its released `ApiErrorCode` enumeration covers platform failures only —
+  eight constants, none of them an authentication or authorization code — and its exception advice
+  deliberately rethrows `AuthenticationException` and `AccessDeniedException` unmapped, because
+  ADR-014 itself defers that mapping to `OPEN-001`. `ADR-014` additionally places a published
+  client error catalogue out of scope while its Consequences let each business module own its own
+  codes.
+
+  Together those positions leave every client unable to write correct failure handling for the
+  failures it will actually meet. On the wire today a Driver app cannot distinguish a wrong
+  credential, an expired session, a revoked session, a rate limit, a suspended membership, a
+  backend outage and a captive portal — five of which genuinely collapse, and which need four
+  different driver actions. Adding a code is additive now and breaking later.
+
+  Recorded from `DES-001` and `DES-002`, which reached it independently from the mobile and web
+  sides, and verified against `ApiErrorCode.java` and `ApiExceptionHandler.java` by both design
+  reviewers. Resolve in an ADR — with `OPEN-001` or as a companion to it — before backend `T018`.
+
+- **OPEN-005 Display timezone.** Storage is unambiguous (`TIMESTAMPTZ` for instants, `DATE` for
+  business dates); display is unspecified. In a cross-border product a driver, a dispatcher and an
+  accountant in three zones get three answers to "what day did this fuel event happen", and that
+  answer feeds fuel variance and settlement periods. It binds web and Android identically, which
+  makes it programme-level rather than a client concern. Recorded from `DES-002` `Q-10`.
+
+- **OPEN-006 Product UI language(s).** Canonical material is Uzbek, the market is Uzbekistan and
+  Central Asia, and `ADR-014` puts internationalisation out of its own scope. Nothing states which
+  languages the Driver app and the operator web client present, or how a driver's language is
+  determined. It is woven through every screen rather than isolated to one, which is why it is
+  recorded rather than deferred. Recorded from `DES-002` `Q-11`.
+
+- **OPEN-007 Android screen orientation.** Whether the Driver app supports landscape at all is an
+  app-wide manifest and architecture property with cost on every feature surface, and canon names
+  no device form factor anywhere — `F-01` fixes the *user*, not the hardware. It reaches
+  authentication first: a phone in a windscreen cradle is the normal case for a driver, and
+  `AUTH-07`/`AUTH-08` have no cradled-driver specification if the answer is portrait-locked.
+  `DES-001` records a proposal and explicitly declines to decide it. Recorded from `DES-001`
+  `S-17`.
+
+- **OPEN-008 Who creates a Company.** Creating a Company is by definition not tenant-scoped —
+  there is no `company_id` to scope it by — so it falls outside the entire Authentication →
+  Principal → Company Context → RBAC chain the architecture defines, and canon says nothing about
+  who performs it or how. It is entangled with `OPEN-001`: the structurally natural driver
+  provisioning route needs an operator surface, and no web implementation repository exists.
+  Recorded from `DES-002` `Q-01` and `DES-001` `D-02`.
+
+## Recorded canonical inconsistency
+- **WorkOrder ↔ Trip reference.** `domain/GLOSSARY.md` and `domain/domain-model-erd-uz.md` § Trip
+  state that a WorkOrder references a Trip by `tripId`, while the WorkOrder field list in
+  § Maintenance carries no such field. Trip-level *cost* attribution survives either reading,
+  because canon recognises work-order cost through a linked Finance Expense and Expense does carry
+  `tripId`; what does not survive is attributing the operational work order to the trip. It is a
+  documentation fix now and becomes a schema change once `T058` opens the aggregate. Recorded from
+  `DES-002` `Q-14`. Not resolved here: correcting a canonical document is not the Orchestrator's
+  to do silently.
 
 ## Recorded revisions
 - **ADR-018 extends ADR-013/ADR-016 and ADR-017; it does not replace or weaken repository-local
