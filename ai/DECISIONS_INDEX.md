@@ -179,6 +179,33 @@ states the sequence is global and a number is never reused.
   `feat/DES-002-web-foundation` (**PR #5**, not on `main` yet), and `DES-001` `D-02`, in
   `ai/design/mobile/auth/05-open-001-decision-alternatives.md` on `main` (PR #4, merged).
 
+  **`T012` shipped `organization.company` with no uniqueness beyond the primary key, deliberately.**
+  The task first carried a global unique index on the company legal name; independent QA raised it as
+  `QA-3` because no canonical source states that rule, and the Orchestrator ruled it dropped while the
+  migration was still unapplied — recorded in `logicontrol-backend` `.ai/cowork/tasks/T012.md` events
+  `T012-013` and `T012-015`, and in that packet's amendment 3. The absence is the canon-silent
+  position, not an omission. **Whoever closes `OPEN-008` inherits three obligations.** First, settle
+  legal-name uniqueness in canon before shipping any surface that accepts a company legal name from
+  operator input, or that resolves, dedupes or matches a company by name — creating a Company is
+  exactly such a surface, which is why the trigger lands here. Second, if that settlement wants the
+  rule, represent it **above the schema** as a named application-level failure with a use-case test,
+  not as a bare unique index: a rule that lives only in a migration is unknown to the aggregate and
+  has no failure type, and once applied a migration is immutable. Third, weigh the isolation
+  consequence the index carried — a uniqueness comparison at the tenant root lets one company's row
+  reject another's create or rename, disclosing that some other company holds that name to a caller
+  with no authorization. Recorded from `T012` reviewer finding `REV-7`, which established that the
+  trigger had a precise condition and no carrier: it lived only in a closed task's packet, no future
+  agent is required to read one, and no task from `T013` to `T037` accepts a legal name from operator
+  input.
+
+  **`SEC-OBS-2` rides with it.** The `T012` Security Reviewer recorded that a company legal name is
+  not normalised for whitespace or for confusable characters — `String.trim` retains `U+00A0`,
+  `U+200B` and `U+FEFF`, `String.strip` removes `U+2003` and `U+3000` but not the other three, and a
+  Cyrillic homoglyph defeats every whitespace treatment. Dropping the index made it less urgent and
+  did **not** close it: with no uniqueness comparison there is nothing to defeat today, and the moment
+  this decision introduces one, normalisation and a decision about whether the comparison is meant to
+  be confusable-insensitive both become preconditions rather than refinements.
+
 ## Recorded canonical inconsistency
 - **WorkOrder ↔ Trip reference.** `domain/GLOSSARY.md` and `domain/domain-model-erd-uz.md` § Trip
   state that a WorkOrder references a Trip by `tripId`, while the WorkOrder field list in
