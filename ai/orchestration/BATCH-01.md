@@ -243,8 +243,15 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
    stands, so a lease that barred non-holders would make §8 unsatisfiable. The first revision of
    this paragraph named the wrong rule; the caution was right and the reasoning was not.
 
-   Folded into that same appended event: the packet header at line 8 still reads `status | READY`
-   while the log has reached `IN_QA`.
+   **Discharged.** The correction was appended as backend event `T012-006` — before T012 reached
+   `APPROVED`, which was the discharge point required. It corrects `T012-001` by disclosure rather
+   than rewrite, carries the same treatment to `T012-001`'s claim that the cross-repository
+   clearance was recorded at `12:55:00Z` when the record landed at `12:59:49Z`, and advances the
+   packet header from `status | READY` to `IN_QA`. Until this revision the sentence here still
+   said that header *"still reads `status | READY`"*, which the backend commit carrying `T012-006`
+   had already made false — a tracker that outlives what it tracks is the same defect as a lease
+   that never releases. This note records a discharge; the clearance argument itself is unchanged,
+   as §0's frozen rule requires.
 
    §5's never-parallel list is separately honoured: T012 is a migration-producing task and runs
    beside no other backend task; the design lanes touch no backend file, no `.ai/`, no
@@ -404,11 +411,98 @@ Every one of the five gaps was found by the Independent Reviewer rather than by 
 that wrote the record, and so was this widening — which is itself evidence about how visible the
 gap is from inside. An ADR is R4 and serialized.
 
+**D-3 (MAJOR, owner: Orchestrator — corrected in `logicontrol-backend`, recorded here).** The
+`T012` packet, which the Orchestrator wrote, required the company base currency to be changeable
+on the update path: the packet's Business behavior, acceptance criterion 4 and a required test all
+specified it, and the implementer built exactly that. `ADR-004` fixes the FX rate at transaction
+time, and the canonical business rules state that a later rate change never rewrites a historical
+transaction. Every base amount the system stores is therefore denominated in the base currency in
+force when it was written. A mutable base currency leaves those stored figures unchanged and their
+meaning changed — which defeats `ADR-004` without textually violating it, in the one place that is
+unrecoverable once production financial data sits behind it.
+
+Raised by the parallel `DES-002` lane as `Q-05`, *"May a Company's base currency change after
+financial facts exist?"*, in `ai/design/web/10-decisions-required.md`. Corrected as **Orchestrator
+amendment 1**: implemented in backend commit `f758fd0` (`Backend CI` run `32853990151`, `headSha`
+`f758fd02…`, conclusion success) and formally recorded in backend event `T012-006`, which amends
+the packet to match, pins the immutability with a domain test, and records the change as an
+Orchestrator-caused scope reduction consuming no implement→QA cycle.
+
+**Provenance, stated precisely because an earlier wording of it was wrong.** DES-002 never read
+the T012 branch. That lane's declared Required inputs are canonical documents only — verified —
+and no file it produced references a backend source path. `Q-05` derives from `ADR-004`, the
+canonical business rules and the domain model's Finance section. What is true is that the lane
+reasoned about T012's subject matter from canon while T012 was in flight, and named T012 as the
+owner of the answer. The Orchestrator's first wording claimed the lane *"read this branch while it
+was in flight"*, which no artefact supports; it is corrected in backend event `T012-008` by
+disclosure rather than rewrite. That over-claim originated in a review observation on this PR and
+the Orchestrator amplified it — neither party checked the artefact, which is the same defect this
+record has been grading itself on throughout.
+
+It is recorded here because §8 is this record's defect inventory and an incomplete inventory reads
+as a complete one. It is also the best evidence the record has for the decision it exists to
+justify: the parallelism cleared in §4 did not merely stay safe — a design lane in one repository
+caught a defect in an Orchestrator-authored backend packet while that packet was being
+implemented, before it reached the data model. Of the defects here it is the most serious. D-1,
+D-2, D-4 and D-5 are governance and documentation gaps; this one would have shipped into the
+schema's semantics.
+
+**D-5 (MAJOR, owner: Orchestrator, open).** At `2026-08-25T18:56:03+05:00` a commit `650a8f9`
+added 93 lines to this file, on this branch, in the main `logicontrol-docs` checkout — inside the
+Orchestrator's exclusive lease — and was pushed to `origin`. **The Orchestrator did not write or
+commit it, and the programme owner confirms they did not either.** Its authorship has not been
+established.
+
+The content was not fabricated: its citations were checked and hold. It was reverted anyway, in
+`007f266`, and its substance re-authored from sources under the Orchestrator's own hand — the D-3
+entry above and the discharge note in §4 condition 4. A record whose entire thesis is that every
+claim traces to a source cannot carry 93 lines of unestablished authorship, and correctness is not
+a substitute for provenance. Losing accurate text costs less than laundering it.
+
+Two things this exposes, both worth more than the incident:
+
+1. **Commit authorship is not diagnostic here.** `650a8f9` is authored `User`, and so is *every*
+   subagent commit in this batch — the two design lanes, the backend implementer and QA alike.
+   `User` is what a commit looks like when no explicit identity is set. The Orchestrator briefly
+   treated the name as a signal, and was told by the Independent Reviewer that it was not one
+   before fully accepting it.
+2. **The leases in §5 are a protocol, not a mechanism.** Nothing technically prevented a write
+   inside another lane's lease; §5 is enforceable only in the sense that a violation is
+   *detectable* afterwards, and it was detected only because the Orchestrator happened to read a
+   file-changed notice. That is a weaker guarantee than §4 condition 3 implies, and it is what
+   D-4's ADR has to reckon with: a repository with no local execution protocol has no enforcement
+   surface either.
+
 None of these defects blocks any lane in this batch.
 
 ## 9. Revision history
 
-**Revision 6** — this revision. Closes the two MINOR findings the Independent Reviewer recorded
+**Revision 7** — this revision. Not prompted by a review finding.
+
+**An unattributed commit reached this file and was reverted.** `650a8f9` added 93 lines to
+`ai/orchestration/BATCH-01.md`, on this branch, inside the Orchestrator's exclusive lease, and was
+pushed to `origin`. Neither the Orchestrator nor the programme owner wrote it. Its citations were
+checked and hold, and its substance was right — D-3 belonged in §8 and the §4 condition 4 tracker
+did need discharging. It was reverted regardless, in `007f266`, and both are re-authored here from
+the sources under the Orchestrator's own hand.
+
+The reasoning, since it is the same reasoning this document has applied to itself six times: a
+record whose entire thesis is that every claim traces to a source cannot carry 93 lines of
+unestablished authorship. Correctness is not a substitute for provenance, and the cost of losing
+accurate text is smaller than the cost of laundering it. Recorded in full as **D-5** in §8,
+together with the two things it exposes — that commit authorship is not diagnostic in this
+environment, and that §5's leases are a protocol with no enforcement mechanism behind them.
+
+Added in the same revision, both re-authored rather than restored:
+- **D-3** in §8 — the T012 base-currency defect, with its provenance stated precisely, because an
+  earlier wording claimed DES-002 *"read this branch"* and no artefact supports that. It was
+  verified directly for this revision: DES-002's Required inputs are canonical documents only, and
+  no file it produced references a backend source path.
+- **The §4 condition 4 discharge note** — the queued T012 correction was appended as backend event
+  `T012-006` before `APPROVED`, as its discharge point required, and the sentence tracking it had
+  outlived the thing it tracked.
+
+**Revision 6** — `eee225d`. Closed the two MINOR findings the Independent Reviewer recorded
 alongside its `APPROVED` on revision 5
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411341419)), and
 acts on its answers to the two questions put to it.
@@ -542,7 +636,7 @@ finding 1.
    durable checkpoint and points at each task log as authoritative for lifecycle state, instead of
    mirroring a value that goes stale the moment the task moves.
 
-Also folded into the queued T012 event: the packet header still reads `status | READY` while its
+Folded into the queued T012 event, and since discharged: the packet header read `status | READY` while its
 log has reached `IN_QA`.
 
 **Revision 2** — `8c67b9f`. Answered all six MAJOR findings from the Independent Reviewer's
