@@ -164,3 +164,38 @@ than its source"; the sweep found five further instances of the same thing, conc
 where predicted — in `06` and `07`, the compression files. The generalisation worth carrying into
 the next batch's briefing is that **a marking scheme without a `DERIVED` slot manufactures this
 defect**, and that citation spot-checking cannot detect it by construction.
+
+**2026-08-25 — two Orchestrator fixes, and a sixth instance found in the sweep's own output.**
+
+1. **`02` section 8 rule 8 was a fourth instance of the pattern, introduced by the sweep commit
+   itself.** It justified "no tablet or foldable layout is specified" with **FACT** F-01, which says
+   the mobile MVP serves the Driver only and says nothing about form factor. The Orchestrator
+   grepped ADR-015, `architecture/mobile-architecture.md` and both Android `.ai/` files for
+   phone/tablet/handset/foldable: zero hits. **Canon is silent on form factor.** The conclusion is
+   right; the citation was not. Now a `PROPOSAL` resting on a new canonical silence, **`S-17`**,
+   recorded in `04` section 4 with an explicit note that it is not an `OPEN-001` sub-decision and is
+   recorded because `02` section 8 and `07` section 5 both rest on it.
+
+   **Worth recording about the pattern rather than the instance:** this defect was written *in the
+   commit that fixed the same pattern elsewhere*, in the one section no reviewer had yet seen. The
+   pull toward citing a real fact that supports a conclusion without stating it is not a lapse that
+   awareness removes — it survived being consciously hunted. That is an argument for the review
+   question (*"does the cited source state this, or merely support it?"*) being a standing check
+   rather than a one-off remediation step.
+
+2. **The landscape escalation was missing from `07`.** It was in `02` section 8, `auth/README.md`
+   and these notes, but not in the file the package tells the ADR author to work straight from — so
+   the one reader who most needed it was the one reader who would not have seen it. Added as
+   consequence 5 of `07` section 5, naming `AUTH-07`/`AUTH-08` as the screens most likely to appear
+   in a windscreen cradle and stating that a portrait-locked answer leaves them without a
+   specification. `07`'s structural-provenance note is corrected to match — "the one derivation" was
+   itself no longer accurate once section 5 carried two labelled claims.
+
+**Review status: `ed89954` and these fixes return to `review-des001` for a full pass.** The
+Orchestrator's call, and the right one: adding a fifth tag is a change to the taxonomy, not a
+tidy-up. It changes what *"may an implementer rely on this"* means for every statement in the
+package, including load-bearing arguments that were re-tagged — `03` section 1 among them, which the
+first review had called the strongest part of the work. The standing approval was given against the
+four-tier scheme and does not extend to the five-tier one. The review should test whether the fifth
+tag is applied consistently, whether anything re-tagged `DERIVED` was in fact canonical and has been
+weakened by the change, and whether `07`'s structural provenance rule actually holds.

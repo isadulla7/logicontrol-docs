@@ -144,3 +144,4 @@ None is invented here. Each maps to a sub-decision in
 | **S-14** | Account recovery: forgotten secret, lost device, no code received, a driver who cannot complete the flow unaided. | D-12 |
 | **S-15** | Whether authentication failures are represented in the `ApiErrorCode` enumeration at all (F-13, F-14). | D-14 |
 | **S-16** | When and how the driver chooses Uzbek or Russian, and whether that choice exists before sign-in. | D-15 |
+| **S-17** | **Device form factor.** No canonical document names one — not ADR-015, not `architecture/mobile-architecture.md`, not the Android repository's own rules. F-01 fixes the *user* (Driver only), not the hardware. Every layout rule in this package assumes a phone, and that assumption is the designer's. | None — not an `OPEN-001` sub-decision. Recorded because `02` section 8 rests on it, and because it is the premise behind the landscape question raised in `07` section 5. |

@@ -505,9 +505,13 @@ A driver's handset is not always upright in a hand. The four configurations this
    the narrow, short case already covered by rules 2 and 3. No separate design is specified.
 7. **Small-width devices are a real target.** **FACT** F-28 fixes `minSdk 26`, which reaches
    handsets around 320dp wide. The narrow case is the design baseline, not an edge case.
-8. **No tablet or foldable layout is specified.** The MVP user is a Driver on a phone (**FACT**
-   F-01). If a large-screen client is ever wanted, it is a new design question, not an extension of
-   this one.
+8. **No tablet or foldable layout is specified.** **PROPOSAL, resting on a canonical silence —
+   `S-17`.** An earlier draft justified this with **FACT** F-01, which was a mis-citation: F-01 says
+   the mobile MVP serves the Driver only, and says nothing about form factor. **No canonical
+   document names a form factor at all** — not ADR-015, not `architecture/mobile-architecture.md`,
+   not the Android repository's own rules. The design assumes a phone because that is what a driver
+   carries, and that assumption is the designer's. If a large-screen client is ever wanted, it is a
+   new design question, not an extension of this one.
 
 ### What is deliberately left open
 

@@ -17,8 +17,9 @@ decorative:
 - **Sections 2 and 3** state the questions and the options. The column headed *"Designer's
   proposal"* is exactly that — a `PROPOSAL` in every row, never a recommendation the sources make.
 - **Section 4** is the designer's judgement about field cost throughout. No source states any of it.
-- **Section 5** mixes canonical facts with conclusions drawn from them; the one derivation that
-  carries real weight is labelled inline.
+- **Section 5** mixes canonical facts with conclusions drawn from them. The ones that carry weight
+  are labelled inline: consequence 1 is `DERIVED`, consequence 5 is a `PROPOSAL` resting on a
+  canonical silence.
 - **Section 6** is a proposed checklist, not an accepted acceptance standard.
 
 If a reader wants the tag-level provenance for any statement here, the file it was compressed from
@@ -166,7 +167,17 @@ Whatever is chosen:
    non-empty queue, a driver who never re-authenticates, work authored by a different identity, and
    sign-out with an undrainable queue are all `OPEN-002` questions that surface on authentication
    screens. Sequencing them together avoids discovering the collision during `T083`.
-5. **`T083` remains gated** until this ADR is accepted.
+5. **Whether the app supports landscape is an open programme decision, and authentication is where
+   it bites first.** A driver's phone is in a windscreen cradle, in landscape, at the moment a
+   session expires mid-drive — so `AUTH-07` and `AUTH-08` are the screens most likely to appear in
+   that orientation. This package's position, in `02` section 8 rule 1, is a **PROPOSAL**: those
+   screens should not force a rotation on a driver in motion. The decision is not the designer's to
+   take, because landscape support has a cost across every other feature surface, not only these
+   fourteen screens. **If the answer is portrait-locked, `AUTH-07` and `AUTH-08` need a
+   cradled-driver specification that this package does not contain.** Note also that no canonical
+   document names a device form factor at all (**S-17**); the phone assumption throughout is the
+   designer's.
+6. **`T083` remains gated** until this ADR is accepted.
 
 ---
 
