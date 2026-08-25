@@ -123,9 +123,11 @@ references. Warranty stores period and mileage limits, and a repeat repair can r
 alert (`product/business-rules-uz.md` § Maintenance / Repair / Warranty).
 
 `[C]` "The Driver reports a condition; the Driver never owns this lifecycle"
-(`domain/GLOSSARY.md` § Field operations). Somebody on the web side owns it. That is a canonical
-fact about the product, and it is the strongest single piece of evidence that a maintenance duty
-area exists on the web client.
+(`domain/GLOSSARY.md` § Field operations). `[DERIVED]` Somebody other than the Driver therefore owns
+it; the Driver App is the Driver's client; so that owner works somewhere else, and on the evidence
+available that means the web client. Canon states who does **not** own the lifecycle. That the owner
+is a web user is this lane's step — the strongest evidence available that a maintenance duty area
+exists on the web side, not a canonical statement that one does.
 
 **What this person is trying to finish:** keep vehicles legal, fuelled and working; investigate a
 fuel variance that might be theft and might be a stale norm; move a work order through diagnosis and

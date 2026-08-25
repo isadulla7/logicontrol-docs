@@ -1,6 +1,6 @@
 # DES-002 — Web Platform IA + Organization/Company Foundation
 
-- Status: APPROVED by independent review (PR #5); close-out pass applied. Awaiting merge by the human owner (`OPEN-003` — merge authority is an open decision; the accepted ADR-013/ADR-016 rule governs until an ADR ratifies otherwise).
+- Status: **APPROVED** by independent review at `4d778a5` (PR #5, three review rounds). One MINOR text fix raised in that round is applied in the commit after it and is not itself reviewed. Awaiting merge by the human owner (`OPEN-003` — merge authority is an open decision; the accepted ADR-013/ADR-016 rule governs until an ADR ratifies otherwise).
 - Type: PRODUCT/DESIGN
 - Owner role: `web-designer`
 - Canonical repository: `logicontrol-docs`
@@ -199,3 +199,40 @@ extend to the branch tip; the branch was `CHANGES_REQUESTED` until this commit. 
 found only because `[DERIVED]` made the inference visible enough to check. The marker makes
 derivations reviewable; it does not make them true. Any future audit of this package should re-read
 the inferences rather than the markers.
+
+### Round 3 close-out — two things recorded rather than changed
+
+**Which leg of `09` § 2 item 4 is load-bearing.** The re-warranting gives that rule two canonical
+legs plus an independent `[D]` leg, and they are not equally strong. The transaction-graph rule
+("Dashboard/P&L transaction graph yuklamaydi") is the solid one. The aggregate-ownership leg is
+**tension, not entailment**: strictly, the aggregate rule constrains the backend domain model, not
+what a screen looks like. Left as written because the hedge ("pushes against") is honest, but a
+future reader should know that if that leg is attacked the attacker is partly right, and the rule
+then rests mostly on the `[D]` leg — independent loading, failure and permission states per panel.
+That leg is strong enough to carry it alone, which is why the rule survives; but it is a design
+argument, not a canonical one.
+
+**The unmarked-prose gap, and what can actually be done about it.** Three errors in this lane —
+the cross-module premise, the README coverage claim, and a merge-authority statement in the task
+packet — were all claims about the world taken from context rather than from a file, and all three
+sat in prose carrying no marker at all. No marker discipline reaches them: a marker is a
+self-assessment of provenance made by the author of the sentence, and these were sentences not
+perceived as claims at all — scaffolding for a point rather than the point. **You cannot mark what
+you do not see as a claim.** The convention verifies marked sentences; nothing verifies the decision
+to mark.
+
+Two partial mitigations, both from the round-3 review, recorded because they are cheap:
+
+- **Author side, a drafting prompt rather than a rule:** *"could I have written this sentence
+  without opening any file?"* If yes, its warrant is memory, and memory is where this whole class
+  of error lives.
+- **Reviewer side, a scoping instruction rather than a marker:** *"for each load-bearing rule,
+  verify its premise independently of its citation."* A reviewer told to check citations
+  structurally cannot find this class — rounds 1 and 2 verified 23 citations, every one real, and
+  missed a false premise sitting under the package's strongest rule. Round 3 found it because it was
+  scoped to the inferences instead. Note also that a grep for absolute constructions ("is
+  forbidden", "structurally incapable", "were checked and are clean") in unmarked prose would have
+  caught two of the three in minutes.
+
+`[?]` The general case remains unreachable. `[DERIVED]` made the inference visible; only the
+instruction to re-derive it got it checked.
