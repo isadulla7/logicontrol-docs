@@ -25,6 +25,7 @@ If higher-priority sources conflict, stop and escalate; never silently reconcile
 - CONTRACT
 - BACKEND
 - ANDROID
+- WEB (only after the web implementation repository is created)
 - INTEGRATION
 - PLATFORM
 
@@ -46,6 +47,8 @@ Integration QA
       |
 Review/release gate
 ```
+
+A future React/Next.js implementation lane follows the same contract gate once its repository exists.
 
 Downstream work starts early only when the required contract is stable enough to isolate it from unfinished upstream implementation.
 
@@ -74,7 +77,7 @@ Primary MVP user: Driver. Cover happy/loading/empty/offline/locally-saved/pendin
 Driver UX: large touch targets, minimal typing, one-hand usability, high contrast, low cognitive load, explicit offline/sync status, no distracting motion.
 
 ### Web Designer
-Design admin/operator workflows: information-dense dashboards, tables/master-detail, filter/search, maps/live tracking, bulk operations, reporting/analytics and permission-aware states.
+Design admin/operator workflows for the already-canonical **React/Next.js web client family**: information-dense dashboards, tables/master-detail, filter/search, maps/live tracking, bulk operations, reporting/analytics and permission-aware states. Design may run now even though a dedicated web implementation repository has not yet been created.
 
 ### Shared design language
 Web/mobile share brand/foundation semantics while retaining platform-native component behavior. Figma is the preferred visual source of truth when available.
@@ -99,13 +102,13 @@ Implementation author != QA != Independent Reviewer. Security Reviewer is additi
 After V2 is merged and repositories are stable:
 - Backend: `P01 / T012 — Company aggregate`.
 - Mobile Design: `OPEN-001 Authentication UX` discovery/flows; proposals only, not silent closure.
-- Web Design: admin web information architecture + Organization/Company foundation.
+- Web Design: React/Next.js admin web information architecture + Organization/Company foundation.
 
 These lanes may run concurrently. Production identity endpoints and production Android auth remain gated by OPEN-001.
 
-## 13. Dormant lanes
+## 13. Dormant / not-yet-instantiated lanes
 - iOS: dormant; no work without a new ADR.
-- Web implementation: no accepted repo/stack yet. Design may proceed; implementation waits.
+- Web implementation: canonical technology is React/Next.js, but no dedicated implementation repository exists yet. Design may proceed; Web Developer execution starts after that repository is created/authorized.
 
 ## 14. Observability compatibility
 Preserve where practical: taskId, repository, agentId, agentRole, sessionId, status, branch, riskLevel, dependencies, lease/ownership, event, findings, blocker and budget. This enables a future Agent Control Center without building one now.
