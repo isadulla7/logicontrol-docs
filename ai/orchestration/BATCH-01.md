@@ -473,6 +473,23 @@ Two things this exposes, both worth more than the incident:
    D-4's ADR has to reckon with: a repository with no local execution protocol has no enforcement
    surface either.
 
+3. **The lease protocol binds only the agents that are party to it, and they are not the only
+   writers with access.** Every member of this batch's team has now answered the provenance
+   question and denied the write: `review-batch01`, `review-des001` and `review-des002` each state
+   they ran no `git add`/`commit`/`push` and wrote only to their own scratchpads. What the
+   Orchestrator did not account for until after the incident is that **this machine hosts other
+   Claude sessions outside the batch entirely** — an interactive session and several Remote
+   Control and cloud sessions, live in the same window, none of them party to §5 and none of them
+   reachable by a lease this record grants.
+
+   That does not identify the author and this record does not name one. It does mean the analysis
+   in point 2 was too narrow: §5's leases are not merely unenforced *within* the team, they have
+   no purchase at all on writers *outside* it, and §4 condition 3's "ownership does not overlap"
+   was verified only against the lanes this record knows about. A future clearance that wants
+   condition 3 to mean anything has to state which population it is quantifying over — and, on
+   this evidence, cannot assume that population is the whole set of writers with repository
+   access.
+
 None of these defects blocks any lane in this batch.
 
 ## 9. Revision history
