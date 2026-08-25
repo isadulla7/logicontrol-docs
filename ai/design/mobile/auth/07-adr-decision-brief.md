@@ -88,14 +88,19 @@ ADR-014's `ApiErrorCode` enumeration contains no authentication code, and its ad
 rethrows authentication and authorization exceptions rather than mapping them, stating that the
 decision waits on `OPEN-001`. Clients branch on `code`, never on prose.
 
-Until this is settled, these seven driver situations are indistinguishable on the wire and collapse
-into one message:
+Until this is settled, these **five** driver situations are indistinguishable on the wire and
+collapse into one message:
 
-wrong credential · session expired · session revoked · rate-limited · membership suspended ·
-backend unavailable · captive portal
+wrong credential · session expired · session revoked · rate-limited · membership suspended
 
-They require four different driver actions: try again, re-confirm, call the office, accept the wifi
-terms. ADR-014 makes adding a code additive and cheap now, and breaking to change once released.
+They require **four** different driver actions: try again, re-confirm, wait, call the office.
+
+Two further field failures — **backend unavailable** and a **captive portal** — are deliberately
+*not* in that list: both are distinguishable today with no new code, the first at the transport
+layer and the second by the `application/problem+json` tell of ADR-014 itself. They are specified in
+[`03-offline-boundaries.md`](03-offline-boundaries.md) section 6.
+
+ADR-014 makes adding a code additive and cheap now, and breaking to change once released.
 
 ---
 

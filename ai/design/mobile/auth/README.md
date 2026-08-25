@@ -34,6 +34,33 @@ tagged, treat that as a defect in this package, not as agreement.
 | [`07-adr-decision-brief.md`](07-adr-decision-brief.md) | The decision-ready summary an ADR author can work straight from. |
 | [`08-shared-foundation-implications.md`](08-shared-foundation-implications.md) | What this lane implies for the shared design foundation, recorded here rather than written into `ai/design/foundation/**`. |
 
+## Design-handoff coverage
+
+`ai/COWORK_V2.md` section 8 defines what design-ready means (**FACT** F-35). The full list, and
+where each item is covered, so a reader can check rather than trust:
+
+| Handoff item | Where |
+|---|---|
+| User goal / role | This file, "The user this is designed for"; `01` |
+| Flow | `01` — four journeys and the session model |
+| Screen / state inventory | `02` sections 1–5 |
+| Component inventory | `02` section 6 |
+| Interactions | `02` section 9; `01` per journey |
+| Validation / errors | `02` sections 2–5; `05` D-14 |
+| Offline / sync states | `03` in full; `02` state matrix |
+| Permission / degraded states | `02` (`PRM`, `DEG`); `03` section 6 |
+| Accessibility | `02` section 7 |
+| Responsive / adaptive behaviour | `02` section 8 — **partial; the gap is named there** |
+| Terminology source | `02` preamble — `domain/GLOSSARY.md` |
+| API assumptions | `04` section 3 |
+| Unresolved decisions | `04` section 4; `05` in full; `07` |
+
+**The one partial item is adaptive behaviour.** `02` section 8 specifies the configurations that
+occur, the layout rules, and the small-width baseline, and states explicitly what it leaves open:
+whether the app supports landscape at all is a programme decision with costs beyond these fourteen
+screens, and if it is answered "portrait-locked" then `AUTH-07` and `AUTH-08` need an answer for
+the driver whose phone is in a windscreen cradle that this package does not contain.
+
 ## The user this is designed for
 
 **FACT** — Poor connectivity is normal behaviour rather than an error path; a driver in the target

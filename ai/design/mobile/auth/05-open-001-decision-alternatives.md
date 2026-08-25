@@ -58,7 +58,7 @@ covers (`ai/DECISIONS_INDEX.md`).
 
 | Option | For | Against | Cost in the field |
 |---|---|---|---|
-| **A. Company provisions; driver activates** — the office creates the `Driver` and `CompanyMember`, the driver activates their own device. | Matches tenancy exactly. No stranger can create an account. The office already holds the driver's details. | Requires an operator web surface that does not exist yet (`ai/CURRENT_STATE.md`: no web implementation repository). Provisioning must therefore be possible by some other means at pilot. | A driver never registers, only activates. Activation must be repeatable (**PLATFORM** PF-06). |
+| **A. Company provisions; driver activates** — the office creates the `Driver` and `CompanyMember`, the driver activates their own device. | Sits most comfortably with tenancy — though canon does not require it, and **ASSUMPTION** A-10 is exactly this proposition left unstated. No stranger can create an account. The office already holds the driver's details. | Requires an operator web surface that does not exist yet (`ai/CURRENT_STATE.md`: no web implementation repository). Provisioning must therefore be possible by some other means at pilot. | A driver never registers, only activates. Activation must be repeatable (**PLATFORM** PF-06). |
 | **B. Driver self-registers, company approves** | Lower operator effort. | Creates an identity with no Company, which the `AUTH-05` `EMP` state has to hold. Opens an unauthenticated write surface. Contradicts nothing explicitly, but sits awkwardly with **FACT** F-07. | A driver can install and get stuck waiting for approval, at the roadside, with no way to work. |
 | **C. Invitation link or code** | Familiar pattern; carries Company context in the artefact. | Links are fragile on feature phones and in messaging apps; a code must still be delivered somehow (D-13). | Depends entirely on the delivery channel being reliable, which **FACT** F-29 warns about for push. |
 
@@ -274,14 +274,23 @@ So the client is currently unable to distinguish, on the wire:
 | Session revoked | Call the office | *"Could not sign in"* |
 | Rate-limited | Wait, and stop trying | *"Could not sign in"* |
 | Membership suspended | Call the office | *"Could not sign in"* |
-| Backend down | Wait | *"Could not sign in"* |
-| Captive portal | Accept the wifi terms | *"Could not sign in"* |
 
-**This is the single largest gap between this design and a shippable one.** Every distinct state
-specified in [`02-screen-state-inventory.md`](02-screen-state-inventory.md) collapses into one
-unless `OPEN-001` — through `T017`/`T018` — settles which enumerated codes exist for authentication
-and which of them the client may show. Recorded as **ASSUMPTION** A-04; it must become a fact
-before `T083`.
+**Five situations, four required driver actions, one message.**
+
+**What is *not* in the collapse, so the argument is not overstated.** Two further failures a driver
+meets in the field are distinguishable today, with no new code at all, and are specified in
+[`03-offline-boundaries.md`](03-offline-boundaries.md) section 6:
+
+| Situation | What the driver needs to do | Why the client can already tell |
+|---|---|---|
+| Backend unavailable | Wait | The request fails at the transport layer; no platform response is produced. |
+| Captive portal | Accept the wifi terms | **FACT** F-11 gives the tell: a platform response is `application/problem+json` with a `code`. Anything else is not the backend, and must not be rendered as an authentication failure or counted against an attempt budget. |
+
+**This is still the single largest gap between this design and a shippable one.** Five distinct
+states specified in [`02-screen-state-inventory.md`](02-screen-state-inventory.md) collapse into
+one unless `OPEN-001` — through `T017`/`T018` — settles which enumerated codes exist for
+authentication and which of them the client may show. Recorded as **ASSUMPTION** A-04; it must
+become a fact before `T083`.
 
 ---
 

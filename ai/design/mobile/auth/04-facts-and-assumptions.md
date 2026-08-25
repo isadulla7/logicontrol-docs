@@ -70,7 +70,7 @@ implementation can be correct.
 | **F-32** | Significant actions are audited with who, what, when, entity, old, new and reason. | `product/business-rules-uz.md` section Audit; `domain/domain-model-erd-uz.md` section "Control / Audit / Notification" |
 | **F-33** | Backend `T017` closes the production authentication UX decision; `T018` is the authentication/session vertical slice; `T019` is security-critical audit. `T017` precedes `T018`. | `roadmap/development-roadmap-v1.0-uz.md` P01 |
 | **F-34** | `T083` (the Android auth/company shell) is gated on `OPEN-001` being resolved in an ADR before any production authentication or device-trust work starts. | `logicontrol-android/.ai/ANDROID_ROADMAP.md` section "Client tasks in the canonical roadmap" |
-| **F-35** | Design-ready handoff must include validation and errors, offline and sync states, permission and degraded states, accessibility, terminology source, API assumptions and unresolved decisions. Implementation agents **never infer missing business behaviour from pixels**. | `ai/COWORK_V2.md` section 8 "Design handoff" |
+| **F-35** | Design-ready handoff means: **user goal/role, flow, screen/state inventory, component inventory, interactions, validation/errors, offline/sync states, permission/degraded states, accessibility, responsive/adaptive behaviour, terminology source, API assumptions and unresolved decisions** — the full list, quoted without abridgement. Implementation agents **never infer missing business behaviour from pixels**. | `ai/COWORK_V2.md` section 8 "Design handoff" |
 
 ---
 

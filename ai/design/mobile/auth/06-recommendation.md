@@ -29,7 +29,7 @@ unhelpful message.
 | Sub-decision | Recommended | Why |
 |---|---|---|
 | **D-01 identifier** | **A — phone number** (with the office able to look a driver up by an internal reference for support: option D) | The only identifier a driver reliably knows without looking anything up. Numeric keypad. Enables SMS if the ADR wants it. |
-| **D-02 provisioning** | **A — Company provisions, driver activates** | The only option consistent with tenancy (**FACT** F-07, F-08, F-09). No unauthenticated account-creation surface. |
+| **D-02 provisioning** | **A — Company provisions, driver activates** | Tenancy makes this the *structurally natural* reading — a Driver cannot exist outside a Company (**FACT** F-07, F-08, F-09) — but canonical material never states who creates the account. That is **ASSUMPTION** A-10, and this recommendation **rests on it rather than deriving it**. Chosen because it needs no unauthenticated account-creation surface, and because the office already holding the driver's record is what makes the D-12 recovery path work. |
 | **D-03 primary proof** | **B/D hybrid — a one-time activation code, deliverable by SMS *or* read out by an operator** | No password to remember, forget, reset, or type one-handed. Numeric only. Its recovery path — call the office — is the one a fleet already operates. |
 | **D-04 local factor** | **C — biometric with app-local PIN fallback**, fallback reachable immediately | The only option that survives **PLATFORM** PF-02 (no sensor/enrolment) and PF-03 (enrolment change) without stranding a driver. |
 | **D-05 company context** | **C — ask only when there is more than one active membership** | Zero cost for the common case; does not foreclose the multi-fleet driver. Requires **ASSUMPTION** A-05. |
@@ -97,11 +97,17 @@ F-14 — ADR-014 deliberately rethrows authentication and authorization exceptio
 mapping them, and says the decision waits on `OPEN-001`. **FACT** F-11 — clients branch on `code`,
 never on prose.
 
-The result is that today, a driver who is rate-limited, a driver whose session expired, a driver
-whose membership was suspended and a driver sitting behind a truck-stop captive portal all receive
-the same undifferentiated failure. They need four different actions: wait, re-confirm, call the
-office, and accept the wifi terms. Guessing between them is worse than saying nothing (see
-[`03-offline-boundaries.md`](03-offline-boundaries.md) section 7).
+The result is that today, five distinct driver situations arrive at the client as the same
+undifferentiated failure: **wrong credential, session expired, session revoked, rate-limited, and
+membership suspended.** They need four different driver actions — try again, re-confirm, wait, and
+call the office — and the client has no basis to choose between them. Guessing is worse than saying
+nothing (see [`03-offline-boundaries.md`](03-offline-boundaries.md) section 7).
+
+Two other failures a driver meets in the field — **backend unavailable** and a **truck-stop captive
+portal** — are *not* part of this collapse: both are distinguishable today without any new code, a
+captive portal by the `application/problem+json` tell of **FACT** F-11 and an unreachable backend at
+the transport layer. They are specified in [`03-offline-boundaries.md`](03-offline-boundaries.md)
+section 6 and are named here only so the argument is not overstated. Five is enough.
 
 **FACT** F-15 makes this additive and cheap to do now, and breaking to do later. It should be
 settled in the same ADR that closes `OPEN-001`, or in a companion one, before `T018`.

@@ -24,7 +24,7 @@ name used in specification and code.
 | `AUTH-02` | Identifier entry | J1 | all | D-01 |
 | `AUTH-03` | Secret entry (password or activation code) | J1, J3 | A, C, D | D-03 |
 | `AUTH-04` | One-time code entry | J1, J3 | B, C | D-03, D-13 |
-| `AUTH-05` | Company selection | J1, J3 | all | D-05, A-05 |
+| `AUTH-05` | Company selection | J1 only | all | D-05, A-05 |
 | `AUTH-06` | Device unlock setup | J1 | all | D-04, D-06 |
 | `AUTH-07` | Local unlock | J2 | all | D-04 |
 | `AUTH-08` | Re-authentication (session confirm) | J3 | all | D-09 |
@@ -35,9 +35,20 @@ name used in specification and code.
 | `AUTH-13` | Sign-out confirmation | J4 | all | D-10 |
 
 `AUTH-05` is specified but rendered only when the identity holds more than one active
-`CompanyMember` (**FACT** F-09; **ASSUMPTION** A-05). `AUTH-03` and `AUTH-04` are both specified
-because D-03 is unresolved; the ADR's choice deletes one, both, or neither, and deletes no other
-screen.
+`CompanyMember` (**FACT** F-09; **ASSUMPTION** A-05).
+
+**`AUTH-05` belongs to J1 alone.** Re-authentication preserves the identity and the Company context
+that the device already holds — that is the point of J3, and of `AUTH-08` showing the driver's own
+identifier rather than asking for it again (see
+[`01-driver-auth-journey.md`](01-driver-auth-journey.md) J3). Company context is therefore **not**
+re-selected on re-authentication, and no J3 path routes through `AUTH-05`. A driver who needs to
+change Company context does so as an explicit action from `AUTH-12`, not as a side effect of
+recovering a session.
+
+`AUTH-03` and `AUTH-04` do appear in J3, but as the proof surface *embedded within* `AUTH-08`
+rather than as standalone steps; `AUTH-08`'s state table defers to them for the chosen D-03 option.
+Both are specified because D-03 is unresolved; the ADR's choice deletes one, both, or neither, and
+deletes no other screen.
 
 ---
 
@@ -89,8 +100,19 @@ from the persistent status affordance rather than owned by the screen.
 
 ## 4. Not-applicable states, with reasons
 
-An omission without a reason is indistinguishable from an oversight, so every `–` above is
-accounted for.
+An omission without a reason is indistinguishable from an oversight. Most `–` cells fall under one
+default rule; the rest are called out individually below, and the list is **not** exhaustive of
+every cell in the matrix.
+
+**Default rule.** A state is not applicable to a screen when the screen neither performs the
+operation the state describes nor owns the data it describes — a screen that makes no network call
+has no `DEG`, a screen with no collection has no `EMP`, a screen with no queue has no `PND`, `SYN`
+or `SFL`, and a screen that transfers no binary has no `UPL`. Where a driver still needs that
+information while the screen is shown, it is carried by the persistent status affordance and marked
+`~` rather than `–`.
+
+The cases below are singled out because the default rule alone would leave them ambiguous, or
+because the reason is a canonical constraint rather than a screen property.
 
 - **`EMP` on most auth screens.** These screens own a single input, not a collection. Only
   `AUTH-05` (a list of Companies), `AUTH-12` (a list of active devices and queue contents) and a
@@ -446,7 +468,59 @@ Behaviour is set by the queue, not by the driver's phrasing — see
 
 ---
 
-## 8. Interaction rules that hold across every screen
+## 8. Responsive and adaptive behaviour
+
+**FACT** F-35 lists responsive/adaptive behaviour as a design-ready handoff item. **PROPOSAL**
+throughout, except where a platform constraint is cited.
+
+### The configurations that actually occur
+
+A driver's handset is not always upright in a hand. The four configurations this lane must survive:
+
+| Configuration | Why it happens | Consequence for these screens |
+|---|---|---|
+| **Portrait, in hand, one-handed** | The default. | The layout everything else is derived from. Primary action in the lower third. |
+| **Landscape, in a windscreen cradle** | The normal state of a phone during a trip in this market, and the state it is in when a session expires mid-drive. | Vertical space collapses; the keyboard consumes most of what remains. |
+| **Portrait, in a cradle, reached across** | Cradle mounted centrally rather than in front of the driver. | The lower third is no longer the easy zone; nothing may *require* a precise reach. |
+| **Large system font scale** | Ageing eyes, bright cab, a setting made once and never revisited. | Every string in the flow must reflow rather than truncate. |
+
+### Rules
+
+1. **Every screen in this package supports landscape.** Not because landscape is desirable for
+   data entry, but because a cradled phone is already in it when `AUTH-07` or `AUTH-08` appears,
+   and forcing a rotation to sign in is asking a driver to take a phone out of a cradle in motion.
+2. **In landscape, every screen scrolls.** `AUTH-02`, `AUTH-03`, `AUTH-04` and `AUTH-06` have a
+   field plus a keyboard plus a primary action, and on a short viewport that does not fit. The
+   primary action stays reachable — pinned above the keyboard or reachable by a scroll that does
+   not hide the field being filled — and is never pushed off-screen.
+3. **`AUTH-04`'s code boxes reflow, they do not shrink.** Below the width where boxes hold their
+   minimum touch target, they wrap to a second row rather than scaling down. A digit box smaller
+   than a gloved thumb is worse than a two-row layout.
+4. **Nothing is lost on rotation.** Typed identifier, typed digits, selected language and scroll
+   position all survive a configuration change. This is the same obligation as the connectivity
+   rules in section 9 — the driver's input is never the thing that pays.
+5. **Text reflows; the primary action never truncates.** At the largest system font scale, a label
+   wraps to a second line and the control grows. Russian strings are the binding case (section 7).
+6. **Split-screen and freeform windows are supported but not optimised.** The layout degrades to
+   the narrow, short case already covered by rules 2 and 3. No separate design is specified.
+7. **Small-width devices are a real target.** **FACT** F-28 fixes `minSdk 26`, which reaches
+   handsets around 320dp wide. The narrow case is the design baseline, not an edge case.
+8. **No tablet or foldable layout is specified.** The MVP user is a Driver on a phone (**FACT**
+   F-01). If a large-screen client is ever wanted, it is a new design question, not an extension of
+   this one.
+
+### What is deliberately left open
+
+**Whether the app supports landscape at all is arguably a product and engineering decision rather
+than a purely design one** — it has a real cost across every other feature surface, not only these
+fourteen screens. This lane's position is that authentication in particular cannot afford to force
+a rotation, and rule 1 states that as a proposal. If the programme decides the app is
+portrait-locked, `AUTH-07` and `AUTH-08` need a specific answer for the cradled driver, and this
+package does not contain one.
+
+---
+
+## 9. Interaction rules that hold across every screen
 
 1. An error never clears a field the driver typed.
 2. A loading state never removes the control that started it.
