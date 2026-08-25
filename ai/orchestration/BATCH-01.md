@@ -643,6 +643,12 @@ D. (MAJOR) **This record carried none of revision 7's substance.** It did not co
    below, and this one). §1 and §4 are untouched: they are frozen, and the fix for a frozen
    section going out of date is a live section that says so, not an edit to the frozen one.
 
+6. (MINOR) **Not fixed here, and owed.** `adr/README.md`'s Global ADRs table stops at ADR-017 and
+   its footer still reads *"The next free ADR number is ADR-018"*, missing ADR-018, ADR-019 and
+   ADR-020. It lives in `adr/**` and is outside this lane's lease — fixing it here would be
+   finding A again in the same revision that closes it. PR #6 adds the ADR-018 and ADR-019 rows;
+   the ADR-020 row and the footer are owed by the change that lands ADR-020. Recorded as **D-2b**
+   in §8.
 7. (MINOR) `OPEN-004`–`OPEN-008` cited `ai/design/**` paths without naming where they live. PR #4
    has since merged, so every `DES-001` citation now resolves on `main` and is verified to; the
    `DES-002` citations name PR #5, as `OPEN-001` names PR #6.
@@ -656,13 +662,6 @@ D. (MAJOR) **This record carried none of revision 7's substance.** It did not co
     comment histories with the counting rule stated; the agent count is dropped, with the reason.
 11. (MINOR) Recorded in §10: PR #5's head is not covered by any review verdict and PR #5 is not
     merge-cleared.
-
-6. (MINOR) **Not fixed here, and owed.** `adr/README.md`'s Global ADRs table stops at ADR-017 and
-   its footer still reads *"The next free ADR number is ADR-018"*, missing ADR-018, ADR-019 and
-   ADR-020. It lives in `adr/**` and is outside this lane's lease — fixing it here would be
-   finding A again in the same revision that closes it. PR #6 adds the ADR-018 and ADR-019 rows;
-   the ADR-020 row and the footer are owed by the change that lands ADR-020. Recorded as **D-2's
-   sibling** and carried in §8.
 
 **Revision 7** — `007f266`, `40dff4b`, `44357d0`, `1563dd3`, `4cb7287`, `1de90c4`, `8fba279`. Not
 prompted by a review finding. Seven commits, of which the entry below originally described one;
