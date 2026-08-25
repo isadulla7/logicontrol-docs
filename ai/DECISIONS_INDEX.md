@@ -15,6 +15,7 @@ Programme-wide. Numbering is one global sequence across all authoritative reposi
 - ADR-016 Cowork V1.1 — Security Reviewer Role and Evidence-led Protocol Amendments
 - ADR-017 Three-repository Split
 - ADR-018 Multi-repository Cowork V2 Product Engineering Model
+- ADR-019 Driver Authentication UX (closes OPEN-001)
 
 ## Backend ADRs — authoritative in `logicontrol-backend/docs/adr/`
 - ADR-002 Clean Architecture Dependency Rule
@@ -27,16 +28,35 @@ Programme-wide. Numbering is one global sequence across all authoritative reposi
 ## Mobile ADRs — authoritative in `logicontrol-android/docs/adr/`
 None yet.
 
-**Next free ADR number is ADR-019.**
+**Next free ADR number is ADR-020.**
 
 ## Open decisions
-- **OPEN-001 Authentication UX.** The production credential, registration, OTP and trusted-device
-  flow. Must be resolved in an ADR before production identity endpoints (backend T017/T018) and
-  before any production authentication work on the Android client. ADR-015 records only the
-  platform mechanisms the client will use once the decision is taken (Android Keystore,
-  biometric-gated secrets) and explicitly does not decide the flow. Tenant and RBAC foundation
-  may proceed before it. Cowork V2 task `ai/design/tasks/DES-001-mobile-auth-ux.md` may prepare
-  alternatives, recommendations and UX evidence, but it cannot close OPEN-001 itself.
+- **OPEN-001 Authentication UX — CLOSED by ADR-019 on 2026-08-25.** The production credential,
+  registration, OTP and trusted-device flow. Decided by the human owner sub-decision by
+  sub-decision against the independently reviewed DES-001 package (`ai/design/mobile/auth/`,
+  PR #4, APPROVED), which prepared the alternatives but could not close it itself. All fifteen
+  sub-decisions `D-01`–`D-15` are settled in `adr/ADR-019-driver-authentication-ux.md`: the
+  driver is provisioned by the Company, activates a device with a phone number and a one-time
+  code, and thereafter opens the app with a biometric or an app-local PIN. There is no password
+  anywhere in the driver flow. Backend `T017`/`T018` and Android production authentication are
+  no longer gated on this decision.
+
+  **Two values remain open inside the closed decision, and are deliberately deferred, not
+  overlooked.** They do not reopen `D-01`–`D-15`; each is bounded by a shape that ADR-019 fixes
+  as binding.
+  - **`D-08` — the number of days in the offline grace window.** The shape is decided (bounded,
+    measured in days, warned before expiry, non-destructive at expiry). The number is a
+    business-risk decision, because the window is exactly the maximum latency of revocation on a
+    device that never connects. Offline-boundary work and `T083` cannot be fully closed until it
+    is set.
+  - **`D-11` — rate-limit scope, threshold, duration and reset.** The shape is decided
+    (server-enforced, remaining time returned to and displayed by the client, local lockout kept
+    separate from the server's). The values are a security decision. Note that a whole fleet at
+    one depot may share an IP, so an IP-scoped threshold can lock out a depot.
+
+  Neither value has been given its own `OPEN-` identifier; if the programme wants them tracked
+  as first-class open decisions rather than as residue of a closed one, that numbering is the
+  owner's to assign.
 
 - **OPEN-002 Android sync terminal-error policy.** `ADR-015` specifies the sync engine's retry,
   ordering, batching and idempotency obligations but deliberately does not say what happens when
