@@ -45,7 +45,8 @@ None yet.
   overlooked.** They do not reopen `D-01`–`D-15`; each is bounded by a shape that ADR-019 fixes
   as binding.
   - **`D-08` — the number of days in the offline grace window.** The shape is decided (bounded,
-    measured in days, warned before expiry, non-destructive at expiry). The number is a
+    measured in days, warned before expiry, non-destructive at expiry, and no new business writes
+    accepted at `GRACE_EXPIRED` while plain capture continues). The number is a
     business-risk decision, because the window is exactly the maximum latency of revocation on a
     device that never connects. Offline-boundary work and `T083` cannot be fully closed until it
     is set.
@@ -73,6 +74,13 @@ None yet.
   This matters because offline-first means the driver was already told the write succeeded. A
   terminal failure is therefore not an error path — it is a promise the product has to unmake,
   and doing that silently would be worse than never accepting the write.
+
+  **ADR-019 `D-08` reduces this dependency but does not remove it.** The owner decided that at
+  `GRACE_EXPIRED` the client stops accepting new business writes while plain capture continues.
+  A bounded client-side stop shrinks the population of operations that can ever be permanently
+  rejected on reconnect — the alternative, an unlimited offline queue, would have converted that
+  bounded stop into an unbounded server-side rejection landing squarely in `OPEN-002`. What
+  happens to the operations that are still rejected remains `OPEN-002`'s to decide.
 
   The Android bootstrap carries a **mechanism** for this (`SyncStatus.FAILED_PERMANENT`, a bounded
   attempt cap, and the rule that exhausted work surfaces rather than being dropped) but **no
