@@ -16,7 +16,7 @@ Tasklar atayin shunday kesilganki, bir to'lqin ichidagilar **parallel** bajarili
 
 Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 
-## To'lqin 1 — hammasi mustaqil (6 ta parallel)
+## To'lqin 1 — hammasi mustaqil (7 ta parallel)
 
 | ID | Repo / modul | Ish | Bog'liqlik |
 |---|---|---|---|
@@ -24,10 +24,11 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `DC-02` | docs | **ADR-003 — offline sync va terminal-xato siyosati.** Qaysi javob terminal vs retryable; haydovchiga nima ko'rsatiladi; javobgarlik. Avvalgi OPEN-002 merosini yopadi. | — |
 | `BK-01` | backend / `sharedkernel` + `organization` | **Typed ID'lar + organization moduli.** `CompanyId` va boshqa ID'lar sharedkernel'ga; `Company` (bazaviy valyuta o'zgarmas), `CompanyMember` + rollar, tenant-scoped repository port konvensiyasi, Flyway, testlar. | — |
 | `BK-02` | backend / `app` (platform) | **Xato kontrakti va correlation ID.** `problem+json`, barqaror `code` maydoni, global handler, correlation filter, testlar. `organization`ga tegmaydi. | — |
+| `DS-01` | docs / `design/driver/` | **Haydovchi ilovasi UX — kirish oqimi.** Aktivatsiya (telefon → kod → PIN → biometrik), kompaniya tanlash, xato/rate-limit/offline holatlari ekranma-ekran; har ekran majburiy holatlar katalogi bilan (loading/empty/offline/error/disabled). `AN-04` ga kirish. | — |
 | `AN-01` | android / `core:designsystem` | **Dizayn tizimi.** Tema, ranglar, tipografiya, spacing, holat komponentlari (loading / empty / offline / error / disabled). | — |
 | `AN-02` | android / `core:database` + `domain:sync` + `core:sync` | **Offline navbat mexanizmi.** Room jadval (`client_request_id` unique), sof-Kotlin `domain:sync` (holatlar: `PENDING → SENDING → ACKNOWLEDGED | RETRY_WAIT | REQUIRES_USER_ACTION`, cheklangan backoff), WorkManager scheduler. Siyosat emas — mexanizm; siyosat `DC-02`da. | — |
 
-## To'lqin 2 (5 ta parallel)
+## To'lqin 2 (7 ta parallel)
 
 | ID | Repo / modul | Ish | Bog'liqlik |
 |---|---|---|---|
@@ -36,24 +37,26 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `BK-04` | backend / `fleet` | **Fleet moduli.** `Driver`, `Vehicle`, `Assignment` — to'liq slice: domain, use-caselar, persistence, REST, migratsiya, testlar. `organization`ga faqat `CompanyId` orqali. | `BK-01` |
 | `BK-05` | backend / `trip` | **Trip moduli.** `Customer`, `Trip` (PLANNED→ACTIVE→COMPLETED/CANCELLED), optimistic locking, read model. Fleet'ga faqat ID orqali — compile bog'liqlik yo'q. | `BK-01` |
 | `BK-09` | backend / `organization` (`adapter/out/external`) | **Kompaniya reestri lookup.** `CompanyRegistryLookupPort` + `IhamkorRegistryAdapter` (`ihamkor.uz/api/search/quick?q=<STIR>`): STIR bo'yicha rasmiy nomni olib kelish, noma'lum maydonlarga chidamli parse, qisqa timeout, xatoda bo'sh forma. Reestr — boyitish, haqiqat manbai emas. Fayllari `BK-01` bilan kesishmaydi (faqat port interfeysi qo'shiladi). | `BK-01` |
+| `DS-02` | docs / `design/driver/` | **Haydovchi ilovasi UX — reys va xarajat.** Reys ro'yxati/detali, offline xarajat kiritish, navbat holatlari (yuborilmoqda/qabul qilindi/kutilmoqda/rad), terminal-xato ekrani `DC-02` siyosati bilan. `AN-05`/`AN-06` ga kirish. | `DC-02` |
 | `AN-03` | android / `core:network` | **Tarmoq qatlami.** Retrofit/OkHttp, `problem+json` parsing (noma'lum maydonga chidamli), korrelyatsiya sarlavhasi. Backend kodini kutmaydi — `DC-03` kontraktiga quriladi. | `DC-03` |
 
-## To'lqin 3 (4 ta parallel)
+## To'lqin 3 (5 ta parallel)
 
 | ID | Repo / modul | Ish | Bog'liqlik |
 |---|---|---|---|
 | `BK-06` | backend / `sync` | **Idempotency komponenti.** `(company_id, operation, client_request_id)` unique; aynan takror → oldingi natija; boshqa payload → konflikt; replay avtorizatsiyani qayta ishga tushiradi. | `BK-01`, `DC-02` |
 | `BK-07` | backend / `finance` (1-qism) | **Expense va Advance.** `DRAFT→SUBMITTED→APPROVED/REJECTED`, Spend Policy darajalari, FX snapshot, operator tasdiqlash use-caselari, optimistic locking. | `BK-01` |
-| `AN-04` | android / `feature:auth` | **Aktivatsiya va kirish oqimi.** Telefon → kod → PIN o'rnatish → biometrik taklif; kompaniya tanlash; xato holatlari `DC-03` kodlari bilan. | `DC-01`, `AN-01`, `AN-03` |
-| `AN-05` | android / `feature:trip` | **Haydovchi reyslari ekrani.** Ro'yxat + detal; UI kontraktga quriladi, jonli integratsiya faza gate'ida. | `AN-01`, `AN-03` |
+| `DS-03` | docs / `design/web/` | **Operator konsoli dizayni.** IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, ruxsatga sezgir holatlar. Tayanch qoida: server harakatlarni e'lon qiladi. `WB-01..03` ga kirish. | `DC-03` |
+| `AN-04` | android / `feature:auth` | **Aktivatsiya va kirish oqimi.** Telefon → kod → PIN o'rnatish → biometrik taklif; kompaniya tanlash; xato holatlari `DC-03` kodlari bilan. | `DC-01`, `AN-01`, `AN-03`, `DS-01` |
+| `AN-05` | android / `feature:trip` | **Haydovchi reyslari ekrani.** Ro'yxat + detal; UI kontraktga quriladi, jonli integratsiya faza gate'ida. | `AN-01`, `AN-03`, `DS-02` |
 
 ## To'lqin 4 (5 ta parallel)
 
 | ID | Repo / modul | Ish | Bog'liqlik |
 |---|---|---|---|
 | `BK-08` | backend / `finance` (2-qism) | **Ledger va Settlement.** Append-only `LedgerEntry` (DB darajasida UPDATE/DELETE taqiqlangan), tasdiqlangan Expense'ni post qilish (idempotent), reversal, balans query, `Settlement` hisoblash/yopish, reconciliation test to'plami. | `BK-06`, `BK-07` |
-| `AN-06` | android / `feature:expense` | **Offline xarajat kiritish.** Navbat orqali yuborish, holat ko'rsatish, terminal-xato ekrani `DC-02` siyosati bilan. | `AN-02`, `AN-04`, `DC-02` |
-| `WB-01` | web (yangi repo) | **Web shell.** Next.js, routing, kompaniya scope, server-e'lon-qilgan-harakatlar printsipi. | `DC-03` |
+| `AN-06` | android / `feature:expense` | **Offline xarajat kiritish.** Navbat orqali yuborish, holat ko'rsatish, terminal-xato ekrani `DC-02` siyosati bilan. | `AN-02`, `AN-04`, `DS-02` |
+| `WB-01` | web (yangi repo) | **Web shell.** Next.js, routing, kompaniya scope, server-e'lon-qilgan-harakatlar printsipi. | `DC-03`, `DS-03` |
 | `WB-02` | web | **Jadval va holat tizimi.** DataTable, pagination, barcha holat komponentlari. `WB-01` bilan fayl kesishmasa parallel. | `WB-01` |
 | `WB-03` | web | **Xarajat tasdiqlash navbati.** Operatorning asosiy ekrani. | `WB-02`, `BK-07` |
 
