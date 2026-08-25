@@ -11,7 +11,7 @@ never speak to its author.
 
 ## Evidence marking — read this before anything else
 
-Every load-bearing statement in this package carries one of four markers. If a statement has no
+Every load-bearing statement in this package carries one of five markers. If a statement has no
 marker it is editorial connective tissue and decides nothing.
 
 | Marker | Meaning | How a reader should treat it |
@@ -25,6 +25,34 @@ marker it is editorial connective tissue and decides nothing.
 **No endpoint, error code, role name, permission name or authentication behaviour in this package
 is agreed.** Where one appears, it appears as `[A-API]` or `[A-RBAC]` with a placeholder name whose
 only purpose is to make a screen discussable.
+
+### Where this convention fails, and the two rules that stop it
+
+A marking convention is only worth the trust it asks for, and this one has a predictable failure
+mode: independent review found it six times across two rounds, always in the same shape. These two
+rules exist because a convention that fails in one identifiable place deserves a rule in the
+document that defines it, rather than vigilance.
+
+**Rule M-1 — a marker attaches to a claim about the world, never to a claim about this package; and
+where a sentence carries a canonical clause inside a non-canonical one, the marker goes on the
+clause.** *(Formulation taken from the DES-002 independent review.)*
+
+What it catches: a marker leading a sentence that is doing **summary work** — summarising canon, or
+summarising this package's own earlier proposals — where it reads as a warrant for the summary
+rather than for anything inside it. Both directions failed in practice: a `[C]` heading a mixed list
+whose three items had three different warrants, and a `[C]` on a cross-reference to this package's
+own `[D]` pattern. The corollary follows from the same idea: **if the items of a list have different
+warrants, mark the items, not the list.**
+
+**Rule M-2 — a marker names where a claim comes from, so an absence of canon is `[?]`, never an
+assumption.**
+
+`[A-API]` and `[A-RBAC]` mean *this design is relying on something unbuilt*. "Canonical material
+does not contain this" is the opposite: nothing is being relied on, and there is nothing for a
+backend reader to confirm or refute. Marking an absence as an assumption puts a phantom into the
+register in [06](06-api-assumptions.md), where every row is supposed to be a real dependency with a
+real fallback. M-1 does not catch this one, because the mis-marked claim is about the world — it is
+the marker's *type* that is wrong, not where it sits.
 
 ## Contents
 

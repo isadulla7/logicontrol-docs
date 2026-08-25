@@ -102,8 +102,8 @@ work the user did, and the user will have done that work in good faith because t
 them the action.
 
 `[A-API]` **What the message can say depends on `A-21`.** Where the server supplies a
-machine-readable reason, the message explains what was denied in the server's own terms. `[C]` Where
-it does not, the UI falls back to generic denial copy — because `ADR-014` rethrows
+machine-readable reason, the message explains what was denied in the server's own terms. `[D]` Where
+it does not, the UI falls back to generic denial copy — because `[C]` `ADR-014` rethrows
 `AccessDeniedException` unchanged to the security filter chain rather than mapping it, so a 403 is
 not guaranteed to carry a `problem+json` body at all: no `code`, no `message`, no `correlationId`.
 Keeping the work and offering a route back do **not** depend on `A-21`; only the explanation does.

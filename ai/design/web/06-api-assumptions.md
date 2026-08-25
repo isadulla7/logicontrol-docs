@@ -63,7 +63,7 @@ degraded; **Medium** = a surface is degraded; **Low** = cosmetic or deferrable.
 | A-20 | There is an authenticated principal and a resolved company context per request | everything | — | not an assumption so much as the `[C]` canonical chain; the **mechanism** is `OPEN-001` and is deliberately untouched here |
 | A-21 | **A denial carries a machine-readable reason the UI can render** | [05](05-permission-aware-states.md) § 3 L5; [03](03-organization-workspace.md) § 3 `S-DENIED`; **and it is A-06's own fallback** | High | generic denial copy with no server-supplied reason. Entered data is still kept and a route back is still offered, but the UI cannot say *what* was denied |
 
-`[C]` **A-21 needs stating plainly because `ADR-014` currently points the other way.** The advice
+**A-21 needs stating plainly because `ADR-014` currently points the other way.** `[C]` The advice
 rethrows `AccessDeniedException` unchanged rather than mapping it, deliberately, because Spring
 Security's `ExceptionTranslationFilter` is the only component that can decide 401 versus 403 and
 that decision waits on `OPEN-001`. So a 403 is **not guaranteed to carry a `problem+json` body at

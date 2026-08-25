@@ -181,7 +181,7 @@ for the first contract gate.
 | accessibility | [04](04-operational-patterns.md) § 13; [07](07-responsive-behavior.md) § 4 | Complete |
 | responsive / adaptive | [07](07-responsive-behavior.md) | Complete |
 | terminology source | [README](README.md); `domain/GLOSSARY.md` | Complete |
-| API assumptions | [06](06-api-assumptions.md) | Complete, 20 registered with fallbacks |
+| API assumptions | [06](06-api-assumptions.md) | Complete, 21 registered with fallbacks |
 | unresolved decisions | [10](10-decisions-required.md) | Complete, 14 registered, including one canonical inconsistency (`Q-14`) |
 
 `[C]` And the rule that governs your side of it: "Implementation agents never infer missing business

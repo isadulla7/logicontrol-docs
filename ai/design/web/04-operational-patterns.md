@@ -290,28 +290,29 @@ for, because partial failure is the normal case:
   decides approval requirements and business rules are not thrown to the frontend. The client
   submits what the user selected and reports what the server decided per item.
 
-`[D]` **Which bulk operations exist.** Each row states its warrant, because they differ: some rest on
-a canonical lifecycle, one rests on nothing yet.
+`[D]` **Which bulk operations exist.** Each row states its own warrant, because they differ: some
+rest on a canonical lifecycle, two rest on an export that is itself undecided, and one has no
+canonical operation to batch at all.
 
 | Workspace | Bulk operations `[D]` | Warrant | Never |
 |---|---|---|---|
 | Alerts | acknowledge, assign, resolve | `[C]` lifecycle is `OPEN → ACKNOWLEDGED → RESOLVED` with an assignee | — |
 | Expense approvals | approve, reject | `[C]` lifecycle is `DRAFT → SUBMITTED → APPROVED \| REJECTED` and reject requires a mandatory reason — so bulk reject collects one reason for the batch and the UI says it applies to all | — |
-| Compliance | **none in V1** | `[A-API]` see the note below — no canonical operation exists to batch | — |
+| Compliance | export only | `[?]` no canonical operation exists to batch — see the note below; `[?]` export itself is undecided under `Q-09`, exactly as for Audit | — |
 | Members | suspend, reactivate | `[C]` CompanyMember carries a status | bulk role change |
 | Ledger, Settlements | **none** | `[C]` append-only; no bulk anything | — |
 | Audit | export only | `[C]` append-only; `[?]` export itself is undecided under `Q-09` | — |
 
-`[A-API]` **On Compliance:** an earlier draft of this table proposed "request renewal" and "assign
-owner", and neither has a canonical referent. Canon gives `ComplianceDocument` an
-`ownerType/ownerId` that is an **entity** — Company, Driver, Vehicle, Trip or TripLeg — not a
-responsible person, so "assign owner" would mean something the model does not support; and no
-renewal-request workflow exists in `product/business-rules-uz.md`, the ERD or the roadmap. They are
-removed rather than kept as proposals, because a bulk operation implies a backend operation and this
-package registers every backend dependency it takes. If a renewal workflow is later defined
-(plausibly alongside `T067` expiry detection), it enters through [06](06-api-assumptions.md) as a
-registered assumption like everything else. Compliance still supports selection and export under the
-same `Q-09` caveat as Audit.
+**On Compliance:** an earlier draft of this table proposed "request renewal" and "assign owner", and
+neither has a canonical referent. `[C]` Canon gives `ComplianceDocument` an `ownerType/ownerId` that
+is an **entity** — Company, Driver, Vehicle, Trip or TripLeg
+(`domain/domain-model-erd-uz.md` § Compliance + Files) — not a responsible person, so "assign owner"
+would mean something the model does not support. `[?]` And no renewal-request workflow exists in
+`product/business-rules-uz.md`, the ERD or the roadmap. They are removed rather than kept as
+proposals, because a bulk operation implies a backend operation and this package registers every
+backend dependency it takes. If a renewal workflow is later defined (plausibly alongside `T067`
+expiry detection), it enters through [06](06-api-assumptions.md) as a registered assumption like
+everything else.
 
 `[D]` **No bulk delete exists anywhere in this product.** `[C]` The financial model is append-only
 and audit is append-only; the operational entities have lifecycles with cancellation states rather

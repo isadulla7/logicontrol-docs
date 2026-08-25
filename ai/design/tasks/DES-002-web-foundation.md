@@ -1,6 +1,6 @@
 # DES-002 — Web Platform IA + Organization/Company Foundation
 
-- Status: DESIGN COMPLETE — awaiting independent review (see Progress below)
+- Status: APPROVED by independent review (PR #5); close-out pass applied. Awaiting Orchestrator merge.
 - Type: PRODUCT/DESIGN
 - Owner role: `web-designer`
 - Canonical repository: `logicontrol-docs`
@@ -74,3 +74,40 @@ all localized text fixes, with no screen, rule or structural decision changed. A
 
 The reviewer additionally recorded four items explicitly declined as taste rather than error — rail
 composition, density defaults, the URL model and the no-phone-layout call. Left untouched.
+
+## Review round 2 — APPROVED, close-out pass
+
+Round 2 returned `APPROVED` with two non-blocking residuals, three further instances of the marking
+pattern, and an offered rule. All addressed in one pass; nothing restructured.
+
+| Item | Resolution |
+|---|---|
+| `09` § 7 still read "20 registered" | Corrected to 21 |
+| `04` § 10 Compliance row said "none in V1" while its note said compliance supports export, contradicting the Audit row | Row now reads "export only" with the same `Q-09` caveat as Audit; the note's trailing sentence removed. The table's introductory sentence also summarised the old contents and was corrected with it |
+| `04` § 10 Compliance warrant and note both opened `[A-API]` | Both corrected. "No canonical operation exists" is an absence, not an assumption — now `[?]`; the editorial note carries no leading marker, and the canonical claim inside it (`ownerType/ownerId` is an entity) is marked and now cited |
+| `06` § 2 `[C]` led a statement about the register's own needs | Marker moved onto the canonical sentence that follows it |
+| `05` § 3 L5 `[C]` led a design treatment; the canonical fact was the because-clause | Treatment marked `[D]`, `[C]` moved onto the `ADR-014` clause. This was the one worth fixing: as written it read as canon requiring the fallback copy |
+| README `one of four markers` (the table lists five) | Corrected to five |
+| Offered rule for the README | Taken, and extended — see below |
+
+**The marking rule is now in the README** (`README.md` § Where this convention fails), as two rules
+rather than one:
+
+- **M-1**, the reviewer's formulation taken verbatim and credited: a marker attaches to a claim about
+  the world, never to a claim about this package; and where a sentence carries a canonical clause
+  inside a non-canonical one, the marker goes on the clause. Recorded with the failure it catches —
+  a marker leading a sentence doing summary work — and with the corollary that if a list's items
+  have different warrants, the items get marked and not the list.
+- **M-2**, added because M-1 does not reach it: a marker names where a claim comes from, so an
+  absence of canon is `[?]` and never an assumption. The `04` § 10 instance was mis-marked in
+  *type*, not in placement — the claim was about the world, so M-1 passes it — and the cost is a
+  phantom row in the `06` register, where every entry is meant to be a real dependency with a real
+  fallback.
+
+Correction accepted on the round-1 self-diagnosis: the pattern is not "where summarising my own
+earlier work" — that fits findings 2 and 7 but not 1, which was summarising canon. It appears
+wherever a marker leads a sentence doing summary work, of either kind. M-1 is written to that
+broader statement.
+
+Two items explicitly left alone per the reviewer: `A-21`'s flat High risk score, and the four
+round-1 taste items.
