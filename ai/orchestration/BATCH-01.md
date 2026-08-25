@@ -3,13 +3,41 @@
 Recorded by the Global Orchestrator (`gorc`) on 2026-08-25 before dispatch, as ADR-018 /
 `ai/COWORK_V2.md` section 5 requires. Any condition left unaddressed reads as false.
 
-## 1. Recovered repository state (not summary state)
+## 0. Status of this record
 
-| Repository | `main` | CI on `main` | Open PRs | Conclusion |
+**Status: `ACTIVE` — this batch is in flight.** A record left without a status reads as a live
+clearance forever, so this one carries its own lifecycle:
+
+| Status | Meaning |
+|---|---|
+| `ACTIVE` | The batch is dispatched; the leases in §5 are held and enforceable. |
+| `CLOSED` | Every lane has reached a terminal outcome, every lease in §5 is released, and the outcomes are recorded in §10. A `CLOSED` record grants nothing and constrains nothing; it is history. |
+| `ABANDONED` | The batch was stopped before its lanes reached terminal outcomes. §10 records what was abandoned and what state each lane was left in. Leases release on the same terms as `CLOSED`. |
+
+The Orchestrator sets the status, and only in the transition that also records §10. Batch 02 may
+not be cleared while this record is `ACTIVE` unless its own clearance addresses every lease §5
+still holds — that is the whole point of §5 being enforceable rather than descriptive.
+
+**Two reading rules for this document.** §1 and §4 are a **frozen snapshot taken at dispatch**;
+they are the evidence the clearance decision rested on and they are deliberately not updated as
+the world moves, because a clearance argument revised after the fact is no longer the argument
+that authorised the dispatch. Everything else is live and revised. Where a frozen section states
+something that has since changed, that is not staleness — it is the record doing its job. §10 and
+§0 carry current state.
+
+## 1. Recovered repository state at dispatch (not summary state) — FROZEN
+
+**As of 2026-08-25T12:59Z, the moment of dispatch.** Not maintained since; see §0 and §10.
+
+| Repository | `main` | CI on `main` | Open PRs (at dispatch) | Conclusion |
 |---|---|---|---|---|
 | `logicontrol-docs` | `2007f11` | no CI workflow | none | Cowork V2 (PR #1) and the runtime plugin (PR #2) are MERGED. |
 | `logicontrol-backend` | `6dd391c` | `Backend CI` run `32846355898` **success** | none | PRs #1–#9 MERGED. P00 COMPLETE. |
 | `logicontrol-android` | `e517fbe` | `Android CI` run `32849118280` **success** | none | Bootstrap PR #1 MERGED after six failed runs and one cancelled; `main` is green. |
+
+This batch has itself opened PRs #3, #4 and #5 in `logicontrol-docs` and #10 in
+`logicontrol-backend` since that instant. The "none" above is a dispatch-time fact, not a claim
+about now.
 
 ### Correction to a canonical summary
 `ai/CURRENT_STATE.md` described `logicontrol-android` as *"Android foundation exists on its
@@ -25,7 +53,7 @@ and the file sits inside the Orchestrator's own lease, so there was never anythi
 No accepted decision is changed; only a fact that reality had already overtaken.
 
 That the Android baseline is green does **not** by itself authorise Android feature work; see
-section 4.
+section 6, which records why the `android` specialist is not activated.
 
 ## 2. Dependency DAG for this batch
 
@@ -137,6 +165,25 @@ Dispatched set: **backend T012**, **DES-001**, **DES-002**.
    not both be true, and this is one of the six conditions the record exists to establish. Writing
    the decision down to close finding 8 is what surfaced the conflict the deleted clause had been
    hiding — the fix working, one step short of finished.
+
+   **What must be true before each lane merges.** An order without a gate is only a queue. T012's
+   gate is supplied by `COWORK_V1.md` §3 and §9a: `APPROVED` by the Independent Reviewer, over
+   independent QA evidence, plus a *clearing* Security Reviewer verdict, then the human owner
+   merges. The design lanes had no stated gate, because the protocol that governs them defines
+   design-readiness (`COWORK_V2.md` §8) and role separation (§11) but names no verdict vocabulary
+   and no gating role for a PRODUCT/DESIGN lane.
+
+   For this batch the gate is therefore derived from those two sections rather than invented
+   beyond them, and it is **batch-local**: a design lane merges when an Independent Reviewer who
+   did not write it has returned `APPROVED`, having checked the package against its own task
+   packet and against `COWORK_V2.md` §8's design-ready checklist, with `CHANGES_REQUESTED`
+   returning it to the same author and the same lease. That is `COWORK_V2.md` §11's separation
+   requirement applied to a design artefact, using the Independent Reviewer vocabulary the
+   programme already has.
+
+   This is an orchestration decision for Batch 01, not a new accepted rule. Whether
+   PRODUCT/DESIGN lanes should carry a lifecycle of their own is a real question and it is
+   recorded as **D-4** in §8; deciding it needs an ADR, which is R4 and serialized.
 5. **Repository-local Cowork permits it.** Two repositories run lanes in this batch, so this
    condition must be answered twice. The first revision answered only the backend and was graded
    MAJOR for it.
@@ -206,6 +253,29 @@ All six are answered. Clearance granted.
 | `mobile-design-auth` | `logicontrol-docs` | `feat/DES-001-mobile-auth-ux` | `ai/design/mobile/**`, `ai/design/tasks/DES-001-mobile-auth-ux.md` |
 | `web-design-org` | `logicontrol-docs` | `feat/DES-002-web-foundation` | `ai/design/web/**`, `ai/design/tasks/DES-002-web-foundation.md` |
 | `gorc` (Orchestrator) | `logicontrol-docs` | this branch | `ai/orchestration/**`, `ai/CURRENT_STATE.md`, `ai/DECISIONS_INDEX.md`, `ai/design/foundation/**` |
+
+### Release conditions
+
+Every lease above is granted until a stated end. A lease with no release condition is not a
+control — it is an assertion that the lane will succeed, and it makes §5's absolute rule that
+*"two live leases must never intersect"* uncheckable the moment a later batch wants any path
+inside it.
+
+| Lane | Lease releases when |
+|---|---|
+| `backend-t012` | The task reaches `MERGED` or `BLOCKED`, per `COWORK_V1.md` §5. That protocol supplies this lane's release condition and this record does not override it. |
+| `mobile-design-auth` | PR #4 is merged or closed, **and** its review verdict is recorded. Until then the lane holds `ai/design/mobile/**` even though it has delivered — delivery is not release, because a `CHANGES_REQUESTED` returns the work to the same author in the same files. |
+| `web-design-org` | PR #5 is merged or closed, and its review verdict is recorded. Same reasoning. |
+| `gorc` | This record reaches `CLOSED` or `ABANDONED` in §0. |
+
+**If a lane is abandoned rather than delivered**, its lease releases when the Orchestrator records
+the abandonment in §10 and states what was left behind: the branch, the last commit, and whether
+the files it wrote are to be kept, reverted or superseded. An abandoned lane never releases its
+lease silently, because the next batch needs to know whether those paths carry work or wreckage.
+
+`ai/design/foundation/**` is reserved and unwritten. It is held by `gorc` and releases with this
+record. A later batch that wants it must either wait for `CLOSED` or take an explicit reassignment
+recorded here — it must not treat "nobody wrote to it" as "nobody holds it".
 
 The two design lanes run in separate `git worktree` checkouts so that two branches of
 `logicontrol-docs` are live at once without either agent switching the other's branch out from
@@ -286,11 +356,72 @@ out-of-lease fix is withdrawn.
 accepted precedence rule between them. Stated in full in section 4, condition 3. Discharged by a
 follow-up change after this batch.
 
-Neither defect blocks any lane in this batch.
+**D-4 (MAJOR, owner: human owner, needs an ADR).** PRODUCT/DESIGN lanes have no lifecycle. They
+have a role definition (`COWORK_V2.md` §7), a readiness checklist (§8) and a separation principle
+(§11), but no states, no verdict vocabulary, no gating role, no lease release condition and no
+defined outcome when a lane is abandoned. Batch 01 supplied all five locally — §0 for status, §4
+condition 4 for the merge gate, §5 for release — which is enough to run one batch honestly and is
+not a substitute for a decision. Every one of those five gaps was found by the Independent
+Reviewer rather than by the Orchestrator that wrote the record, which is itself evidence about how
+visible the gap is from inside. An ADR is R4 and serialized.
+
+None of these defects blocks any lane in this batch.
+
+## 10. Outcomes
+
+Empty while §0 reads `ACTIVE`. Filled in the same change that sets `CLOSED` or `ABANDONED`, with
+one row per lane: terminal state, the PR and commit it ended at, the review verdicts recorded
+against it, and for an abandoned lane what was left behind and whether it is to be kept, reverted
+or superseded.
+
+A record whose §10 is empty and whose §0 says `CLOSED` is malformed; so is one whose §0 says
+`ACTIVE` after every lane has terminated. Either is a defect against this file.
 
 ## 9. Revision history
 
-**Revision 4** — this revision. Answers findings 10 and 11 from the third review pass
+**Revision 5** — this revision. Answers findings 12, 13 and 14 from the fourth review pass
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411239410)), which
+confirmed 10 and 11 closed and independently verified that both design lanes wrote **exactly**
+inside the leases §5 granted, with `ai/design/foundation/**` untouched by either — the mechanism
+held under test, including the part built on evidence the reviewer had originally challenged.
+
+12. (MINOR) `§1`'s Android note pointed at section 4, which contains no mention of Android. The
+    referent is section 6. Claim true, pointer wrong; pointer fixed.
+13. (MAJOR) §5 granted four exclusive leases and stated a release condition for none of them.
+    `COWORK_V1.md` §5 supplies one for the backend lane; nothing supplied one for the other three,
+    and condition 5 had already established that for the docs lanes these leases are *the whole*
+    of their file-level protection. A protection with no defined end is not a control. Release
+    conditions added for all four, plus the abandonment case, plus an explicit rule that
+    `ai/design/foundation/**` being unwritten does not mean it is unheld.
+14. (MINOR) Condition 4 set a merge order for the design lanes without saying what must be true
+    before either merges — an order without a gate is only a queue. A batch-local gate is now
+    derived from `COWORK_V2.md` §8 and §11 rather than invented beyond them, and the underlying
+    question is recorded as **D-4**.
+
+**Two structural changes this revision, from the reviewer's answer to the question of what the
+record is blind to.** Both address a class of defect that no truth-audit could have found, because
+every sentence involved was true when written:
+
+- **§0 Status.** The record now has a lifecycle of its own — `ACTIVE` / `CLOSED` / `ABANDONED` —
+  because a clearance record with no status reads as a live clearance forever, and Batch 02 needs
+  to know whether Batch 01's leases still bind.
+- **§1 marked FROZEN, with §10 Outcomes added.** §1 and §4 are the evidence the dispatch decision
+  rested on and are deliberately not maintained; a clearance argument revised after the fact is no
+  longer the argument that authorised the dispatch. §1's "Open PRs: none" is now explicitly a
+  dispatch-time fact, and current state lives in §0 and §10.
+
+The reviewer's diagnosis, recorded because it is more useful than the findings: findings 1–11 all
+fired on something the document **said**, and none on something it never mentioned. Every control
+this record created was written as if success were the only outcome — leases with no end,
+clearance with no expiry, no defined state for an abandoned lane. The habit that closes it is to
+ask, for each control created, *what ends it and what happens if it fails.* Applied here to leases
+(§5), to clearance itself (§0), and to lane outcomes (§10).
+
+Also on the reviewer's advice, §1's recovered facts are no longer re-audited each round: three
+verification passes against GitHub across four revisions held every time, and re-reading them has
+stopped paying.
+
+**Revision 4** — `1ee0ac9`. Answered findings 10 and 11 from the third review pass
 ([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5411169190)), which
 confirmed 7, 8 and 9 closed.
 
