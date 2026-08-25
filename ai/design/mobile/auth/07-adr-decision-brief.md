@@ -94,10 +94,26 @@ a driver is blocked mid-trip              a revoked driver keeps recording
 through no fault of their own             company facts for that long, offline
 ```
 
-`product/business-rules-uz.md` non-negotiable #11 (offline driver workflow is a normal condition)
-and ADR-015 (a driver spends hours outside coverage) push it long. Company isolation
-(non-negotiable #7) and the existence of revocation push it short. Both are canonical; the balance
-point is a business risk judgement only the owner can make.
+**The two sides of this dial do not have equal standing, and an earlier draft said they did.**
+
+*Pushing it long — canonical.* `product/business-rules-uz.md` non-negotiable #11 (offline driver
+workflow is a normal condition) and ADR-015 (a driver spends hours outside coverage).
+
+*Pushing it short — one canonical, one assumed.* Company isolation (non-negotiable #7) is
+canonical. **The existence of server-side session revocation is not.** It is `A-06`, which this
+package's own register marks *"implied, never stated"*. An earlier draft of this brief called both
+sides canonical — an assumption presented as canon, on the number the package calls the most
+consequential in `OPEN-001`.
+
+That is not only bookkeeping. A grace window is exactly the maximum latency of revocation on a
+device that never connects. **If `A-06` is false and no revocation mechanism exists, shortening the
+window buys nothing at all** — there is no revocation for it to accelerate — and the entire case
+for a short window collapses into pure cost to the driver. `A-06`'s own "if it turns out false"
+entry says this changes the risk calculus of every option here.
+
+**Confirm or deny `A-06` before setting this number.** It is cheap to check and it determines which
+end of the dial is even arguable. The balance point between the two, once `A-06` is settled, remains
+a business risk judgement only the owner can make.
 
 Proposed properties regardless of the number: **warn before expiry**, and **expiry never signs out,
 never wipes local data, never empties the queue**.
@@ -152,11 +168,13 @@ Whatever is chosen:
 
 1. **A cold device cannot be signed into offline.** **DERIVED, not canonical** — no document states
    it; it is concluded from tenancy, and the full inference with its five supporting facts is in
-   [`03-offline-boundaries.md`](03-offline-boundaries.md) section 1. The short form: a queued
-   operation needs a `company_id` and an idempotency identity of `(company_id, operation,
-   client_request_id)`, and a device with no Company context cannot form one. A reader who wants to
-   overturn this consequence should attack that inference rather than search for a contradicting
-   document. If it holds, a driver whose phone is replaced out of coverage cannot work — so
+   [`03-offline-boundaries.md`](03-offline-boundaries.md) section 1. The short form: the facts that
+   constitute an authenticated principal — identity record, membership, role, status — all live on
+   the server, and the client is forbidden the material to evaluate them locally, so no client-side
+   arrangement produces one. A reader who wants to overturn this consequence should attack that
+   inference rather than search for a contradicting document, and should attack it there rather than
+   at the narrower point about queueing, which can be beaten without moving the conclusion. If it
+   holds, a driver whose phone is replaced out of coverage cannot work — so
    activation must be cheap and repeatable, and the operational practice of activating before
    departure matters.
 2. **`core:security` (`M002`) is on the critical path** for the Android client and does not exist

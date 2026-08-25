@@ -470,8 +470,14 @@ Behaviour is set by the queue, not by the driver's phrasing — see
 
 ## 8. Responsive and adaptive behaviour
 
-**FACT** F-35 lists responsive/adaptive behaviour as a design-ready handoff item. **PROPOSAL**
-throughout, except where a platform constraint is cited.
+**FACT** F-35 lists responsive/adaptive behaviour as a design-ready handoff item.
+
+**Provenance in this section.** An earlier version read "`PROPOSAL` throughout, except where a
+platform constraint is cited", which promotes every cited rule to a platform fact and re-creates the
+drift the fifth tag closes. The correct rule: the **constraints** cited below are `FACT` or
+`PLATFORM`; **what this design does about them** is `DERIVED` where it follows from one and
+`PROPOSAL` where it is judgement. Rule 7 is `DERIVED` from F-28. Rule 8 is a `PROPOSAL` resting on a
+canonical silence (`S-17`). The remaining rules are `PROPOSAL`.
 
 ### The configurations that actually occur
 

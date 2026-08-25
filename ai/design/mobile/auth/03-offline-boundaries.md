@@ -14,12 +14,28 @@ Tags follow [`README.md`](README.md). Identifiers are defined in
 **DERIVED — and the tag matters here more than anywhere else in the package.** No canonical
 document says "a cold device cannot be signed into offline". This section *concludes* it, from five
 canonical facts that individually say something narrower. The facts below are `FACT`; the
-conclusion they add up to is the designer's, and a reader who wants to overturn it should attack
-the inference at point 4 rather than look for a document that contradicts the headline.
+conclusion they add up to is the designer's, and a reader who wants to overturn it should attack the
+inference rather than look for a document that contradicts the headline.
 
-What the tag does **not** mean is that this is soft. The inference is short, and step 4 is close to
-mechanical. It is not a design preference, and it should not be softened — but it is reasoning, and
-labelling it `FACT` would have been the same defect this package's tagging scheme exists to prevent.
+**Attack points 2, 3 and 5 — not point 4.** An earlier version of this note pointed a challenger at
+point 4, which was the wrong target and made the argument look weaker than it is. The legs differ in
+kind:
+
+- **Points 2, 3 and 5 establish *impossibility*.** The client does not hold the identity record, the
+  membership, the role or the status; F-17 forbids giving it the material to evaluate them. No
+  client-side arrangement produces an authenticated principal, because the facts that constitute one
+  live on the server. These are the load-bearing legs and they are the ones to break.
+- **Point 4 establishes only *pointlessness*** — that there would be nothing to queue even if you
+  tried. It is the most mechanical step and it is also the most beatable: a determined reader can
+  observe that an *activation attempt* is an `identity` operation, not a tenant-scoped one, so it
+  need not carry a `company_id` and could in principle be queued. That objection defeats point 4 and
+  **leaves the conclusion standing**, because points 2, 3 and 5 are untouched — a queued activation
+  attempt still cannot be evaluated on the device, so the driver still cannot be told they are
+  signed in.
+
+What the `DERIVED` tag does **not** mean is that this is soft. It is not a design preference and it
+should not be softened — but it is reasoning, and labelling it `FACT` would have been the same
+defect this package's tagging scheme exists to prevent.
 
 The five facts:
 
@@ -40,11 +56,14 @@ The five facts:
 5. **FACT** F-07 — knowing a UUID is never authorization. Possession of a handset is the same kind
    of non-evidence.
 
-Point 4 is the one that settles it. On a device in `NO_IDENTITY` there is no work to accept
-locally, because there is nothing to attribute the work to. Offline-first has nothing to be first
-about. A "sign in offline, we will check later" flow would not be a relaxed security posture; it
-would be a screen that accepts input and then discards it, which is worse for the driver than
-`AUTH-11` saying plainly that the office is needed.
+Points 2, 3 and 5 are what settle it: the facts that constitute an authenticated principal live on
+the server, and the client is forbidden the material to evaluate them locally. Point 4 then removes
+the consolation prize — on a device in `NO_IDENTITY` there is not even any work to accept locally,
+because there is nothing to attribute it to. Offline-first has nothing to be first about.
+
+A "sign in offline, we will check later" flow would not be a relaxed security posture; it would be a
+screen that accepts input and then discards it, which is worse for the driver than `AUTH-11` saying
+plainly that the office is needed.
 
 **Consequence for the field.** A driver whose phone was replaced, wiped or reinstalled while out of
 coverage **cannot work**, and no amount of client design changes that. That cost is real and
@@ -56,12 +75,19 @@ It is not an argument for faking a session.
 
 ## 2. Capability by state
 
-The two axes from [`01-driver-auth-journey.md`](01-driver-auth-journey.md) section 0. **PROPOSAL**
-throughout, except where a cell cites a fact.
+The two axes from [`01-driver-auth-journey.md`](01-driver-auth-journey.md) section 0.
+
+**Read the citations three ways, not two.** An earlier version of this note read "`PROPOSAL`
+throughout, except where a cell cites a fact" — which silently promotes every cited cell to `FACT`,
+and is exactly the drift the fifth tag exists to close (see [`README.md`](README.md), "Why there is
+a fifth tag"). The correct rule: a cell is **FACT** only where the cited source *states* the cell's
+content; **DERIVED** where the cell concludes something a cited fact supports but does not state;
+and **PROPOSAL** where nothing is cited. The two `NO_IDENTITY` cells below are `DERIVED` — F-08 and
+F-21 state what a queued operation must carry, not what a device may do.
 
 | Server standing | Read local trip data | Capture evidence | Queue a business write | Send queued work | Change Company | Sign out safely |
 |---|---|---|---|---|---|---|
-| `NO_IDENTITY` | **No — none exists** (F-8/F-21) | No | **No** (F-21) | n/a | No | n/a |
+| `NO_IDENTITY` | **No — none exists.** `DERIVED` from F-08, F-21 | No | **No.** `DERIVED` from F-21 | n/a | No | n/a |
 | `ACTIVATING` | No | No | No | n/a | No | n/a |
 | `ACTIVE_VERIFIED` | Yes | Yes | Yes | Yes | Yes (online) | Yes |
 | `ACTIVE_UNVERIFIED` | **Yes** | **Yes** | **Yes** | No — held | No | Only with `DST` |

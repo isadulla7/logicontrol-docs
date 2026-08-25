@@ -5,8 +5,16 @@ what the mobile authentication lane needs from a shared foundation, so the Orche
 reconcile it against the web lane afterwards.
 
 **Nothing here is a foundation decision.** It is a list of requirements and open questions from one
-lane. Everything is **PROPOSAL** unless it cites a fact from
-[`04-facts-and-assumptions.md`](04-facts-and-assumptions.md).
+lane.
+
+**Provenance.** An earlier version of this line read "everything is `PROPOSAL` unless it cites a
+fact", which promotes every cited statement to `FACT` and re-creates the drift the fifth tag closes
+(see [`README.md`](README.md), "Why there is a fifth tag"). The correct rule, using the identifiers
+in [`04-facts-and-assumptions.md`](04-facts-and-assumptions.md): **FACT** only where the cited
+source *states* the claim; **DERIVED** where the claim concludes something a cited fact supports but
+does not state — which covers most of what follows, since no canonical document says anything about
+design tokens; **PROPOSAL** where nothing is cited. Every token name, weight and constraint below is
+one of the latter two. None is canonical.
 
 ---
 

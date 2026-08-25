@@ -269,7 +269,15 @@ driver work.
 driver was told was accepted. **FACT** F-18: the driver *was* told. **FACT** F-20: an item is
 `SYNCED` only after backend confirmation, so a queued item is precisely a promise not yet kept.
 
-A sign-out that clears local state while the queue is non-empty therefore breaks a promise the
+**DERIVED, and the extension is a real step worth naming.** F-23 is written about *schema
+migrations* — it forbids a destructive migration discarding accepted work. Sign-out is not a
+migration. Extending F-23 to it is an inference: both are cases of the app deleting a local database
+that holds writes the driver was told were accepted, and F-23's stated reason ("wiping it discards
+work the driver was told was accepted") applies identically to both. The inference is short and this
+package believes it holds, but a reader is entitled to reject it — in which case sign-out's
+behaviour is governed by nothing canonical at all, which makes D-10 more open rather than less.
+
+On that reading: a sign-out that clears local state while the queue is non-empty breaks a promise the
 product already made. A sign-out that leaves another driver's data readable on a shared device
 breaks company isolation expectations (**FACT** F-07). Both are real; the design has to choose
 between them explicitly rather than by accident.

@@ -1,6 +1,6 @@
 # DES-001 — Mobile Authentication UX / OPEN-001 Discovery
 
-- Status: DELIVERED — awaiting independent review. `OPEN-001` remains OPEN.
+- Status: DELIVERED — `APPROVED` on PR #4 against the five-tier tagging scheme; three required fixes from the confirmation pass are closed and returned for confirmation. `OPEN-001` remains OPEN.
 - Type: PRODUCT/DESIGN
 - Owner role: `mobile-designer`
 - Canonical repository: `logicontrol-docs`
@@ -64,8 +64,11 @@ grace window, `D-14` authentication error codes.
 **Escalations raised with the Orchestrator, not resolved here.**
 1. ADR-014's `ApiErrorCode` enumeration carries no authentication code, and its advice deliberately
    rethrows authentication and authorization exceptions rather than mapping them, stating that the
-   decision waits on `OPEN-001`. Until that is settled, seven distinct driver situations requiring
+   decision waits on `OPEN-001`. Until that is settled, **five** distinct driver situations requiring
    four different driver actions collapse into one undifferentiated message on the client.
+   *(Corrected 2026-08-25: this escalation originally said seven. Backend-unavailable and captive
+   portal are distinguishable today and are not part of the collapse — the same inflated count that
+   review observation 2 caught in `05` and `07`, left stale here when those were fixed.)*
 2. `OPEN-002` (terminal sync-error policy) surfaces on the authentication screens — rejected
    session with a queued backlog, sign-out with an undrainable queue, work authored by a different
    identity on a shared device. `OPEN-001` can close without it, but `T083` cannot ship correctly
@@ -176,12 +179,15 @@ defect**, and that citation spot-checking cannot detect it by construction.
    recorded in `04` section 4 with an explicit note that it is not an `OPEN-001` sub-decision and is
    recorded because `02` section 8 and `07` section 5 both rest on it.
 
-   **Worth recording about the pattern rather than the instance:** this defect was written *in the
-   commit that fixed the same pattern elsewhere*, in the one section no reviewer had yet seen. The
-   pull toward citing a real fact that supports a conclusion without stating it is not a lapse that
-   awareness removes — it survived being consciously hunted. That is an argument for the review
-   question (*"does the cited source state this, or merely support it?"*) being a standing check
-   rather than a one-off remediation step.
+   **Correction, recorded 2026-08-25 after the confirmation pass — the claim first written here was
+   wrong.** This note originally said rule 8 "survived being consciously hunted" and offered it as
+   the evidence for making the review question a standing check. The reviewer re-based the timeline
+   and is right: the README failure-mode section is in `ed89954`, so rule 8 (written in `00cbb0a`)
+   **predates** the conscious hunt rather than surviving it. Rule 8 is in fact the *weakest*
+   evidence for a standing check, because it was caught within one cycle by exactly the check being
+   proposed. The claim was a conclusion stronger than its evidence — the same failure mode, in the
+   note describing the failure mode. See the assessment below for the evidence that actually
+   supports the conclusion.
 
 2. **The landscape escalation was missing from `07`.** It was in `02` section 8, `auth/README.md`
    and these notes, but not in the file the package tells the ADR author to work straight from — so
@@ -199,3 +205,59 @@ first review had called the strongest part of the work. The standing approval wa
 four-tier scheme and does not extend to the five-tier one. The review should test whether the fifth
 tag is applied consistently, whether anything re-tagged `DERIVED` was in fact canonical and has been
 weakened by the change, and whether `07`'s structural provenance rule actually holds.
+
+**2026-08-25 — confirmation pass: `APPROVED` holds against the five-tier scheme; three required fixes closed.**
+
+The full review confirmed the fifth tag as an improvement with no wrongful demotion, re-confirmed
+`S-17` independently (zero form-factor hits across ADR-015, `mobile-architecture.md` and both
+Android `.ai/` files), and judged `04` section 2's *Constraint* / *Why it matters here* split the
+best single item in the sweep. Three required fixes, two of which were **false as written** and both
+in owner-facing files.
+
+1. **`06` D-12 was a second invalid derivation — untagged, and still live after every prior pass.**
+   It claimed operator re-issuance was "the only route that survives a lost handset". `05` D-12
+   option A is precise: self-service fails if the phone **or the number** is lost. Under the
+   recommended phone-number identifier, a driver who replaces the handset and keeps the SIM recovers
+   by self-service OTP with no operator at all. `06` collapsed the disjunction and stated something
+   false. Now `DERIVED`, with the cases operator re-issuance actually covers enumerated — lost or
+   changed number, number unreachable when needed, blocked at `AUTH-09`, biometric key invalidated
+   by PF-03 — and the unmeasured "commonest case" claim withdrawn. D-13 tagged in the same pass.
+
+2. **`07` section 3.2 asserted an assumption as canonical.** It said company isolation "and the
+   existence of revocation push it short. Both are canonical." Revocation is **A-06**, which this
+   package's own register marks *"implied, never stated"* — an assumption presented as canon, in the
+   file the owner reads, on the number the package calls the most consequential in `OPEN-001`. Now
+   split by standing, with the consequence made explicit: **a grace window is the maximum latency of
+   revocation, so if `A-06` is false there is no revocation to accelerate and the entire case for a
+   short window collapses.** The brief now instructs the ADR author to confirm or deny `A-06`
+   *before* setting the number.
+
+3. **Three blanket rules still encoded the pre-`DERIVED` binary** — `08`'s header, `03` section 2
+   and `02` section 8 each said a statement is a `PROPOSAL` *"unless/except it cites a fact"*, which
+   silently promotes every cited statement to `FACT` and re-creates the exact hole the fifth tag
+   closes. All three now state the three-way rule. The live effect in `03` section 2's capability
+   table is fixed: the two `NO_IDENTITY` cells are `DERIVED`, since F-08 and F-21 state what a
+   queued operation must carry, not what a device may do.
+
+Suggested items also taken:
+
+- **`03` section 1 misidentified its own load-bearing step.** Points 2, 3 and 5 establish
+  *impossibility* — the facts constituting an authenticated principal live on the server and F-17
+  forbids giving the client the material to evaluate them. Point 4 establishes only *pointlessness*,
+  and is beatable: an activation attempt is an `identity` operation, not a tenant-scoped one, so it
+  need not carry a `company_id` and could in principle be queued. That objection defeats point 4 and
+  leaves the conclusion standing. The invitation-to-attack now points at the impossibility legs, and
+  `07` section 5 consequence 1 is re-pointed to match.
+- **The F-23 → sign-out extension is now flagged as its own step.** F-23 is written about schema
+  migrations; sign-out is not a migration. The extension is short and this package believes it
+  holds, but a reader may reject it — in which case D-10 is governed by nothing canonical, which
+  makes it more open rather than less.
+
+**On the evidence for a standing citation check — the reviewer's version is better than mine and
+replaces it.** Rule 8 was the wrong exhibit. The right ones are `06` D-12 and `07` section 3.2:
+both survived the original review, the five closures, the provenance sweep, the introduction of the
+fifth tag and a conscious hunt for exactly this pattern. And both are **untagged prose** — the tag
+never got a chance at either. That is the sharper finding, and it confirms the web lane's result
+from the opposite side: **markers make derivations reviewable, but a derivation that was never
+marked is invisible to marker discipline entirely.** A tagging scheme is necessary and not
+sufficient; the standing check has to be the question applied to prose, not an audit of the tags.
