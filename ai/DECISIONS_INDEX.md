@@ -48,9 +48,26 @@ on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized cha
   them leaves the client unable to act differently on outcomes that need different driver actions.
 
   **`DES-001` delivered fifteen sub-decisions (`D-01`–`D-15`) with options, trade-offs and field
-  cost, in `ai/design/mobile/auth/`.** One ordering constraint recorded there matters to the
-  answer rather than to confidence: a grace window is the maximum latency of revocation, so
-  whether revocation exists at all (`A-06`) must be settled **before** the window is numbered.
+  cost, in `ai/design/mobile/auth/`** — on `main` since PR #4 merged, so every citation to that
+  package in this file now resolves there.
+
+  One ordering constraint recorded there matters to the answer rather than to confidence, and it
+  has to be carried with **both** of its halves. `ai/design/mobile/auth/07-adr-decision-brief.md`
+  §3.2 records that an earlier draft of it carried only the first, *"which was wrong and pointed
+  the owner the wrong way"*.
+
+  The grace window enforces two bounds. **Bound 1 — revocation latency — exists only if `A-06`
+  (server-side session revocation) is true**: a grace window is exactly the maximum latency of
+  revocation on a device that never connects. **Bound 2 — unverified writes — exists either way,
+  and is enforced entirely by the client**: at `GRACE_EXPIRED` the device stops accepting new
+  business writes, which is a local timer needing no server mechanism and no knowledge that
+  anything is wrong.
+
+  So `A-06` must be settled **before** the window is numbered — but what it determines is *which
+  argument sets the number*, not whether a number is needed. The branch where `A-06` is false is
+  the branch where the number carries **more** weight, not less: the window is then the only
+  control the company has over a device it cannot reach, and reading that branch as licence to
+  lengthen the window removes the last bound and puts nothing in its place.
 
   **Status: the programme owner has decided all fifteen, and the decision is on
   `docs/ADR-019-driver-authentication-ux` (PR #6), pending merge.** This entry is superseded by
@@ -123,19 +140,26 @@ on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized cha
 
   Recorded from `DES-001` and `DES-002`, which reached it independently from the mobile and web
   sides, and verified against `ApiErrorCode.java` and `ApiExceptionHandler.java` by both design
-  reviewers. Resolve in an ADR — with `OPEN-001` or as a companion to it — before backend `T018`.
+  reviewers. The `DES-001` material is `ai/design/mobile/auth/` on `main` (PR #4, merged); the
+  `DES-002` material is `ai/design/web/10-decisions-required.md` on
+  `feat/DES-002-web-foundation` (**PR #5**), which is not on `main` yet. Resolve in an ADR — with
+  `OPEN-001` or as a companion to it — before backend `T018`.
 
 - **OPEN-005 Display timezone.** Storage is unambiguous (`TIMESTAMPTZ` for instants, `DATE` for
   business dates); display is unspecified. In a cross-border product a driver, a dispatcher and an
   accountant in three zones get three answers to "what day did this fuel event happen", and that
   answer feeds fuel variance and settlement periods. It binds web and Android identically, which
-  makes it programme-level rather than a client concern. Recorded from `DES-002` `Q-10`.
+  makes it programme-level rather than a client concern. Recorded from `DES-002` `Q-10`, in
+  `ai/design/web/10-decisions-required.md` §`Q-10` on `feat/DES-002-web-foundation` (**PR #5**);
+  not on `main` yet.
 
 - **OPEN-006 Product UI language(s).** Canonical material is Uzbek, the market is Uzbekistan and
   Central Asia, and `ADR-014` puts internationalisation out of its own scope. Nothing states which
   languages the Driver app and the operator web client present, or how a driver's language is
   determined. It is woven through every screen rather than isolated to one, which is why it is
-  recorded rather than deferred. Recorded from `DES-002` `Q-11`.
+  recorded rather than deferred. Recorded from `DES-002` `Q-11`, in
+  `ai/design/web/10-decisions-required.md` §`Q-11` on `feat/DES-002-web-foundation` (**PR #5**);
+  not on `main` yet.
 
 - **OPEN-007 Android screen orientation.** Whether the Driver app supports landscape at all is an
   app-wide manifest and architecture property with cost on every feature surface, and canon names
@@ -143,14 +167,16 @@ on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized cha
   authentication first: a phone in a windscreen cradle is the normal case for a driver, and
   `AUTH-07`/`AUTH-08` have no cradled-driver specification if the answer is portrait-locked.
   `DES-001` records a proposal and explicitly declines to decide it. Recorded from `DES-001`
-  `S-17`.
+  `S-17`, in `ai/design/mobile/auth/04-facts-and-assumptions.md` on `main` (PR #4, merged).
 
 - **OPEN-008 Who creates a Company.** Creating a Company is by definition not tenant-scoped —
   there is no `company_id` to scope it by — so it falls outside the entire Authentication →
   Principal → Company Context → RBAC chain the architecture defines, and canon says nothing about
   who performs it or how. It is entangled with `OPEN-001`: the structurally natural driver
   provisioning route needs an operator surface, and no web implementation repository exists.
-  Recorded from `DES-002` `Q-01` and `DES-001` `D-02`.
+  Recorded from `DES-002` `Q-01`, in `ai/design/web/10-decisions-required.md` on
+  `feat/DES-002-web-foundation` (**PR #5**, not on `main` yet), and `DES-001` `D-02`, in
+  `ai/design/mobile/auth/05-open-001-decision-alternatives.md` on `main` (PR #4, merged).
 
 ## Recorded canonical inconsistency
 - **WorkOrder ↔ Trip reference.** `domain/GLOSSARY.md` and `domain/domain-model-erd-uz.md` § Trip
@@ -159,8 +185,9 @@ on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized cha
   because canon recognises work-order cost through a linked Finance Expense and Expense does carry
   `tripId`; what does not survive is attributing the operational work order to the trip. It is a
   documentation fix now and becomes a schema change once `T058` opens the aggregate. Recorded from
-  `DES-002` `Q-14`. Not resolved here: correcting a canonical document is not the Orchestrator's
-  to do silently.
+  `DES-002` `Q-14`, in `ai/design/web/10-decisions-required.md` on `feat/DES-002-web-foundation`
+  (**PR #5**); not on `main` yet. Not resolved here: correcting a canonical document is not the
+  Orchestrator's to do silently.
 
 ## Recorded revisions
 - **ADR-018 extends ADR-013/ADR-016 and ADR-017; it does not replace or weaken repository-local
