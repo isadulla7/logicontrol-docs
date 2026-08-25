@@ -1,6 +1,6 @@
 # DES-002 — Web Platform IA + Organization/Company Foundation
 
-- Status: APPROVED by independent review (PR #5); close-out pass applied. Awaiting Orchestrator merge.
+- Status: APPROVED by independent review (PR #5); close-out pass applied. Awaiting merge by the human owner (`OPEN-003` — merge authority is an open decision; the accepted ADR-013/ADR-016 rule governs until an ADR ratifies otherwise).
 - Type: PRODUCT/DESIGN
 - Owner role: `web-designer`
 - Canonical repository: `logicontrol-docs`
