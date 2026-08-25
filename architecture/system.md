@@ -45,3 +45,16 @@ keyingi bosqichida ochiladi.
 - Backend: `mvn clean verify` — unit + Testcontainers (PostgreSQL) + Modulith verify + ArchUnit.
 - Android: `testDebugUnitTest lintDebug assembleDebug` GitHub Actions'da.
 - Har PR CI yashil bo'lmasdan merge qilinmaydi.
+
+## Tashqi integratsiya: kompaniya reestri (ihamkor.uz)
+
+Kompaniya yaratishda STIR (INN) bo'yicha rasmiy ma'lumot `https://ihamkor.uz/api/search/quick?q=<STIR>`
+dan olib kelinadi va forma avtomatik to'ldiriladi. Qoidalar:
+
+1. **Reestr — boyitish manbai, haqiqat manbai emas.** Kompaniya yaratish API ishlamasa ham
+   ishlaydi (qo'lda kiritish); saqlangan ma'lumot bizning bazamizniki.
+2. **Port ortida**: `organization` moduli `CompanyRegistryLookupPort` e'lon qiladi;
+   `IhamkorRegistryAdapter` — `adapter/out/external` da. Provayder almashsa domen o'zgarmaydi.
+3. Javob strukturasi noma'lum maydonlarga chidamli parse qilinadi; timeout qisqa (2–3 s),
+   xatoda forma bo'sh ochiladi, foydalanuvchiga bildiriladi.
+4. Olingan xom javob (JSON) audit uchun snapshot sifatida saqlanishi mumkin — keyin isbot bo'ladi.
