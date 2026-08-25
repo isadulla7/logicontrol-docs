@@ -490,6 +490,37 @@ Two things this exposes, both worth more than the incident:
    this evidence, cannot assume that population is the whole set of writers with repository
    access.
 
+**D-6 (MAJOR, owner: Orchestrator, open — programme level).** Two controls in
+`logicontrol-backend/.ai/COWORK_V1.md` assume an environment this batch did not have, and both
+were hit in T012.
+
+*The full-gate budget row.* §7 caps `mvn clean verify` runs by the Developer before handoff, a row
+written for a Developer who can run the gate locally and chooses how often to spend it. On this
+machine there is no Maven, no wrapper, no JDK 21 and no Docker daemon, so CI is the only gate in
+existence and the Orchestrator instructed a push-per-commit cadence to have one at all. The row
+then counted something it was not measuring: of the five runs first declared, two were triggered
+by commits that changed only the task log and verified no production code. **Recording evidence is
+not verification work and must not be charged to a verification budget.** Raised by QA as `QA-1`,
+ruled an adequate discharge by the Independent Reviewer, which also corrected the Orchestrator's
+own overstatement of its overrun from three-over to one-over.
+
+*The frozen event envelope has no value for an agent record that is not a lifecycle transition.*
+`event` and `status` are both required, and neither enum admits "I am recording something without
+moving the task". The consequence is not cosmetic and there are three instances in one task log:
+the Orchestrator recorded `T012-006` and `T012-008` as `TASK_READY` for want of a truer value, and
+the Independent Reviewer's first draft of `T012-012` carried `status: IN_REVIEW` after the task had
+already reached `APPROVED` — **a lifecycle regression, inside the event correcting a false
+statement.** It was caught in post-append validation and never committed, and the reviewer recorded
+that it happened rather than quietly fixing it. Raised as `REV-4` and graded `MINOR`; on that
+evidence it is worth more than a hygiene grade, because an agent reaching for `status` on a
+non-transition event is guessing, and a guess that reads as a lifecycle regression is exactly what
+the frozen envelope exists to make impossible.
+
+Both belong to whoever amends `COWORK_V1.md`, which is an ADR change and therefore R4 and
+serialized. Recorded here so the two are fixed together: they are the same defect seen twice — a
+protocol that encodes an assumption about its own runtime, and gives an agent no honest way to say
+so.
+
 None of these defects blocks any lane in this batch.
 
 ## 9. Revision history
