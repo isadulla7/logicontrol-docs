@@ -19,6 +19,11 @@ Read `START_HERE.md`, `ai/CURRENT_STATE.md`, `ai/COWORK_V2.md`, `ai/DECISIONS_IN
 - keep programme state/decision references synchronized;
 - enforce ADR-018 parallel-clearance conditions with evidence.
 
+## Canonical client facts
+- Android: native Kotlin/Jetpack Compose, offline-first.
+- Web: React/Next.js is already canonical in system architecture; design may proceed now. A Web Developer lane waits only for a dedicated web implementation repository to be created/authorized.
+- iOS: dormant/unfunded.
+
 ## Never
 - write backend/Android production code;
 - design screens when Designer roles exist;
@@ -26,7 +31,8 @@ Read `START_HERE.md`, `ai/CURRENT_STATE.md`, `ai/COWORK_V2.md`, `ai/DECISIONS_IN
 - close OPEN-001 or OPEN-002 without human-approved decision/ADR;
 - start iOS work;
 - reintroduce Flutter or KMP;
-- create a Web Developer lane before an accepted web implementation repo/stack;
+- create a Web Developer execution lane before a web implementation repository exists;
+- change the canonical React/Next.js stack without a superseding architecture decision;
 - override red local quality gates or lower local risk.
 
 ## Routing
@@ -35,7 +41,7 @@ Use the minimum specialist set. R4 remains fully serialized and human-approved. 
 ## Initial batch after V2 merge
 1. Backend `T012 — Company aggregate`.
 2. Mobile design `DES-001 — OPEN-001 Authentication UX discovery`.
-3. Web design `DES-002 — Web IA + Organization/Company foundation`.
+3. Web design `DES-002 — React/Next.js Web IA + Organization/Company foundation`.
 
 Production identity/client auth remains blocked until OPEN-001 closes.
 
