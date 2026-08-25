@@ -30,6 +30,31 @@ that authorised the dispatch. Everything else is live and revised. Where a froze
 something that has since changed, that is not staleness — it is the record doing its job. §10 and
 §0 carry current state.
 
+### Live state, recorded at revision 8
+
+§1 and §4 are frozen, so this is where anything that has changed since dispatch is recorded. The
+frozen/live split only works if the live half is actually written, and for one revision it was not.
+
+- **Merge authority is unchanged, and `OPEN-003` is open.** §4 condition 4's *"Only the human owner
+  merges"* was true when the clearance was granted and is true at head. Revision 7 wrote
+  `adr/ADR-020-orchestrator-merge-authority.md` on this branch, ratifying `OPEN-003`; both
+  Independent Reviewers graded that MAJOR, because `adr/**` is read-only for every lane in this
+  batch **including this one** and §5 commits any ADR the batch needs to a serialized slot after
+  the lanes land. It is reverted in `320c243`. The decision itself is not withdrawn: its text is
+  preserved as a draft at `ai/orchestration/ADR-020.draft.md`, which grants nothing, and it lands
+  in its own serialized pull request where the findings raised against it are owed. Until that
+  pull request is accepted, nothing in this batch merges except by the human owner.
+- **`ai/orchestration/REVIEW-NOTES-01.md` was added by this batch** (`4cb7287`) — what independent
+  review actually caught across Batch 01 and with which question. It is a companion to this record
+  and not part of the clearance argument; §7 of it and §8/§9 here must agree on the counts, and
+  once did not.
+- **Five open decisions were added to `ai/DECISIONS_INDEX.md`** (`1de90c4`): `OPEN-004` client
+  error codes, `OPEN-005` display timezone, `OPEN-006` product UI language(s), `OPEN-007` Android
+  screen orientation, `OPEN-008` who creates a Company — plus one recorded canonical inconsistency
+  (WorkOrder ↔ Trip). All five were raised by the design lanes and none is resolvable by this
+  batch. `OPEN-004` is the one with a near dependency: it is owed with or beside `OPEN-001`,
+  before backend `T018`.
+
 ## 1. Recovered repository state at dispatch (not summary state) — FROZEN
 
 **As of 2026-08-25T12:59Z, the moment of dispatch.** Not maintained since; see §0 and §10.
@@ -362,7 +387,38 @@ Not activated, with the trigger that is absent:
    explicit Reviewer ruling on whether that records a structural attribute or invents product
    policy. It reaches the human owner only if the Reviewer says the latter.
 
-None of the three blocks this batch.
+4. **T012 `QA-3` and `QA-4`** — raised to the human owner in backend event `T012-014`
+   (`ESCALATED`, `2026-08-25T14:36:00Z`, `decisionOwner: human`), and since answered. An
+   independent QA pass by a distinct agent instance (`T012-013`) returned `CHANGES_REQUESTED` with
+   two MAJOR findings *after* the task had already been advanced to `APPROVED` by a parallel
+   chain, and `COWORK_V1.md` does not let a QA finding lapse because another chain reached a
+   verdict first.
+
+   **`QA-3`** — `V202608250003`'s `CREATE UNIQUE INDEX company_legal_name_uq` made a company legal
+   name globally unique across every tenant. No canonical source carries that rule, and once
+   `T013`–`T016` add a write or rename path it becomes a cross-tenant existence oracle reachable
+   with no authorization, in the aggregate whose whole purpose is to be the isolation boundary.
+   **`QA-4`** — the `QA_RESULT` recorded as `T012-007` carries a `sessionId` byte-identical to
+   that of the events of the agents that produced the packet and the diff. Either the §1
+   separation rule was broken and that `PASS` is not independent, or a required envelope field is
+   false; the log cannot distinguish them, and that is itself the defect.
+
+   The owner returned both in session and the rulings are recorded in `T012-015`
+   (`2026-08-25T15:16:00Z`): the index is dropped while the migration is still unapplied and
+   therefore still editable, and `T012-007`'s `PASS` is **withdrawn** as not established to be
+   independent. `T012-007` is not edited. The task moved from `APPROVED` back to
+   `CHANGES_REQUESTED`, recorded as the real lifecycle regression it is. `QA-5` (MINOR, the
+   exempt-cycle language on two Orchestrator events) remains **open** and routed by name to the
+   Independent Reviewer, who has not ruled on it.
+
+   Recorded here because §7 is this record's escalation inventory and §8's rule applies to it
+   equally: an incomplete inventory reads as a complete one. It was missing for two revisions
+   while the artefact was available.
+
+The first three do not block this batch. The fourth blocks its backend lane until the five-element
+gate `T012-015` states — remediation, CI green at the amended head, a fresh independent QA pass, a
+fresh Independent Reviewer pass ruling on `QA-5`, and a fresh Security Reviewer pass — is satisfied
+at that head.
 
 ## 8. Defects recorded, not fixed here
 
@@ -384,6 +440,18 @@ The commit is therefore **reverted** on this branch (`9400e48`), `OWNERSHIP.md` 
 after this batch, under its own lease. The defect is real and stays recorded; only the
 out-of-lease fix is withdrawn.
 
+**D-2b (MINOR, owner: Orchestrator) — `adr/README.md` is stale by three ADRs and cannot be fixed
+from this lane.** Its Global ADRs table stops at ADR-017 and its footer reads *"The next free ADR
+number is **ADR-018**"*, while `ai/DECISIONS_INDEX.md` is at ADR-021. It is missing ADR-018 (which
+predates this batch, and is the same omission as D-2), ADR-019 and ADR-020.
+
+It lives in `adr/**`, which §5 leases to nobody and declares read-only for every lane here
+including this one. Correcting it from this branch would be finding A repeated in the revision
+that closes finding A, so it is recorded rather than fixed. **Discharge, split by row:** PR #6
+(`docs/ADR-019-driver-authentication-ux`) already adds the ADR-018 and ADR-019 rows; the ADR-020
+row and the footer are owed by the serialized change that lands ADR-020. Recorded from
+`review-docs-pr3` finding 6 and `review-batch01` finding 17's carry clause.
+
 **D-1 (MAJOR, owner: Orchestrator).** Two divergent definitions of each designer role, with no
 accepted precedence rule between them. Stated in full in section 4, condition 3. Discharged by a
 follow-up change after this batch.
@@ -401,11 +469,20 @@ lane is abandoned. Batch 01 supplied all five locally — §0 for status, §4 co
 merge gate, §5 for release — which is enough to run one batch honestly and is not a substitute for
 a decision.
 
-But the `gorc` lane is equally ungoverned, **and so is this pull request**: five revisions and
-four independent review passes, none of which any protocol required, all of which happened because
-the Orchestrator chose to ask. D-4 is being demonstrated by its own container. An ADR scoped only
-to design lanes would define a design lifecycle and leave orchestration work in this repository
-exactly as ungoverned as it is now.
+But the `gorc` lane is equally ungoverned, **and so is this pull request**: eight revisions and
+**seven independent review passes by two reviewers**, none of which any protocol required, all of
+which happened because the Orchestrator chose to ask. The count is derived at head from the pull
+request's own comment history under the rule stated in `REVIEW-NOTES-01.md` §7 — one pass is one
+comment by a reviewer that did not write the work under review, returning a verdict or a
+verification result against a named commit or range, with the author's own responses excluded. Six
+of the seven are `review-batch01` (revisions 1–5 and the `c237e94..8fba279` range) and one is
+`review-docs-pr3` (revision 7). An earlier wording of this sentence said *five revisions and four
+independent review passes*: true when it was written at revision 5, and false by revision 7 without
+the sentence changing. That is D-4's own subject matter arriving in D-4's own paragraph, and it is
+the same class as findings 8, 9 and 10 — a true statement that stopped being true, in a record with
+no mechanism to notice. D-4 is being demonstrated by its own container in more ways than one. An
+ADR scoped only to design lanes would define a design lifecycle and leave orchestration work in
+this repository exactly as ungoverned as it is now.
 
 Every one of the five gaps was found by the Independent Reviewer rather than by the Orchestrator
 that wrote the record, and so was this widening — which is itself evidence about how visible the
@@ -525,7 +602,84 @@ None of these defects blocks any lane in this batch.
 
 ## 9. Revision history
 
-**Revision 7** — this revision. Not prompted by a review finding.
+**Revision 8** — this revision. Reviewer-directed remediation of the `CHANGES_REQUESTED` verdicts
+that `review-docs-pr3`
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5412715664)) and
+`review-batch01`
+([comment](https://github.com/isadulla7/logicontrol-docs/pull/3#issuecomment-5412790268)) returned
+on revision 7. Both reviewers reached the same MAJOR finding independently.
+
+A. / 17. (MAJOR) **`adr/ADR-020-orchestrator-merge-authority.md` was written into `adr/**` from
+   this lane while §0 reads `ACTIVE`.** `adr/**` is in §5's not-leased set and read-only for every
+   lane "including the Orchestrator's own", and §5 commits any ADR this batch needs to a
+   serialized slot after the lanes land. An ADR change is R4; `COWORK_V1.md` §5 serializes R4
+   outright and names `docs/adr/` in its never-parallel list; §4 condition 6 answers *"No R4
+   serialization rule violated"*, and the branch that answers it had answered it false.
+
+   Both branches the reviewers offered were open — revert, or record a lease amendment. **The
+   revert was taken**, in `320c243`, for the reason finding 2 was resolved the same way: amending
+   the lease so the rule fits what was already done is the letter-satisfied-intent-missed pattern
+   `REVIEW-NOTES-01.md` §6 exists to name, and this record's own answer to finding 2 was that
+   writing the rule and breaking it in the same commit is worse than not writing it. The revert is
+   a new commit, not a rewrite; `8fba279` stays in the log with `320c243` pointing at it. The
+   `OPEN-003` entry returns to open in `ai/DECISIONS_INDEX.md`, which makes §4 condition 4 true
+   again at head rather than merely unrewritten — recorded in §0 rather than left to be inferred.
+   ADR-020's text is preserved byte-for-byte at `ai/orchestration/ADR-020.draft.md`, inside the
+   `gorc` lease, holding no authority until its own serialized pull request accepts it.
+
+B. / C. / 5. / 18. / 19. / 20. **Travel with ADR-020.** The Context paragraph that was false
+   against `T012-014` fifteen minutes before it was written; the three gate elements undefined
+   outside `logicontrol-backend`; the `ADR-016` §9a citation; the gate elements that name no place
+   their satisfaction is recorded; element 1 being vacuous in the repository the Orchestrator
+   writes in; and element 3's independence test not excluding a reviewer that *specified* the
+   work. All six are edits to a document that is no longer on this branch, and all six are owed in
+   the change that lands it. They are not closed and are not dropped.
+
+D. (MAJOR) **This record carried none of revision 7's substance.** It did not contain the strings
+   `ADR-020`, `REVIEW-NOTES-01.md` or `OPEN-004`; §9's revision-7 entry covered one of its seven
+   commits; §7's escalation list omitted the T012 escalation while the artefact had been available
+   for two commits; and D-4's revision and review-pass count had gone stale in place. Fixed in §0
+   (new *Live state* subsection), §7 (item 4), §8 (D-4's count) and §9 (the revision-7 entry
+   below, and this one). §1 and §4 are untouched: they are frozen, and the fix for a frozen
+   section going out of date is a live section that says so, not an edit to the frozen one.
+
+7. (MINOR) `OPEN-004`–`OPEN-008` cited `ai/design/**` paths without naming where they live. PR #4
+   has since merged, so every `DES-001` citation now resolves on `main` and is verified to; the
+   `DES-002` citations name PR #5, as `OPEN-001` names PR #6.
+8. (MINOR) `ai/CURRENT_STATE.md` listed two of eight open decisions. All eight are now listed in
+   one line each, with `ai/DECISIONS_INDEX.md` named as the authoritative and complete list.
+9. (MINOR) `OPEN-001`'s ordering clause reproduced only Bound 1 — the reading
+   `ai/design/mobile/auth/07-adr-decision-brief.md` §3.2 records as *"wrong and pointed the owner
+   the wrong way"*. Both bounds are now carried, with the conclusion the source itself draws.
+10. (MINOR) `REVIEW-NOTES-01.md` §7's *"four review agents, thirteen review passes across four
+    pull requests"* was not reachable from any population. Recounted from the four pull requests'
+    comment histories with the counting rule stated; the agent count is dropped, with the reason.
+11. (MINOR) Recorded in §10: PR #5's head is not covered by any review verdict and PR #5 is not
+    merge-cleared.
+
+6. (MINOR) **Not fixed here, and owed.** `adr/README.md`'s Global ADRs table stops at ADR-017 and
+   its footer still reads *"The next free ADR number is ADR-018"*, missing ADR-018, ADR-019 and
+   ADR-020. It lives in `adr/**` and is outside this lane's lease — fixing it here would be
+   finding A again in the same revision that closes it. PR #6 adds the ADR-018 and ADR-019 rows;
+   the ADR-020 row and the footer are owed by the change that lands ADR-020. Recorded as **D-2's
+   sibling** and carried in §8.
+
+**Revision 7** — `007f266`, `40dff4b`, `44357d0`, `1563dd3`, `4cb7287`, `1de90c4`, `8fba279`. Not
+prompted by a review finding. Seven commits, of which the entry below originally described one;
+the rest are recorded here because §9 is this document's own log.
+
+- `007f266`, `40dff4b` — the unattributed commit reverted, and D-3 and the §4 condition 4
+  discharge note re-authored. Described in full below.
+- `44357d0` — **D-5**'s third point: §5's leases bind only the agents party to them, and have no
+  purchase on any writer outside the batch.
+- `1563dd3` — **D-6**: two `ADR-016` controls assume a runtime with a local build gate that this
+  environment does not have.
+- `4cb7287` — `ai/orchestration/REVIEW-NOTES-01.md` added: what independent review actually caught
+  across Batch 01, and with which question.
+- `1de90c4` — `OPEN-004` through `OPEN-008` and one recorded canonical inconsistency added to
+  `ai/DECISIONS_INDEX.md`, all raised by the design lanes.
+- `8fba279` — `adr/ADR-020-orchestrator-merge-authority.md`, and `OPEN-003` marked ratified.
+  **Reverted in revision 8** as finding A/17; see above and §0.
 
 **An unattributed commit reached this file and was reverted.** `650a8f9` added 93 lines to
 `ai/orchestration/BATCH-01.md`, on this branch, inside the Orchestrator's exclusive lease, and was
@@ -563,9 +717,11 @@ acts on its answers to the two questions put to it.
     reviewer's comment on the lane's PR, cited by URL in §10.
 16. (MINOR) D-4 was scoped to PRODUCT/DESIGN lanes. The gap condition 5 established is wider —
     `logicontrol-docs` has **no repository-local execution protocol at all**, so the `gorc` lane
-    is equally ungoverned, and so is this pull request: five revisions and four review passes,
-    none of which any protocol required. D-4 widened, with PRODUCT/DESIGN kept as the instance
-    that forced it.
+    is equally ungoverned, and so is this pull request: **five revisions and four review passes at
+    that point**, none of which any protocol required. D-4 widened, with PRODUCT/DESIGN kept as
+    the instance that forced it. Those two figures are left as the revision-5 finding stated them,
+    because §9 is a log; the live count is in §8's D-4 and was corrected in revision 8, where the
+    counting rule is stated.
 
 **On the batch-local merge gate — the claim of derivation was too strong.** Asked whether the
 gate was derivation or invention, the reviewer counted instead of judging: in `ai/COWORK_V2.md`,
@@ -739,3 +895,27 @@ docs lanes, instead of arguing it from first principles again.
 
 A record whose §10 is empty and whose §0 says `CLOSED` is malformed; so is one whose §0 says
 `ACTIVE` after every lane has terminated. Either is a defect against this file.
+
+### Stamped observations owed to §10 when it is filled
+
+Not a lane table and not a live mirror — each item is stamped, and a stamped observation that goes
+out of date is not stale in the way an unstamped assertion is. Recorded because they are evidence
+§10 will need and because the artefacts exist now.
+
+**As of 2026-08-25T15:40Z:**
+
+- **PR #4 (`mobile-design-auth`) merged** at `2026-08-25T15:30:11Z`, head `6d254fe`. Its `Final
+  check` comment covers `b96d672..6d254fe`, which is that head, so the approval covers what
+  merged with nothing to state. Only the *merged* half of its §5 release condition is satisfied:
+  the verdict URLs are still owed to §10, and until they are cited there the lease has not
+  released.
+- **PR #5 (`web-design-org`) is not merge-cleared.** It is under a remediation round: head is
+  `5f0cea9`, and the newest comment on it
+  ([`5412859497`](https://github.com/isadulla7/logicontrol-docs/pull/5#issuecomment-5412859497))
+  is the author's remediation of reopened round-2 findings, *requesting* a confirmation pass. No
+  review verdict covers `5f0cea9`. The record states this rather than asserting a clearance,
+  because the previous head `80a5f65` was already uncovered when `review-docs-pr3` raised it as
+  finding 11, and an uncovered head that nobody names reads as a covered one.
+- **Backend `T012` is at `CHANGES_REQUESTED`**, not `APPROVED`: `T012-015` recorded the lifecycle
+  regression and `T012-016` is a Security Reviewer `REVIEW_RESULT` of `CHANGES_REQUESTED` at head
+  `5ae4273`. §7 item 4 carries what is owed before it can move.
