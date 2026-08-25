@@ -8,6 +8,9 @@ Normal Claude/Codex/developer sessions start from `.ai/` to minimize context cos
 4. `.ai/DECISIONS_INDEX.md`
 5. relevant task/ADR only
 
+Multi-agent (Cowork) sessions additionally read `.ai/COWORK_V1.md` for the role, lifecycle,
+handoff and review protocol. It coordinates work only; it never overrides the foundation.
+
 ## Canonical version-controlled foundation
 - `docs/business/README_UZ.md`
 - `docs/architecture/README_UZ.md`
