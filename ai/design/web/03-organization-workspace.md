@@ -207,8 +207,8 @@ No status values appear in this design.
 - **Filters** `[D]`: role, membership status, free-text on identity.
 - **Bulk operations** `[D]`: suspend, reactivate. **Not** bulk role change — a role change is a
   security-consequential decision per person, and a bulk role assignment across a filtered set is
-  the shape of an accident. `[C]` Bulk operations follow the per-item semantics in
-  [04](04-operational-patterns.md) § 7.
+  the shape of an accident. `[D]` Bulk operations follow the per-item semantics in
+  [04](04-operational-patterns.md) § 10, which are this lane's proposal and not canon.
 
 `[C]` **What identifies a member is not decidable here.** `OPEN-001` covers the production
 credential, registration, OTP and trusted-device flow (`ai/DECISIONS_INDEX.md` § Open decisions), and
@@ -324,7 +324,7 @@ applicable row is answered; screens that answer "n/a" say why.
 | `S-ERROR-PARTIAL` | one panel of a hub fails | the failing panel shows `S-ERROR-LOAD`; every other panel renders normally. Explicitly specified because it is the normal case on hub screens |
 | `S-ERROR-ACTION` | write failed | the form keeps every entered value, the error appears next to the action, nothing is cleared. `fieldErrors` map to fields; a non-field error appears at form level |
 | `S-CONFLICT` | version conflict `[C]` | a first-class state, not an error: "this record changed while you were editing", showing which fields changed and by whom if the server says `[A-API]`, and offering Reload-and-reapply or Discard. **User input is never silently overwritten or silently discarded** |
-| `S-DENIED` | 403 on an attempted action | explains what was denied in the server's own terms; keeps entered data; offers a way back. Never a redirect to a generic page — a redirect loses the work |
+| `S-DENIED` | 403 on an attempted action | keeps entered data and offers a way back — always. Explains what was denied in the server's own terms **where the server supplies a reason** `[A-API]` (`A-21`); `[C]` `ADR-014` rethrows `AccessDeniedException` unmapped, so a 403 may carry no body, in which case the copy is generic. Never a redirect to a generic page — a redirect loses the work |
 | `S-NOT-FOUND` | 404 | identical copy whether the record is absent or belongs to another company `[C]` (`ADR-014` non-disclosure) |
 | `S-SESSION-END` | session no longer valid | [05](05-permission-aware-states.md) § 6. Work in progress is preserved across re-authentication |
 | `S-SAVING` | write in flight | the submit control is busy and idempotent against double submission `[C]` (`ADR-008` idempotency semantics); the form stays visible and readable |

@@ -51,7 +51,7 @@ degraded; **Medium** = a surface is degraded; **Low** = cosmetic or deferrable.
 | A-08 | Web writes may carry a `clientRequestId` under the canonical idempotency contract | [04](04-operational-patterns.md) §§ 10, 14 | High | disable the submit control during flight and accept that a retry may duplicate. Unacceptable for financial writes; bulk operations become non-retryable |
 | A-09 | Money serialises as a decimal **string** plus currency code; financial records also expose base amount and a reference to their FX snapshot | [04](04-operational-patterns.md) § 3 | High | if the FX snapshot is unreachable, converted figures are shown without their basis — which the design considers a defect, not a variant |
 | A-10 | Timestamps are ISO-8601 with offset; business dates are plain `YYYY-MM-DD` with no time | [04](04-operational-patterns.md) § 3 | Medium | if a business date arrives as a timestamp the client must be told which fields are dates, or it will shift them across borders |
-| A-11 | Related collections on a hub are separate endpoints keyed by the hub's id (`?tripId=…`) | [02](02-information-architecture.md) § 5 rule IA-5 | Medium | this follows directly from `[C]` no-cross-module-ownership, so the risk is mainly that the endpoints are simply not built yet; panels degrade to "not available" |
+| A-11 | Related collections on a hub are separate endpoints keyed by the hub's id (`?tripId=…`) | [02](02-information-architecture.md) § 5 rule IA-5 | Medium | this follows directly from `[C]` no-cross-module-ownership, so the risk is mainly that the endpoints are simply not built yet; panels degrade to "not available". **Exception: the Work-orders panel has no canonical key** — `[?]` `Q-14`, and its fallback is a weaker `vehicleId` + date-window query |
 | A-12 | Company profile is readable and updatable; the server, not the client, knows whether base currency may still change | [03](03-organization-workspace.md) ORG-04/05/06 | Medium | base currency is rendered as permanently immutable, which is this lane's recommendation anyway. See `Q-05` |
 | A-13 | A cross-module search read model exists | [02](02-information-architecture.md) § 8 | Low | already designed for: the palette navigates and acts, and hands off to per-workspace search |
 | A-14 | Projection responses carry an "as of" freshness marker | [02](02-information-architecture.md) § 6 rule IA-11 | Low | analytics surfaces are labelled as projections without a timestamp |
@@ -61,10 +61,23 @@ degraded; **Medium** = a surface is degraded; **Low** = cosmetic or deferrable.
 | A-18 | Evidence is retrievable through a short-lived presigned URL, and thumbnails are addressable separately from originals | expense/fuel/compliance evidence viewing | Medium | `[C]` `ADR-005` puts binaries in object storage with DB metadata only, and canon says the mobile client generates thumbnails — so some retrieval contract must exist; its shape is unknown |
 | A-19 | Bulk operations are **N individual calls**, not a batch endpoint | [04](04-operational-patterns.md) § 10 | Low | if a batch endpoint exists it must still report **per-item** outcomes; a batch that succeeds or fails as a unit cannot express what Spend Policy will actually do to a mixed selection |
 | A-20 | There is an authenticated principal and a resolved company context per request | everything | — | not an assumption so much as the `[C]` canonical chain; the **mechanism** is `OPEN-001` and is deliberately untouched here |
+| A-21 | **A denial carries a machine-readable reason the UI can render** | [05](05-permission-aware-states.md) § 3 L5; [03](03-organization-workspace.md) § 3 `S-DENIED`; **and it is A-06's own fallback** | High | generic denial copy with no server-supplied reason. Entered data is still kept and a route back is still offered, but the UI cannot say *what* was denied |
+
+`[C]` **A-21 needs stating plainly because `ADR-014` currently points the other way.** The advice
+rethrows `AccessDeniedException` unchanged rather than mapping it, deliberately, because Spring
+Security's `ExceptionTranslationFilter` is the only component that can decide 401 versus 403 and
+that decision waits on `OPEN-001`. So a 403 is **not guaranteed to carry a `problem+json` body at
+all** — no `code`, no `message`, no `correlationId`. [05](05-permission-aware-states.md) § 5 already
+draws the right conclusion about *shape* (the client renders what the server sent and must not
+invent a 401/403 distinction the platform has not made), but the consequence for the register is
+sharper: **if A-21 is false, A-06's fallback degrades further than § 3 below claims** — not merely
+buttons that lie, but buttons that lie and then fail with nothing the UI can render. That makes A-21
+worth deciding alongside A-06 rather than after it.
 
 ## 3. The three that matter most
 
-`[D]` If a backend reader has time for three questions, these are them.
+`[D]` If a backend reader has time for three questions, these are them. A-21 above is the fourth,
+and it is really the tail of A-06.
 
 ### A-06 — action declarations
 

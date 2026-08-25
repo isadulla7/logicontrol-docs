@@ -67,9 +67,11 @@ this product.
 tooltip). `[D]` Collapse state is a user preference persisted locally, and is forced collapsed below
 1280 px (see [07](07-responsive-behavior.md)).
 
-**D — Work surface.** Everything that matters. One of four layouts, defined in
-[04](04-operational-patterns.md) § 6: **list**, **split** (list + detail), **detail** (full page),
-**form**.
+**D — Work surface.** Everything that matters. It renders one of four things: a **list**
+([04](04-operational-patterns.md) § 4), a **form** ([04](04-operational-patterns.md) § 14), or one
+of the two master-detail layouts from [04](04-operational-patterns.md) § 9 — **split** (list +
+detail) or **full-page detail**. The third layout in § 9, the **drawer**, is an overlay over any of
+these rather than a fifth state of this region.
 
 **E — Context strip.** Appears only when it has something to say: selection count and bulk actions,
 pagination, or a result summary. `[D]` It is anchored to the bottom of the viewport rather than to
@@ -206,6 +208,19 @@ from the trip module, and then a set of **related panels**, each of which:
 Panels on Trip detail `[D]`: Legs (owned, in-aggregate), Expenses, Revenue, Fuel events, Work
 orders, Compliance documents and checks, Alerts, Driver ledger entries for this trip, Audit.
 
+`[?]` **One of these eight panels does not have a canonical key.** Expense, Revenue, FuelEvent and
+LedgerEntry each carry an optional `tripId` in the ERD, so each is servable exactly as specified.
+**WorkOrder does not** — its field list in `domain/domain-model-erd-uz.md` § Maintenance is
+`companyId, vehicleId, reporter, issue, priority, vendor, status, odometer, estimate/approved
+references, dates/version`, with no `tripId`, and `product/business-rules-uz.md` § Maintenance adds
+none. This contradicts `domain/GLOSSARY.md` § Operations and `domain/domain-model-erd-uz.md` § Trip,
+which both state that a Trip never owns WorkOrder entities and that those reference it *by* `tripId`.
+This is a canonical inconsistency, not a design choice; it is registered as
+[10](10-decisions-required.md) `Q-14` and carried into [06](06-api-assumptions.md) `A-11`. If
+WorkOrder genuinely carries no `tripId`, this panel must key on the Trip's `vehicleId` plus a date
+window — a different and materially weaker query, since it would show work orders for that vehicle
+during that period rather than work arising from that trip.
+
 This is the most consequential structural rule in the package for an implementer, because it is the
 difference between a screen that can be served and one that cannot. It also produces genuinely
 better UX: a compliance panel that is slow or forbidden does not stop a dispatcher seeing that the
@@ -312,8 +327,14 @@ structure:
    into the record where the decision is actually made.
 2. **Today's operations** — active trip count by state, trips blocked before start, trips due to
    depart today, vehicles unassigned.
-3. **Exposure** — driver cash exposure, unresolved advances, open settlements. `[C]` These are
-   canonical Owner Cockpit contents.
+3. **Exposure** — three items with three different warrants, kept distinct because only one of them
+   is cockpit canon. `[C]` **Driver cash exposure** is named in the canonical Owner Cockpit
+   enumeration (`product/business-rules-uz.md` § Profitability va Intelligence: active trips, spend,
+   repairs, driver cash exposure, fuel anomaly, compliance, budget, profitability).
+   `[C]` **Unresolved advances** is canonical, but as a **Control rule example**
+   (`product/business-rules-uz.md` § Control va Alert), not as cockpit content — so it belongs here
+   only because a control rule already exists to raise it. `[D]` **Open settlements** is this lane's
+   proposal and appears nowhere in canon as a cockpit item.
 4. **Trend** — a small number of profitability figures, marked as projections per IA-11.
 
 `[D]` Region 1 occupies the first screenful. If a chart appears above a decision, the screen has

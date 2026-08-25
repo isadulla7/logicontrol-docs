@@ -219,6 +219,43 @@ widths.
 
 **Owner:** Human / Product Owner. Not urgent.
 
+### Q-14 · Does a WorkOrder reference a Trip? Canon says both yes and no
+
+**This is a canonical inconsistency, not a design question.** It is recorded rather than resolved,
+and this lane has deliberately not designed around it silently.
+
+`[C]` `domain/GLOSSARY.md` § Operations: "A Trip never owns Expense, Fuel, WorkOrder or Document
+entities; those reference it by `tripId`." `[C]` `domain/domain-model-erd-uz.md` § Trip says the
+same — Trip does not own Expense/Fuel/WorkOrder/ComplianceDocument collections, and they reference it
+by `TripId`.
+
+`[C]` But the WorkOrder field list in `domain/domain-model-erd-uz.md` § Maintenance is `companyId,
+vehicleId, reporter, issue, priority, vendor, status, odometer, estimate/approved references,
+dates/version` — **there is no `tripId`** — and `product/business-rules-uz.md` § Maintenance adds
+none either. Expense, Revenue, FuelEvent and LedgerEntry each carry an optional `tripId` in their own
+ERD field lists. WorkOrder is the only one of the four entities named in that glossary sentence whose
+key is missing from its own field list.
+
+**Blocked:** the Work-orders panel on Trip detail ([02](02-information-architecture.md) § 5) and
+assumption `A-11`. It is the one panel of eight that is not servable as specified.
+
+`[D]` The consequence if WorkOrder genuinely carries no `tripId`: the panel must key on the Trip's
+`vehicleId` plus the trip's date window, which answers a different question — "what work was done on
+this vehicle around then" rather than "what work arose from this trip" — and it cannot support
+per-trip attribution of the work order itself. `[C]` Note that trip-level *cost* attribution survives
+either way, because canon recognises WorkOrder economic cost through a linked Finance Expense and
+Expense does carry `tripId`. What does not survive is attributing the operational work order to the
+trip.
+
+`[D]` This lane takes no position on which side is right. Either the glossary and ERD § Trip overstate
+the relationship and WorkOrder should be dropped from that sentence, or the ERD § Maintenance field
+list is incomplete and should carry an optional `tripId` like its three peers. Both are one-line
+corrections to canonical documents — they are simply not this lane's line to write.
+
+**Owner:** Human / Product Owner or Architecture, as a correction to
+`domain/domain-model-erd-uz.md` and/or `domain/GLOSSARY.md`. `[D]` Worth settling before `T058` opens
+the WorkOrder aggregate, because after that it is a schema change rather than a documentation fix.
+
 ## 2. Relationship to the existing open decisions
 
 `[C]` `ai/DECISIONS_INDEX.md` carries two open decisions. Both touch this lane:
@@ -255,10 +292,13 @@ widths.
 4. `Q-02` / `Q-06` — the role catalogue. Blocks steps 4–5 of the build order. `T013` will answer it.
 5. `Q-05` — base-currency mutability. Blocks ORG-06 only, and `T012` is deciding it now.
 6. `Q-01` — company provisioning. Blocks ORG-03 only.
+7. `Q-14` — the WorkOrder `tripId` canonical inconsistency. Blocks one panel of eight on Trip
+   detail, at build-order step 6. `[D]` Cheap to correct while it is a documentation fix; a schema
+   change once `T058` opens the WorkOrder aggregate.
 
 **Not blocking anything:**
 
-7. `Q-03`, `Q-04`, `Q-07`, `Q-08`, `Q-09`, `Q-12`, `Q-13`. Each has a designed fallback or a
+8. `Q-03`, `Q-04`, `Q-07`, `Q-08`, `Q-09`, `Q-12`, `Q-13`. Each has a designed fallback or a
    deferrable surface.
 
 `[D]` **And the honest structural answer to the question as asked:** the binding constraint on a web

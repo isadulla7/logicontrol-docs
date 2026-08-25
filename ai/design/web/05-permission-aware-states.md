@@ -97,13 +97,22 @@ simply unused and nothing else changes.
 The action was offered and the server refused it (403).
 
 `[D]` Treatment: `S-DENIED` from [03](03-organization-workspace.md) § 3. **Every entered value is
-kept.** The message explains what was denied, in the server's terms, and offers a route onward. No
-redirect — a redirect to a generic denial page throws away work the user did, and the user will have
-done that work in good faith because the client offered them the action.
+kept**, and a route onward is offered. No redirect — a redirect to a generic denial page throws away
+work the user did, and the user will have done that work in good faith because the client offered
+them the action.
+
+`[A-API]` **What the message can say depends on `A-21`.** Where the server supplies a
+machine-readable reason, the message explains what was denied in the server's own terms. `[C]` Where
+it does not, the UI falls back to generic denial copy — because `ADR-014` rethrows
+`AccessDeniedException` unchanged to the security filter chain rather than mapping it, so a 403 is
+not guaranteed to carry a `problem+json` body at all: no `code`, no `message`, no `correlationId`.
+Keeping the work and offering a route back do **not** depend on `A-21`; only the explanation does.
 
 `[D]` L5 is the fallback the whole design rests on if assumption `A-06` is refused: without action
 declarations, every action is offered optimistically and denial is discovered here. The product
-still functions. It is just slower and more irritating, and users learn which buttons lie.
+still functions — but be honest about how far it degrades if `A-06` **and** `A-21` are both false.
+That is not "users learn which buttons lie"; it is buttons that lie and then fail with nothing the
+UI can render. Which is why [06](06-api-assumptions.md) argues the two should be decided together.
 
 ## 4. Applying the ladder
 

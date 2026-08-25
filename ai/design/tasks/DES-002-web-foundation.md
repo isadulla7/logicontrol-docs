@@ -45,14 +45,32 @@ Canonical terminology; no endpoint/security rule invented as accepted; operation
 | 3. Company/Organization screens + states | `ai/design/web/03-organization-workspace.md` | Done — 14 screens, 16-state inventory |
 | 4. Table/filter/search/master-detail patterns | `ai/design/web/04-operational-patterns.md` | Done |
 | 5. Permission treatment without inventing RBAC | `ai/design/web/05-permission-aware-states.md` | Done |
-| 6. API assumptions marked explicitly | `ai/design/web/06-api-assumptions.md` | Done — 20 assumptions, each with risk and a fallback |
+| 6. API assumptions marked explicitly | `ai/design/web/06-api-assumptions.md` | Done — 21 assumptions, each with risk and a fallback |
 | 7. Figma reference if available | — | **Not available.** No Figma MCP tooling was exposed to this session. Delivered as Markdown specification; artboard list recorded in `09-handoff.md` § 9 |
 | 8. Handoff package | `ai/design/web/09-handoff.md` | Done |
 | Supporting: responsive behavior | `ai/design/web/07-responsive-behavior.md` | Done |
 | Supporting: shared-foundation implications | `ai/design/web/08-shared-foundation-implications.md` | Done — recorded here, not in `ai/design/foundation/**`, for Orchestrator reconciliation |
-| Supporting: decisions required | `ai/design/web/10-decisions-required.md` | Done — 13 open questions (`Q-01`..`Q-13`) |
+| Supporting: decisions required | `ai/design/web/10-decisions-required.md` | Done — 14 open questions (`Q-01`..`Q-14`), including one canonical inconsistency (`Q-14`) |
 
 - Nothing outside the file lease was touched: `ai/design/web/**` plus this packet's status notes.
 - `OPEN-001` is not pre-empted: no authentication or login surface is designed.
 - RBAC is not invented: the client is specified to hold no role name, no permission name and no
   role-to-permission table.
+
+## Review round 1
+
+Independent review of PR #5 (`review-des002`) returned `CHANGES_REQUESTED`: two MAJOR and five MINOR,
+all localized text fixes, with no screen, rule or structural decision changed. All seven addressed.
+
+| # | Finding | Resolution |
+|---|---|---|
+| 1 | MAJOR — `02` § 7 tagged three Overview exposure items `[C]` as Owner Cockpit contents; only driver cash exposure is | Split into three separate warrants: `[C]` cockpit-canonical, `[C]` but as a Control rule example, `[D]` mine |
+| 2 | MAJOR — `03` ORG-08 tagged `[C]` on a self-reference to the package's own `[D]` bulk pattern, and cited § 7 (Search) instead of § 10 | Re-tagged `[D]`, section corrected, and stated explicitly that the semantics are not canon |
+| 3 | MINOR — `02` § 2 region D pointed at `04` § 6 (Pagination) and named four layouts the target does not define | Repointed to § 4, § 9 and § 14; the drawer is now named and correctly described as an overlay rather than a fifth region state |
+| 4 | MINOR — `04` § 10 Compliance bulk operations had no canonical basis in a table framed as canon-grounded | Removed. `ownerType/ownerId` is an entity, not a responsible person, and no renewal workflow exists in canon. Every row now states its own warrant, and the removal is explained in place |
+| 5 | MINOR — the 403 body was an unregistered assumption **and** A-06's own fallback | Registered as `A-21`; L5 and `S-DENIED` now separate what always holds (work kept, route back) from what needs `A-21` (the explanation); `06` records that A-06 + A-21 both false degrades further than § 3 claimed |
+| 6 | MINOR — canon inconsistency: glossary and ERD § Trip say WorkOrder references a Trip by `tripId`; the ERD § Maintenance field list has no such field | Recorded as `Q-14`, framed as a canonical inconsistency for the owner, not resolved and not designed around silently. Consequence noted in `02` § 5 and `06` A-11 |
+| 7 | MINOR — `09` § 2 over-claimed canonical derivation for the decided list | Rewritten as a table marking each of the 18 items `[C]` or `[D]`, since § 2 is what a cold developer reads to learn what they may not change |
+
+The reviewer additionally recorded four items explicitly declined as taste rather than error — rail
+composition, density defaults, the URL model and the no-phone-layout call. Left untouched.

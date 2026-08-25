@@ -32,55 +32,48 @@ suit a design nobody has committed to.
 
 ## 2. What is decided
 
-Decided means: derived from canonical material, and safe to build against without asking anyone.
-Everything here is either `[C]` or a `[D]` whose justification is a `[C]`.
+**Decided means: these are the decisions of record for this design.** It does **not** mean all of
+them are canon-derived, and the distinction matters to you more than anywhere else in this package,
+because this is the list you will read to learn what you may not change.
 
-1. **Navigation mirrors module ownership.** Nine rail items in three groups.
-   [02](02-information-architecture.md) § 3.
-2. **Company scope is explicit in the URL** (`/c/:companyId/...`), and it is an addressing device,
-   never a security mechanism. [02](02-information-architecture.md) § 4.
-3. **All list state lives in the URL** — filters, sort, cursor, selection, split state.
-   [02](02-information-architecture.md) § 4.
-4. **Hub screens load related data as independent panels.** Trip, Vehicle, Driver and Customer detail
-   never fetch a cross-module object graph, because the backend structurally cannot produce one.
-   [02](02-information-architecture.md) § 5.
-5. **Trip operational and financial status are always two separate things.** No merged status
-   anywhere, at any breakpoint. [02](02-information-architecture.md) § 6 rule IA-6.
-6. **The client never derives an available action from a status value.**
-   [02](02-information-architecture.md) § 6 rule IA-7.
-7. **Money always carries its currency; no mixed-currency sum exists; converted figures are marked
-   and expose their FX basis.** [04](04-operational-patterns.md) § 3.
-8. **The ledger has no edit or delete affordance, and reversed entries stay visible.**
-   [02](02-information-architecture.md) § 6 rule IA-9.
-9. **Every list is paginated server-side, sorted server-side, filtered server-side.**
-   [04](04-operational-patterns.md) §§ 5–8.
-10. **Four distinct empty states; refetch never clears the table; failures scope to the smallest
-    region.** [04](04-operational-patterns.md) § 11.
-11. **Error copy comes from `code`, never from `message`; `correlationId` is always copyable.**
-    [04](04-operational-patterns.md) § 11, per `ADR-014`.
-12. **Version conflict is a first-class state that never loses user input.**
-    [03](03-organization-workspace.md) § 3 `S-CONFLICT`.
-13. **Bulk operations are N idempotent per-item calls with per-item results; "select all matching" is
-    a separate deliberate act; no bulk delete exists.** [04](04-operational-patterns.md) § 10.
-14. **The client holds no role names, no permission names and no role→permission table.**
-    [05](05-permission-aware-states.md) § 2.
-15. **The UI never distinguishes "not found" from "another company's".**
-    [05](05-permission-aware-states.md) § 5.
-16. **Compact density is the operational default; density is a user preference; no hover-only
-    affordances anywhere.** [04](04-operational-patterns.md) §§ 2, 4.
-17. **Full keyboard operation of every queue.** [04](04-operational-patterns.md) § 12.
-18. **Desktop and tablet only; below 768 px is explicitly unsupported.**
-    [07](07-responsive-behavior.md) § 1.
+Each item is marked. `[C]` means reversing it makes the product **wrong** — it contradicts a
+canonical rule or an architectural constraint, and changing it needs a change to the canonical
+source. `[D]` means reversing it makes the product **different** — it is this lane's proposal,
+argued from a stated user model, and a later designer or a product owner may legitimately overrule
+it.
 
-`[D]` If you deviate from one of these, say so in your task's evidence and say why. Several of them
-look like style preferences and are not: 4, 5, 6, 7, 8, 14 and 15 each encode a canonical rule or an
-architectural constraint, and reversing one produces a product that is wrong rather than different.
+| # | Decision | Where | Warrant |
+|---|---|---|---|
+| 1 | Navigation mirrors module ownership; nine rail items in three groups | [02](02-information-architecture.md) § 3 | `[D]`, but the *no-cross-module-graph* constraint behind it is `[C]` |
+| 2 | Company scope is explicit in the URL, and is an addressing device, never a security mechanism | [02](02-information-architecture.md) § 4 | `[D]` for the URL shape; `[C]` that it confers no authorization (`ADR-010`) |
+| 3 | All list state lives in the URL | [02](02-information-architecture.md) § 4 | `[D]` |
+| 4 | Hub screens load related data as independent panels; no cross-module object graph | [02](02-information-architecture.md) § 5 | **`[C]`** — the backend is structurally forbidden to serve one |
+| 5 | Trip operational and financial status are always two separate things, at every breakpoint | [02](02-information-architecture.md) § 6 IA-6 | **`[C]`** — business non-negotiable #4 |
+| 6 | The client never derives an available action from a status value | [02](02-information-architecture.md) § 6 IA-7 | **`[C]`** — business non-negotiable #12 |
+| 7 | Money always carries its currency; no mixed-currency sum; converted figures marked and expose their FX basis | [04](04-operational-patterns.md) § 3 | **`[C]`** — `ADR-004` and the Money model |
+| 8 | The ledger has no edit or delete affordance; reversed entries stay visible | [02](02-information-architecture.md) § 6 IA-9 | **`[C]`** — `ADR-003`, non-negotiables #3 and #8 |
+| 9 | Every list is paginated, sorted and filtered server-side | [04](04-operational-patterns.md) §§ 5–8 | **`[C]`** that lists are bounded; `[D]` that the client never does it locally — though doing it locally is a correctness bug, not a preference |
+| 10 | Four distinct empty states; refetch never clears the table; failures scope to the smallest region | [04](04-operational-patterns.md) § 11 | `[D]` |
+| 11 | Error copy comes from `code`, never from `message`; `correlationId` always copyable | [04](04-operational-patterns.md) § 11 | **`[C]`** — `ADR-014` states `message` is not a contract |
+| 12 | Version conflict is a first-class state that never loses user input | [03](03-organization-workspace.md) § 3 | **`[C]`** that conflict is explicit; `[D]` for the treatment |
+| 13 | Bulk operations are N idempotent per-item calls with per-item results; "select all matching" is a separate act; no bulk delete | [04](04-operational-patterns.md) § 10 | `[D]` for the pattern; **`[C]`** that no bulk delete can exist over append-only data |
+| 14 | The client holds no role names, no permission names and no role→permission table | [05](05-permission-aware-states.md) § 2 | `[D]` as a rule, but it is the reason this package could be written before `T013`; reversing it re-couples the web client to an undecided model |
+| 15 | The UI never distinguishes "not found" from "another company's" | [05](05-permission-aware-states.md) § 5 | **`[C]`** — `ADR-014` non-disclosure, `ADR-010` |
+| 16 | Compact density is the operational default; density is a user preference; no hover-only affordances | [04](04-operational-patterns.md) §§ 2, 4 | `[D]` |
+| 17 | Full keyboard operation of every queue | [04](04-operational-patterns.md) § 12 | `[D]` |
+| 18 | Desktop and tablet only; below 768 px explicitly unsupported | [07](07-responsive-behavior.md) § 1 | `[D]` — and explicitly revisitable: [07](07-responsive-behavior.md) § 1 and [10](10-decisions-required.md) `Q-13` both frame it as a product decision, not a technical one |
+
+`[D]` If you deviate from any of these, say so in your task's evidence and say why. For the `[C]`
+rows — 4, 5, 6, 7, 8, 11 and 15, plus the canonical halves of 2, 9, 12 and 13 — "why" needs to be a
+change to the canonical source or a superseding ADR, not a judgement call. For the `[D]` rows it can
+be a better argument than mine.
 
 ## 3. What is assumed
 
-[06](06-api-assumptions.md) is the register — 20 assumptions with risk and fallback for each. The
-three that will shape your first sprint are `A-06` (server-declared actions), `A-04` (a business
-error-code catalogue) and `A-08` (idempotency for web writes).
+[06](06-api-assumptions.md) is the register — 21 assumptions with risk and fallback for each. The
+ones that will shape your first sprint are `A-06` (server-declared actions), `A-21` (a denial
+carries a renderable reason — really the tail of `A-06`, and it should be decided with it), `A-04`
+(a business error-code catalogue) and `A-08` (idempotency for web writes).
 
 `[A-RBAC]` The role names in [01](01-roles-and-workspaces.md) § 4 are placeholders. So are the
 capability names in [05](05-permission-aware-states.md) § 7. Do not put either in code.
@@ -189,7 +182,7 @@ for the first contract gate.
 | responsive / adaptive | [07](07-responsive-behavior.md) | Complete |
 | terminology source | [README](README.md); `domain/GLOSSARY.md` | Complete |
 | API assumptions | [06](06-api-assumptions.md) | Complete, 20 registered with fallbacks |
-| unresolved decisions | [10](10-decisions-required.md) | Complete, 13 registered |
+| unresolved decisions | [10](10-decisions-required.md) | Complete, 14 registered, including one canonical inconsistency (`Q-14`) |
 
 `[C]` And the rule that governs your side of it: "Implementation agents never infer missing business
 behavior from pixels" (`ai/COWORK_V2.md` § 8). If a screen here implies a business rule you cannot
