@@ -15,7 +15,6 @@ Programme-wide. Numbering is one global sequence across all authoritative reposi
 - ADR-016 Cowork V1.1 — Security Reviewer Role and Evidence-led Protocol Amendments
 - ADR-017 Three-repository Split
 - ADR-018 Multi-repository Cowork V2 Product Engineering Model
-- ADR-020 Orchestrator Merge Authority Under a Complete Gate
 
 ## Backend ADRs — authoritative in `logicontrol-backend/docs/adr/`
 - ADR-002 Clean Architecture Dependency Rule
@@ -28,7 +27,11 @@ Programme-wide. Numbering is one global sequence across all authoritative reposi
 ## Mobile ADRs — authoritative in `logicontrol-android/docs/adr/`
 None yet.
 
-**Next free ADR number is ADR-021.**
+**Next free ADR number is ADR-021.** Neither 019 nor 020 is on `main` yet and neither is listed
+above, but both are written, and a number is claimed when the ADR is written rather than when it
+merges: ADR-019 is on `docs/ADR-019-driver-authentication-ux` (PR #6), and ADR-020's text is held
+on this branch at `ai/orchestration/ADR-020.draft.md` pending the serialized change that lands it.
+`OWNERSHIP.md` states the sequence is global and a number is never reused.
 
 ## Open decisions
 - **OPEN-001 Authentication UX.** The production credential, registration, OTP and trusted-device
@@ -71,7 +74,7 @@ None yet.
   before Android feature work queues its first real operation — in practice before roadmap `T084`,
   and before any slice that queues a financial write.
 
-- **OPEN-003 Merge authority under Cowork V2 — RESOLVED by `ADR-020`.** `ADR-013`/`ADR-016` Cowork V1.1 section 1 reserves
+- **OPEN-003 Merge authority under Cowork V2.** `ADR-013`/`ADR-016` Cowork V1.1 section 1 reserves
   merge to `main` to the human owner, and section 3 makes `APPROVED -> MERGED` a human-only
   transition. The programme owner has since directed, in session, that the Global Orchestrator may
   perform the merge itself once every gate is green — CI, independent QA evidence, an Independent
@@ -84,16 +87,24 @@ None yet.
   from the Independent Reviewer's finding 8 on `logicontrol-docs` PR #3, which caught the
   Orchestrator asserting the decision in a clearance record while no artefact anywhere carried it.
 
-  **Ratified by `ADR-020`, which is the correction completed.** The entry stays recorded rather
-  than deleted, because its history is the point: the direction was first asserted in a clearance
-  record while no artefact carried it, the Independent Reviewer graded that `MAJOR`, and the fix
-  was to write it down and hold it open until an ADR carried it. `ADR-020` defines the six-element
-  gate, keeps R4 and ADR acceptance with the human owner, and keeps the separation rule intact.
+  **The direction is not acted on until it is ratified.** `ai/COWORK_V2.md` §1 ranks accepted ADRs
+  above every other source and forbids silently reconciling them; ADR-013/ADR-016 §1 and §3 are
+  unamended, and this entry is by its own words open. So in the interim the accepted rule governs
+  and only the human owner merges to `main`. No merge has been performed under the new direction,
+  and none will be until an ADR carries it. Recorded from the same reviewer's finding 10, which
+  caught the first revision of this entry claiming the direction was already being followed while
+  the clearance record two files away still said only the human owner merges.
 
-  **The distinction this entry drew must not be generalised.** OPEN-001 and OPEN-002 block work:
-  nothing proceeds on the decisions they gate until they are resolved. This one blocked only a
-  change of authority. Nothing here licenses treating any other open decision as settled by
-  conversation, and OPEN-001 in particular is closed by ADR alone.
+  **This entry is open in a different sense from OPEN-001 and OPEN-002, and the difference must
+  not be generalised.** Those two block work: nothing proceeds on the decisions they gate until
+  they are resolved. This one blocks only a change of authority — normal work continues under the
+  *existing* accepted rule, which is why the interim is safe. Nothing here licenses treating any
+  other open decision as settled by conversation, and OPEN-001 in particular is closed by ADR
+  alone.
+
+  An ADR change is R4 and R4 is fully serialized, so ratification waits for a slot with no other
+  lane running. **No ADR number is pre-assigned**; the sequence is allocated when the ADR is
+  written, never reserved in advance.
 
 - **OPEN-004 Client error codes for authentication, authorization and business failures.**
   `ADR-014` fixes the `application/problem+json` body and requires clients to branch on `code`
