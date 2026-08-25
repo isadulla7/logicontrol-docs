@@ -4,16 +4,17 @@
 - Type: PRODUCT/DESIGN
 - Owner role: `web-designer`
 - Canonical repository: `logicontrol-docs`
+- Target implementation family: React/Next.js (canonical system architecture)
 - Parallel-safe with backend T012: YES — design only; no shared implementation files
 
 ## Outcome
-Create the first coherent admin/operator web information architecture and Organization/Company design foundation so backend P01 and future web implementation converge on the same product language without coupling design to unfinished backend code.
+Create the first coherent admin/operator web information architecture and Organization/Company design foundation so backend P01 and the future React/Next.js web implementation converge on the same product language without coupling design to unfinished backend code.
 
 ## Scope IN
 Supported target roles; global navigation/IA; Company/Organization overview/detail flows supported by canonical material; dashboard shell; table/search/filter/master-detail patterns; loading/empty/error/permission states; desktop/tablet behavior; shared design-foundation implications; Figma flows/screens when available.
 
 ## Scope OUT
-Selecting a web framework; writing web/backend code; inventing RBAC/security rules; implementing T012; inventing API contracts.
+Changing the accepted React/Next.js technology direction; bootstrapping a web implementation repository; writing web/backend code; inventing RBAC/security rules; implementing T012; inventing API contracts.
 
 ## Required inputs
 Canonical business rules, domain model/glossary, system architecture, programme roadmap and ADR-018.
@@ -26,7 +27,7 @@ Canonical business rules, domain model/glossary, system architecture, programme 
 5. Permission treatment without inventing RBAC.
 6. API assumptions marked explicitly.
 7. Figma reference if available.
-8. Handoff package for future Web Developer after a web implementation decision.
+8. Handoff package for a future React/Next.js Web Developer after the implementation repository is created.
 
 ## Acceptance
-Canonical terminology; no endpoint/security rule invented as accepted; operational workflows prioritize speed/clarity/data density; loading/empty/error/permission states represented; can evolve independently while T012 executes.
+Canonical terminology; no endpoint/security rule invented as accepted; operational workflows prioritize speed/clarity/data density; loading/empty/error/permission states represented; design remains feasible for the canonical React/Next.js client family and can evolve independently while T012 executes.
