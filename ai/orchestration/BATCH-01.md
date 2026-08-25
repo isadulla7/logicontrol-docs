@@ -367,16 +367,6 @@ visible the gap is from inside. An ADR is R4 and serialized.
 
 None of these defects blocks any lane in this batch.
 
-## 10. Outcomes
-
-Empty while §0 reads `ACTIVE`. Filled in the same change that sets `CLOSED` or `ABANDONED`, with
-one row per lane: terminal state, the PR and commit it ended at, the review verdicts recorded
-against it, and for an abandoned lane what was left behind and whether it is to be kept, reverted
-or superseded.
-
-A record whose §10 is empty and whose §0 says `CLOSED` is malformed; so is one whose §0 says
-`ACTIVE` after every lane has terminated. Either is a defect against this file.
-
 ## 9. Revision history
 
 **Revision 5** — this revision. Answers findings 12, 13 and 14 from the fourth review pass
@@ -501,3 +491,13 @@ and confirmed the R3-not-R4 classification for T012. The facts held; the argumen
 did not, in six places.
 
 **Revision 1** — `d43b303`. Superseded.
+
+## 10. Outcomes
+
+Empty while §0 reads `ACTIVE`. Filled in the same change that sets `CLOSED` or `ABANDONED`, with
+one row per lane: terminal state, the PR and commit it ended at, the review verdicts recorded
+against it, and for an abandoned lane what was left behind and whether it is to be kept, reverted
+or superseded.
+
+A record whose §10 is empty and whose §0 says `CLOSED` is malformed; so is one whose §0 says
+`ACTIVE` after every lane has terminated. Either is a defect against this file.
