@@ -39,7 +39,7 @@ Restated so it is not mistaken for an assumption:
 Risk is the cost to the design if the assumption is false: **High** = a pattern is materially
 degraded; **Medium** = a surface is degraded; **Low** = cosmetic or deferrable.
 
-| ID | Assumption `[A-API]` | Needed by | Risk | Fallback if refused |
+| ID | Assumption — `[A-API]` unless the ID cell marks it otherwise | Needed by | Risk | Fallback if refused |
 |---|---|---|---|---|
 | A-01 | A company-scoped collection endpoint exists per module resource the IA exposes | every workspace | High | none — the design assumes only that resources are readable at all; if a resource has no read endpoint its workspace does not exist |
 | A-02 | Collections support server-side filtering, sorting and text search by named fields | [04](04-operational-patterns.md) §§ 5, 7, 8 | High | client-side filtering over a page is **forbidden** ([04](04-operational-patterns.md) § 8); an unfilterable table is offered only with a default order and no filter chips |

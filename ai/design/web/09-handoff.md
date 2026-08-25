@@ -14,9 +14,9 @@ building.**
 architecture v1.0 (`architecture/system-architecture-uz.md` § Baseline). It is not this design's to
 change and not yours either — `[C]` "when that repository is created, it follows the
 already-canonical React/Next.js architecture unless superseded by a later ADR"
-(`ai/CURRENT_STATE.md` § Product/UI/UX lanes), and `[C]` superseding is the only route available: a
-decision that changes an accepted ADR supersedes it or records an explicit revision with rationale,
-and never edits it silently (`ai/DECISIONS_INDEX.md` § Rule).
+(`ai/CURRENT_STATE.md` § Product/UI/UX lanes). `[C]` And where such a decision changes an accepted
+ADR, two routes exist and neither is silent: "do not edit history silently. Supersede the ADR or
+record the explicit revision with rationale here." (`ai/DECISIONS_INDEX.md` § Rule).
 
 `[C]` `ai/CURRENT_STATE.md` § Web: "A dedicated web implementation repository has not yet been
 created, so no Web Developer execution lane is active yet." `[C]` `ai/COWORK_V2.md` § 3 lists the
