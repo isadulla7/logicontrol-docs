@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-25
-- Human approval: explicit owner decision, taken sub-decision by sub-decision against the DES-001 package. `D-08`'s grace-expiry write boundary was a fourth property added later, decided by the owner during independent review of this ADR and recorded in "`D-08` — where the line falls at grace expiry".
+- Human approval: explicit owner decision, taken sub-decision by sub-decision against the DES-001 package. `D-08`'s grace-expiry write boundary was a fourth property added later, decided by the owner during independent review of this ADR and recorded in "`D-08` — where the line falls at grace expiry, and the two bounds on the number".
 - Closes: `OPEN-001 Authentication UX`
 - Does not close: `OPEN-002 Android sync terminal-error policy`
 
@@ -44,7 +44,11 @@ The fourth property in the `D-08` row is a **decision**, not a proposal. `03-off
 
 **Who decided this, and when.** The boundary was **not** part of the original fifteen. It was raised during independent review of this ADR, put to the programme owner, and **decided by the owner** — first left to stand without limit, then reversed by them once the consequence below was set beside it. It is recorded with its actor because a decision written without the party who took it is precisely the defect that produced the first draft of this section, in which the Orchestrator stated the design package's proposal as settled fact and the Independent Reviewer caught it.
 
-**The alternative that was rejected, and why.** The position taken first was to let the device keep accepting business writes without limit after expiry. The owner reversed it once the consequence was put alongside it: those writes are still subject to server-side authorization when they sync, so a driver on a revoked or suspended membership could work for days or weeks and then have the entire queue rejected on reconnect. That trades a bounded client-side stop for an unbounded server-side rejection whose handling is `OPEN-002`, which is unresolved. The client-side stop is what keeps the failure visible to the driver at the moment it happens instead of weeks later. It **reduces but does not remove** the `OPEN-002` dependency: it shrinks the population of operations that can ever be permanently rejected, and `OPEN-002` still governs what happens to the ones that are.
+**The alternative that was rejected, and why.** The position taken first was to let the device keep accepting business writes without limit after expiry. The owner reversed it once the consequence was put alongside it: every request is authorized server-side on arrival (`F-06`) and the client is forbidden to evaluate that locally (`F-17`), so a driver on a revoked or suspended membership could keep working for days or weeks and have **everything written after expiry** rejected on reconnect. That trades a bounded client-side stop for an unbounded server-side rejection whose handling is `OPEN-002`, which is unresolved. The client-side stop is what keeps the failure visible to the driver at the moment it happens instead of weeks later.
+
+Note that this argument runs on **per-request authorization**, not on session revocation. It therefore does not depend on the membership leg of `A-06` left as a `T018` requirement above: even with no session revocation at all, writes made after expiry fail authorization on arrival.
+
+**What the boundary does and does not change.** It **shrinks the population** of operations that can ever reach a terminal rejection — operations queued *before* expiry are in the queue either way, and the boundary does not save them. It does **not** reduce the `OPEN-002` dependency itself: `OPEN-002` is needed exactly as much, and exactly as early, as it was before, and it still governs what happens to every operation that is rejected.
 
 **Two bounds govern the number of days, which is still open, and whoever sets it must weigh both.** They must not be collapsed into one argument.
 
@@ -82,7 +86,7 @@ A driver never learns, types or resets a password. The office creates their reco
 
 These values are not settled here. Each was presented and consciously deferred; none is an oversight. This list is authoritative for what remains open.
 
-- **D-08 — the number of days in the offline grace window.** The design package declines to invent it because it is a business-risk decision. The *shape* is decided and binding, including the grace-expiry write boundary. **Two bounds govern the number and both must be weighed; they are set out under "`D-08` — where the line falls at grace expiry" in the Decision section above.** Until the number is set, offline-boundary work and `T083` cannot be fully closed.
+- **D-08 — the number of days in the offline grace window.** The design package declines to invent it because it is a business-risk decision. The *shape* is decided and binding, including the grace-expiry write boundary. **Two bounds govern the number and both must be weighed; they are set out under "`D-08` — where the line falls at grace expiry, and the two bounds on the number" in the Decision section above.** Until the number is set, offline-boundary work and `T083` cannot be fully closed.
 - **The numeric policies this ADR does not set.** `S-05` PIN length and composition; `S-06` activation-code length, expiry and resend interval; `S-09` session duration, renewal interval **and absolute maximum lifetime** — under `D-07 B`'s long session the absolute maximum is a distinct value from the renewal interval. The *shapes* are decided above; the values are not, and `07` §6 lists them among its acceptance criteria. They are open on the same terms as `D-08` and `D-11`.
 - **D-11 — rate-limit scope, threshold, duration and reset.** The shape is decided and binding, including that the remaining time must reach the driver. The values are a security decision. Note that a whole fleet at one depot may share an IP, so an IP-scoped threshold can lock out a depot.
 
@@ -90,7 +94,7 @@ These remain open under `OPEN-001`'s successor scope and must be recorded as suc
 
 ### Not covered
 
-`OPEN-002` (Android sync terminal-error policy) is untouched by this ADR and remains open. D-10 borders on it — retaining a queue against a previous identity is squarely `OPEN-002` territory, which is one reason option D was not chosen — but this ADR neither closes nor prejudges it. `D-08`'s grace-expiry write boundary **reduces but does not remove** the dependency: it shrinks the population of operations that can ever reach a terminal rejection, and `OPEN-002` still governs what happens to the ones that do.
+`OPEN-002` (Android sync terminal-error policy) is untouched by this ADR and remains open. D-10 borders on it — retaining a queue against a previous identity is squarely `OPEN-002` territory, which is one reason option D was not chosen — but this ADR neither closes nor prejudges it. `D-08`'s grace-expiry write boundary **shrinks the population** of operations that can ever reach a terminal rejection. It does not reduce the `OPEN-002` dependency, which is needed exactly as much and exactly as early as before, and which still governs what happens to every operation that is rejected.
 
 ## Alternatives considered
 

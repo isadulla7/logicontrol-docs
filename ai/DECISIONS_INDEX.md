@@ -75,7 +75,7 @@ None yet.
   terminal failure is therefore not an error path — it is a promise the product has to unmake,
   and doing that silently would be worse than never accepting the write.
 
-  **ADR-019 `D-08` reduces this dependency but does not remove it.** The owner decided that at
+  **ADR-019 `D-08` shrinks what can reach this decision; it does not reduce the dependency.** The owner decided that at
   `GRACE_EXPIRED` the client stops accepting new business writes while plain capture continues.
   A bounded client-side stop shrinks the population of operations that can ever be permanently
   rejected on reconnect — the alternative, an unlimited offline queue, would have converted that
