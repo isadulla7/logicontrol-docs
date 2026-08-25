@@ -6,6 +6,25 @@ package; nothing new is introduced.
 **Status of this file:** input to a decision. It closes nothing. `OPEN-001` closes only when the
 human product owner accepts an ADR (`ai/DECISIONS_INDEX.md`; roadmap task `T017`).
 
+**How provenance works in this file.** Unlike the rest of the package, this brief does not carry an
+inline `FACT`/`DERIVED`/`PROPOSAL`/`ASSUMPTION` tag on every sentence — it is a compression of five
+other files and tagging each clause would make it unreadable for the one person it is written for.
+Provenance is carried structurally instead, and the structure is load-bearing rather than
+decorative:
+
+- **Section 1** is canonical only. Every item is an accepted ADR or a canonical document, and the
+  section exists to mark the boundary of what is *not* on the table.
+- **Sections 2 and 3** state the questions and the options. The column headed *"Designer's
+  proposal"* is exactly that — a `PROPOSAL` in every row, never a recommendation the sources make.
+- **Section 4** is the designer's judgement about field cost throughout. No source states any of it.
+- **Section 5** mixes canonical facts with conclusions drawn from them; the one derivation that
+  carries real weight is labelled inline.
+- **Section 6** is a proposed checklist, not an accepted acceptance standard.
+
+If a reader wants the tag-level provenance for any statement here, the file it was compressed from
+carries it. **A statement in this brief is never stronger evidence than its source file** — where
+the two appear to differ, the source file governs and this brief is the defect.
+
 ---
 
 ## 1. What is being decided
@@ -130,11 +149,15 @@ The condensed version of the trade-off tables, framed as the moment the cost lan
 
 Whatever is chosen:
 
-1. **A cold device cannot be signed into offline.** This follows from tenancy — a queued operation
-   needs a `company_id` and an idempotency identity of `(company_id, operation, client_request_id)`,
-   and a device with no Company context cannot form one. A driver whose phone is replaced out of
-   coverage cannot work. Activation must therefore be cheap and repeatable, and the operational
-   practice of activating before departure matters.
+1. **A cold device cannot be signed into offline.** **DERIVED, not canonical** — no document states
+   it; it is concluded from tenancy, and the full inference with its five supporting facts is in
+   [`03-offline-boundaries.md`](03-offline-boundaries.md) section 1. The short form: a queued
+   operation needs a `company_id` and an idempotency identity of `(company_id, operation,
+   client_request_id)`, and a device with no Company context cannot form one. A reader who wants to
+   overturn this consequence should attack that inference rather than search for a contradicting
+   document. If it holds, a driver whose phone is replaced out of coverage cannot work — so
+   activation must be cheap and repeatable, and the operational practice of activating before
+   departure matters.
 2. **`core:security` (`M002`) is on the critical path** for the Android client and does not exist
    yet.
 3. **Driver provisioning needs an operator surface** that does not exist yet — no web implementation

@@ -81,6 +81,11 @@ implementation; they are recorded here because they materially constrain the opt
 [`05-open-001-decision-alternatives.md`](05-open-001-decision-alternatives.md), not because this
 package is authoritative on the Android platform.
 
+**Read the two columns differently.** *Constraint* is the platform fact. *Why it matters here* is
+**DERIVED** — the designer's conclusion about what that constraint implies for this design, not
+something the Android documentation says. The same split applies to the *If it turns out false*
+column in section 3. A reader may rely on the constraints; the implications are arguable.
+
 | ID | Constraint | Why it matters here |
 |---|---|---|
 | **PF-01** | The framework `BiometricPrompt` is API 28+; the AndroidX `androidx.biometric` library is the supported route on a `minSdk 26` client (F-28). | Biometric unlock is available, but through the support library, and the floor is a real one. |

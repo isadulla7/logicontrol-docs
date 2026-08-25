@@ -287,8 +287,10 @@ not on the driver's phrasing:
 
 The destructive confirmation must state the consequence as a fact about the driver's work, not as
 a warning about data: *"3 expense records have not reached the office. If you sign out now they
-will be lost and cannot be recovered."* **PROPOSAL** — the wording is the designer's; the
-obligation to state it is **FACT** F-23.
+will be lost and cannot be recovered."* **PROPOSAL** — the wording is the designer's. The
+obligation behind it is **DERIVED**: **FACT** F-23 forbids accepted driver work being discarded
+silently, and naming the count is how this design discharges that. F-23 specifies no dialog, no
+count and no driver-facing wording.
 
 **A fourth option deserves consideration and is offered to the ADR (D-10):** sign-out that
 *retains* the queue against the original identity and refuses to discard it, deferring the choice

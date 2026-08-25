@@ -6,14 +6,22 @@ an authority over canonical product, domain or architecture material.
 
 ## Rules for anything written here
 
-1. Every statement is tagged as a **canonical fact** (cited), a **platform fact** (Android,
-   verifiable), a **design proposal** (arguable, the designer's), or an **assumption** about the
-   backend or product (never a contract). An untagged statement is a defect.
-2. No business or security rule is invented here. Where canonical material is silent, the silence
+1. Every statement is tagged as a **canonical fact** (cited — the source *says this*), a
+   **platform fact** (Android, verifiable), a **derived conclusion** (built from cited facts: the
+   facts are canonical, the inference is the designer's), a **design proposal** (arguable, the
+   designer's), or an **assumption** about the backend or product (never a contract). An untagged
+   statement is a defect.
+2. **A conclusion drawn from canonical facts is not itself a canonical fact.** Tag it `DERIVED` and
+   cite what it is built from. Without that slot, conclusions drift onto the `FACT` label: the
+   citations stay correct while the tag quietly carries the designer's reasoning about them, and no
+   citation spot-check can catch it — the cited facts really do say what they are cited for. The
+   risk concentrates in summary documents, where several files are compressed into a
+   recommendation, and those are the documents a human actually reads.
+3. No business or security rule is invented here. Where canonical material is silent, the silence
    is recorded as an open decision for the human owner, not filled in.
-3. Nothing here closes an `OPEN-*` decision. Only an accepted ADR does that
+4. Nothing here closes an `OPEN-*` decision. Only an accepted ADR does that
    (`ai/DECISIONS_INDEX.md`).
-4. Implementation agents never infer missing business behaviour from a design document
+5. Implementation agents never infer missing business behaviour from a design document
    (`ai/COWORK_V2.md` section 8).
 
 ## Contents

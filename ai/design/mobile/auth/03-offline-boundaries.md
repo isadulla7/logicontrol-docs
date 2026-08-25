@@ -11,9 +11,17 @@ Tags follow [`README.md`](README.md). Identifiers are defined in
 
 ## 1. The hard boundary: a cold device cannot be signed into offline
 
-**This is not a design preference. It follows from tenancy, and it must not be softened.**
+**DERIVED — and the tag matters here more than anywhere else in the package.** No canonical
+document says "a cold device cannot be signed into offline". This section *concludes* it, from five
+canonical facts that individually say something narrower. The facts below are `FACT`; the
+conclusion they add up to is the designer's, and a reader who wants to overturn it should attack
+the inference at point 4 rather than look for a document that contradicts the headline.
 
-The reasoning, entirely from canonical material:
+What the tag does **not** mean is that this is soft. The inference is short, and step 4 is close to
+mechanical. It is not a design preference, and it should not be softened — but it is reasoning, and
+labelling it `FACT` would have been the same defect this package's tagging scheme exists to prevent.
+
+The five facts:
 
 1. **FACT** F-18 — offline-first requires that every user-visible *write* commits to Room first and
    is acknowledged from local state. It says nothing that permits local-first acknowledgement of

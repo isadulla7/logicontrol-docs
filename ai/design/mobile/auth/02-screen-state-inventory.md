@@ -414,7 +414,7 @@ Behaviour is set by the queue, not by the driver's phrasing — see
 | `SYN` / `UPL` / `LOD` | Queue non-empty and online: *send first*, with visible progress, then sign out. This is the path the design makes easiest. |
 | `SFL` | The queue will not drain. Routes into `OPEN-002` territory; **not decided here** (**FACT** F-24, F-25). |
 | `PND` | The count, always, stated as work. |
-| `DST` | Queue non-empty and offline. Names the exact count and the exact consequence in the driver's language. **Default action is cancel.** The destructive action is not the visually dominant one. Required by **FACT** F-23 — the driver was told this work was accepted (**FACT** F-18) and the product is about to unmake that promise. |
+| `DST` | Queue non-empty and offline. Names the exact count and the exact consequence in the driver's language. **Default action is cancel.** The destructive action is not the visually dominant one. **DERIVED** from **FACT** F-23 and **FACT** F-18: the driver was told this work was accepted and the product is about to unmake that promise, so it may not be unmade silently. That a *dialog naming a count* is the right way to discharge that is the designer's choice — neither fact specifies a dialog, a count or any wording. |
 | `OFF` / `DEG` | Determines which of the above applies. |
 
 ---

@@ -116,3 +116,51 @@ The approval stands and was not re-issued. All five closed before the ADR author
 Observations 1, 2 and 5 share one failure mode — a claim or citation slightly stronger than its
 source. All three were closed by weakening the claim to what the source supports, not by reaching
 for a stronger source.
+
+**2026-08-25 — provenance sweep (cross-lane finding from DES-002), and a fifth tag.**
+
+`DES-002` reported that three of its seven findings were one failure: tagging for *emphasis* rather
+than *provenance*, specifically where the author was summarising their own earlier work rather than
+citing a source. Swept this package for the same pattern. **The hypothesis was right, and the root
+cause is structural.**
+
+**Root cause: the tagging scheme had four tags and no slot for a derivation.** A conclusion built
+out of canonical facts must be tagged something, and with no correct option the natural landing
+place was `FACT` — every such statement then cited facts that support it without stating it. This is
+invisible to citation review: the cited facts really do say what they are cited for, so a spot check
+comes back clean, and the defect lives only in the gap between what the facts say and what the
+sentence concludes.
+
+**Fix: a fifth tag, `DERIVED`** — a conclusion the designer reached by reasoning over cited facts;
+the facts are canonical, the inference is the designer's and is arguable. Recorded in
+`auth/README.md` (with why it was added) and in `ai/design/mobile/README.md` rules 1 and 2.
+
+Instances found and closed, beyond the one the reviewer caught:
+
+- **`06` D-04 was factually wrong, not merely mis-tagged.** It claimed biometric-plus-PIN was "the
+  only option that survives PF-02 and PF-03" while `05` D-04 option B (PIN only) says it *"works on
+  every device"* — PIN-only survives both platform facts equally. The honest claim is that C is the
+  only option that survives them **and** does not make the driver type on every launch; ranking C
+  above B is a judgement about typing cost, not a platform constraint.
+- **`06` D-10 said option C was "Required by FACT F-23".** F-23 forbids silent discard and rules out
+  option A; options B and D also satisfy it. Choosing C among three compliant options is judgement.
+- **`06` D-07 read as though PF-07 stated the conclusion.** PF-07 says background work can be
+  deferred indefinitely; "therefore an unreliable foundation for a security clock" is the inference.
+- **`01` J4 said the obligation to state the count "is FACT F-23".** F-23 specifies no dialog, no
+  count and no driver-facing wording.
+- **`03` section 1 — the package's strongest argument — presented five facts and a conclusion, with
+  the conclusion unlabelled.** Now explicitly `DERIVED`, with a note that a reader wanting to
+  overturn it should attack the inference at point 4 rather than look for a contradicting document.
+  The tag does not weaken it: the inference is short and step 4 is close to mechanical.
+- **`07` carried no tags at all** — the file the human owner reads most directly, and by this
+  package's own README rule that made every statement in it a defect. It now states how provenance
+  is carried structurally, section by section, with the rule that a statement in the brief is never
+  stronger evidence than its source file. Its one load-bearing derivation (consequence 1, the cold
+  device) is labelled inline.
+
+**Assessment for the Orchestrator: yes, three of the five original observations are one failure
+mode, and it is broader than three.** Observations 1, 2 and 5 are all "a claim slightly stronger
+than its source"; the sweep found five further instances of the same thing, concentrated exactly
+where predicted — in `06` and `07`, the compression files. The generalisation worth carrying into
+the next batch's briefing is that **a marking scheme without a `DERIVED` slot manufactures this
+defect**, and that citation spot-checking cannot detect it by construction.

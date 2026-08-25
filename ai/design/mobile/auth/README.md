@@ -11,15 +11,32 @@ backend. `OPEN-001` closes in an ADR, through backend task `T017`, before `T018`
 
 ## How to read this package
 
-Every statement in these files is tagged as exactly one of four kinds. If a statement is not
+Every statement in these files is tagged as exactly one of five kinds. If a statement is not
 tagged, treat that as a defect in this package, not as agreement.
 
 | Tag | Meaning | May an implementer rely on it? |
 |---|---|---|
-| **FACT** | Canonical. Cited to a file and section in `logicontrol-docs`, or to an accepted ADR, or to the Android repository's own accepted rules. | Yes. |
+| **FACT** | Canonical. Cited to a file and section in `logicontrol-docs`, or to an accepted ADR, or to the Android repository's own accepted rules. The cited source **says this**. | Yes. |
 | **PLATFORM** | An Android platform constraint, independent of LogiControl. Verifiable against the Android documentation for the API level in force. | Yes, after re-verifying against the current API level. |
+| **DERIVED** | A conclusion the designer reached by reasoning over cited facts. The **facts are canonical; the inference is the designer's** and is arguable. Cites the facts it is built from. | Only with the inference re-checked. It is not canon, and no cited source states it. |
 | **PROPOSAL** | The designer's opinion. Arguable. Chosen because it serves the driver, not because a document said so. | No. It is an input to the ADR, nothing more. |
 | **ASSUMPTION** | Something this design needs the backend or the product to provide, which no canonical document currently provides. | **No.** An assumption is not a contract and must not be implemented as one. |
+
+### Why there is a fifth tag
+
+The first version of this package had four. That was a defect, found in review: a **conclusion
+built out of canonical facts has to be tagged something**, and with no slot for it the natural
+landing place was `FACT` — which is how a statement like *"the only option consistent with
+tenancy"* ended up wearing a canonical label while citing facts that support it without stating it.
+The citations were correct in every such case; the *tag* was carrying the designer's conclusion
+about the sources rather than the sources.
+
+That failure mode is invisible to the check that catches everything else. Spot-checking the
+citations comes back clean, because the cited facts really do say what they are cited for. The
+defect lives only in the gap between what the facts say and what the sentence concludes. `DERIVED`
+exists to make that gap visible, and the strongest arguments in this package —
+[`03-offline-boundaries.md`](03-offline-boundaries.md) section 1 in particular — are `DERIVED`
+rather than `FACT`, which is what they always were.
 
 ## Files
 
