@@ -6,21 +6,38 @@ ADR va implementatsiya uchun tayyor kirish.
 
 ## To'g'ri endpoint — rasmiy ochiq JSON API
 
-[TAXMIN — jonli namuna bilan tasdiqlash kerak, pastga qarang] cbu.uz saytining kurs arxivi
-sahifasi ishlatadigan ichki `POST /common/json/` (Bitrix sessiya cookie'siga bog'liq) **ishlatilmaydi** —
-u brauzer sessiyasiga qaramli va rasmiy kafolatsiz. O'rniga CBU'ning ochiq GET API'si:
+[FAKT: egasi bergan real javob, 2026-08-26 — `cbu-sample.json`, verbatim] cbu.uz saytining kurs
+arxivi sahifasi ishlatadigan ichki `POST /common/json/` (Bitrix sessiya cookie'siga bog'liq)
+**ishlatilmaydi** — u brauzer sessiyasiga qaramli va rasmiy kafolatsiz. O'rniga CBU'ning ochiq
+GET API'si:
 
 ```
-GET https://cbu.uz/uz/arkhiv-kursov-valyut/json/            # bugungi barcha kurslar
-GET https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/2026-08-26/   # bitta valyuta, bitta sana
+GET https://cbu.uz/uz/arkhiv-kursov-valyut/json/                  # bugungi barcha kurslar
+GET https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/2026-08-20/   # bitta valyuta, bitta sana
 ```
 
-Kutiladigan yozuv shakli (umumiy ma'lum struktura; jonli namuna bilan pinlash kerak):
+Tasdiqlangan javob (USD, 20.08.2026):
 
 ```json
-{"id": 69, "Code": "840", "Ccy": "USD", "CcyNm_UZ": "AQSH dollari",
- "Nominal": "1", "Rate": "12650.55", "Diff": "…", "Date": "26.08.2026"}
+[{"id": 1, "Code": "840", "Ccy": "USD",
+  "CcyNm_RU": "Доллар США", "CcyNm_UZ": "AQSH dollari", "CcyNm_UZC": "АҚШ доллари",
+  "CcyNm_EN": "US Dollar",
+  "Nominal": "1", "Rate": "11794.88", "Diff": "-25.52", "Date": "20.08.2026"}]
 ```
+
+Parser pinlash uchun tasdiqlangan faktlar:
+
+1. **Javob har doim massiv** — bitta valyuta so'ralganda ham (`[{...}]`).
+2. **Sana formatlari mos emas**: URL'da ISO (`2026-08-20`), javobdagi `Date` — `dd.MM.yyyy`
+   (`"20.08.2026"`). Parser ikkala formatni adashtirmasligi kerak; javobdagi sana so'ralgan
+   sana bilan solishtiriladi (arxivda kurs yo'q kun bo'lsa CBU qaysi kunni qaytarishi
+   namunada ko'rinmadi — testda yakshanba/bayram sanasi bilan tekshiriladi).
+3. **`Rate` va `Nominal` — string**: `BigDecimal` ga parse qilinadi; haqiqiy kurs =
+   `Rate / Nominal` (USD da Nominal=1, lekin ba'zi valyutalar 10/100 nominalda).
+4. `Ccy` — ISO 4217 harfiy kod, bizning `CurrencyCode` bilan to'g'ridan-to'g'ri mos.
+5. `Diff` manfiy string bo'lishi mumkin; provayder uchun kerak emas, e'tiborsiz qoldiriladi.
+6. Nomlar to'rt tilda keladi (`CcyNm_UZ` va h.k.) — kerak bo'lsa UI lug'ati uchun manba,
+   provayder ishlatmaydi.
 
 ## Nega aynan arxiv endpointi muhim
 
@@ -39,8 +56,8 @@ beradi. Demak provayder real vaqtdagi kursni emas, so'ralgan sananing kursini ol
    valyutalar 1 emas, 10/100 nominalда keladi va bo'lish talab qilinadi.
 4. Kesh: bir sana+valyuta juftligi bir marta so'raladi (kurs kuni ichida o'zgarmaydi).
 
-## Jonli namuna kerak
+## Namuna holati
 
-Bu muhitdan cbu.uz'ga tarmoq chiqishi yopiq (proxy 403) — ihamkor namunasidagi kabi,
-brauzerda `https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/2026-08-26/` ochib javobni
-berilsa, `cbu-sample.json` sifatida pinlanadi va regressiya testi shu bilan yoziladi.
+Real javob pinlangan: `cbu-sample.json` (egasi, 2026-08-26). Provayder regressiya testi shu
+fayl bilan yoziladi. Ochiq savol (implementatsiyada tekshiriladi): kurs e'lon qilinmagan kun
+(yakshanba/bayram) so'ralganda API nima qaytaradi — bo'sh massivmi yoki oxirgi kursmi.
