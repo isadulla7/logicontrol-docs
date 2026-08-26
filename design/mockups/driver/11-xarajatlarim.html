@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>DS-02 · X2 — Xarajatlarim · X3 — Xarajat detali</title>
+<style>
+  :root{
+    --kok-50:#EFF4FB;--kok-100:#DCE7F6;--kok-200:#B9CFED;--kok-300:#8FB4E8;--kok-500:#3A6DB6;
+    --kok-600:#1B4F9C;--kok-800:#113363;--kok-950:#07172D;
+    --amber-400:#E8862D;
+    --n-0:#FFFFFF;--n-50:#F7F8FA;--n-100:#EFF1F5;--n-200:#E3E6EB;--n-300:#CDD2DA;--n-400:#A8AFBB;
+    --n-500:#808896;--n-600:#5F6672;--n-700:#474D58;--n-900:#1F232A;--n-950:#121417;
+    --qizil-50:#FCEEED;--qizil-100:#F7D5D3;--qizil-600:#B3261E;--qizil-800:#6E1713;
+    --yashil-50:#ECF5ED;--yashil-200:#A9D2AC;--yashil-600:#2E7D32;--yashil-800:#1C4E1F;
+    --sariq-50:#FBF4E1;--sariq-200:#E9CC7C;--sariq-500:#B07B00;--sariq-700:#6E4D00;
+    --font-ui:Inter,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  .app{
+    --surface-page:var(--n-50);--surface-raised:var(--n-0);--surface-sunken:var(--n-100);
+    --text-primary:var(--n-900);--text-secondary:var(--n-700);--text-muted:var(--n-500);
+    --border-default:var(--n-200);--border-strong:var(--n-400);
+    --act-bg:var(--kok-600);--act-text:var(--n-0);
+    --e1:0 1px 2px rgb(15 23 42/.06),0 1px 3px rgb(15 23 42/.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#E9EBEF;font-family:var(--font-ui);-webkit-font-smoothing:antialiased;padding:48px 24px 80px}
+  .pagehead{max-width:1100px;margin:0 auto 36px}
+  .pagehead h1{font-size:22px;font-weight:700;color:#1F232A;letter-spacing:-.3px}
+  .pagehead p{font-size:14px;color:#5F6672;margin-top:6px;line-height:1.55;max-width:820px}
+  .canvas{display:flex;gap:44px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .unit>figcaption{font-size:13px;font-weight:600;color:#474D58;margin-bottom:12px;text-align:center}
+  .unit>figcaption small{display:block;font-weight:400;color:#808896;margin-top:2px}
+  .phone{width:390px;height:844px;border-radius:36px;background:var(--surface-page);
+    box-shadow:0 0 0 10px #14161A,0 0 0 11px #3a3f47,0 28px 60px rgb(15 23 42/.35);
+    overflow:hidden;display:flex;flex-direction:column}
+  .osbar{height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 26px;font-size:13.5px;font-weight:600;color:var(--text-primary);flex:none}
+  .osbar .ic{letter-spacing:2px;font-size:11px;color:var(--text-secondary)}
+  .apphd{padding:12px 20px 0;flex:none}
+  .apphd h2{font-size:26px;font-weight:700;color:var(--text-primary);letter-spacing:-.3px}
+  .filters{display:flex;gap:8px;padding:12px 16px 4px;flex:none;overflow:hidden}
+  .f{height:38px;padding:0 15px;border-radius:999px;border:1.5px solid var(--border-strong);
+    display:inline-flex;align-items:center;font-size:14px;font-weight:500;color:var(--text-secondary);white-space:nowrap}
+  .f.on{background:var(--kok-600);border-color:var(--kok-600);color:#fff;font-weight:600}
+
+  .list{flex:1;overflow:hidden;padding:8px 16px 0}
+  .attn{background:var(--qizil-50);border:1.5px solid var(--qizil-100);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+  .attn .hd{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--qizil-800)}
+  .attn .row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:10px}
+  .attn .t{font-size:15.5px;font-weight:600;color:var(--text-primary)}
+  .attn .m{font-size:13px;color:var(--text-secondary);margin-top:2px}
+  .attn .go{flex:none;height:40px;padding:0 14px;border-radius:10px;background:var(--qizil-600);color:#fff;
+    font-size:14px;font-weight:600;display:inline-flex;align-items:center}
+
+  .sect{font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text-muted);margin:12px 4px 8px}
+  .exp{background:var(--surface-raised);border:1px solid var(--border-default);border-radius:14px;
+    padding:13px 15px;margin-bottom:8px;box-shadow:var(--e1);display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .exp .l .t{font-size:15.5px;font-weight:600;color:var(--text-primary)}
+  .exp .l .m{font-size:13px;color:var(--text-muted);margin-top:3px}
+  .money{font-variant-numeric:tabular-nums;font-weight:700;font-size:16px;color:var(--text-primary);text-align:right;flex:none}
+  .money small{font-weight:500;color:var(--text-muted);font-size:12px;margin-left:3px}
+  .chipst{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:500;margin-top:5px}
+  .chipst.warn{background:var(--sariq-50);color:var(--sariq-700);border:1px solid var(--sariq-200)}
+  .chipst.ok{background:var(--yashil-50);color:var(--yashil-800);border:1px solid var(--yashil-200)}
+  .chipst.info{background:var(--kok-50);color:var(--kok-800);border:1px solid var(--kok-200)}
+  .chipst.bad{background:var(--qizil-50);color:var(--qizil-800);border:1px solid var(--qizil-100)}
+
+  .tabbar{flex:none;height:76px;background:var(--surface-raised);border-top:1px solid var(--border-default);display:flex}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    font-size:12px;font-weight:500;color:var(--text-muted)}
+  .tab.on{color:var(--kok-600);font-weight:600}
+  .tab i{font-style:normal;font-size:20px;line-height:1}
+
+  /* X3 */
+  .apphead{display:flex;align-items:center;gap:8px;padding:10px 20px 0;flex:none}
+  .back{font-size:15px;font-weight:500;color:var(--kok-600);padding:12px;margin:-12px}
+  .content{flex:1;overflow:hidden;padding:8px 20px 0}
+  .head3 .cat{font-size:15px;font-weight:600;color:var(--text-secondary)}
+  .head3 .amt{font-size:34px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:2px}
+  .head3 .amt small{font-size:17px;color:var(--text-muted);font-weight:600}
+  .head3 .m{font-size:14px;color:var(--text-muted);margin-top:4px}
+  .rejbox{margin-top:14px;background:var(--qizil-50);border:1.5px solid var(--qizil-100);border-radius:14px;padding:14px 16px}
+  .rejbox .h{display:flex;gap:8px;font-size:14.5px;font-weight:700;color:var(--qizil-800)}
+  .rejbox p{font-size:14.5px;color:var(--text-primary);margin-top:8px;line-height:1.5;background:var(--surface-raised);
+    border-radius:10px;padding:10px 12px}
+  .rejbox .who{font-size:12.5px;color:var(--text-muted);margin-top:6px}
+
+  .tl{margin-top:18px}
+  .tl .hd{font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+  .step{display:flex;gap:12px}
+  .step .rail{display:flex;flex-direction:column;align-items:center;width:22px;flex:none}
+  .step .dotx{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--n-400);background:var(--surface-page);flex:none;margin-top:2px}
+  .step.done .dotx{background:var(--yashil-600);border-color:var(--yashil-600)}
+  .step.bad .dotx{background:var(--qizil-600);border-color:var(--qizil-600)}
+  .step .line{width:2.5px;flex:1;background:var(--n-300);margin:2px 0}
+  .step:last-child .line{display:none}
+  .step .bx{padding-bottom:16px}
+  .step .t{font-size:15px;font-weight:600;color:var(--text-primary)}
+  .step.bad .t{color:var(--qizil-800)}
+  .step .w{font-size:12.5px;color:var(--text-muted);margin-top:2px}
+  .cta{flex:none;padding:12px 20px 24px}
+  .btn{width:100%;height:58px;border:none;border-radius:14px;background:var(--act-bg);color:var(--act-text);
+    font:inherit;font-size:17px;font-weight:600}
+  .editnote{text-align:center;font-size:13px;color:var(--text-muted);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="pagehead">
+  <h1>DS-02 · X2 — Xarajatlarim · X3 — Xarajat detali</h1>
+  <p>Spetsifikatsiya: <b>ds-02-ekranlar.md §X2, §X3</b>. X2 — navbatning yagona yuzasi: har qator
+  bitta status so'zi (ikki qatlam lug'ati bitta katakda aralashmaydi); terminal yozuvlar alohida,
+  e'tibor tortadigan blokda tepada. X3 — «ishim qayerda?» javobi: status vaqt chizig'i, har bosqich
+  vaqti bilan; rad etilganda operator sababi ayblovsiz ohangda + «Qaytadan kiritish» yangi yozuv
+  ochadi (eski tarixda qoladi). Yuborilgan yozuv tahrirlanmaydi — sabab bir qatorda.</p>
+</div>
+<div class="canvas">
+
+  <figure class="unit">
+    <figcaption>X2 · HAP + PEND<small>terminal blok tepada; bo'limlar: yuborilmagan / yuborilgan</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>18:30</span><span class="ic">▲ ▮▮▮▯ ▊</span></div>
+      <div class="apphd"><h2>Xarajatlarim</h2></div>
+      <div class="filters">
+        <span class="f on">Hammasi</span><span class="f">Yuborilmagan · 2</span><span class="f">Ko'rib chiqilmoqda</span><span class="f">Rad etilgan</span>
+      </div>
+      <div class="list">
+        <div class="attn">
+          <div class="hd">❗ Harakat kerak — 1 ta yozuv</div>
+          <div class="row">
+            <div><div class="t">Ta'mirlash — 1 250 000 UZS</div><div class="m">Ofis qabul qilmadi: reys yakunlangan</div></div>
+            <span class="go">Ko'rish</span>
+          </div>
+        </div>
+        <div class="sect">Yuborilmagan · 2</div>
+        <div class="exp">
+          <div class="l"><div class="t">Ovqat</div><div class="m">Bugun 16:03 · Toshkent → Andijon</div><span class="chipst warn">🕐 Kutilmoqda</span></div>
+          <div class="money">40 000<small>UZS</small></div>
+        </div>
+        <div class="exp">
+          <div class="l"><div class="t">Yoqilg'i</div><div class="m">Bugun 09:12 · Toshkent → Andijon</div><span class="chipst info">↗ Yuborilmoqda</span></div>
+          <div class="money">480 000<small>UZS</small></div>
+        </div>
+        <div class="sect">Yuborilgan</div>
+        <div class="exp">
+          <div class="l"><div class="t">Yo'l haqi</div><div class="m">Bugun 11:30 · Kamchiq posti</div><span class="chipst info">◉ Ko'rib chiqilmoqda</span></div>
+          <div class="money">55 000<small>UZS</small></div>
+        </div>
+        <div class="exp">
+          <div class="l"><div class="t">Yoqilg'i</div><div class="m">Kecha 19:44 · Toshkent → Andijon</div><span class="chipst ok">✓ Tasdiqlandi</span></div>
+          <div class="money">390 000<small>UZS</small></div>
+        </div>
+        <div class="exp">
+          <div class="l"><div class="t">Ovqat</div><div class="m">23-avg · umumiy xarajat</div><span class="chipst bad">× Rad etildi</span></div>
+          <div class="money">120 000<small>UZS</small></div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><i>🛣</i>Reyslar</div>
+        <div class="tab on"><i>🧾</i>Xarajatlarim</div>
+        <div class="tab"><i>👤</i>Profil</div>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="unit">
+    <figcaption>X3 · HAP — rad etilgan yozuv<small>vaqt chizig'i to'liq; sabab ayblovsiz; qaytadan kiritish — yangi yozuv</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>18:31</span><span class="ic">▲ ▮▮▮▯ ▊</span></div>
+      <div class="apphead"><a class="back" href="#">← Xarajatlarim</a></div>
+      <div class="content">
+        <div class="head3">
+          <div class="cat">🍛 Ovqat · umumiy xarajat</div>
+          <div class="amt">120 000 <small>UZS</small></div>
+          <div class="m">Kiritilgan: 23-avg 13:40 · «Guliston yo'l kafesi, tushlik»</div>
+        </div>
+        <div class="rejbox">
+          <div class="h">× Rad etildi — operator sababi:</div>
+          <p>«Chekda boshqa sana ko'rsatilgan. Iltimos, xarajat kunini aniqlab qaytadan kiriting.»</p>
+          <div class="who">Dilnoza Karimova · 24-avg 10:05</div>
+        </div>
+        <div class="tl">
+          <div class="hd">Yozuv tarixi</div>
+          <div class="step done"><span class="rail"><span class="dotx"></span><span class="line"></span></span><span class="bx"><span class="t">Saqlandi</span><div class="w">23-avg 13:40 — qurilmada qabul qilindi</div></span></div>
+          <div class="step done"><span class="rail"><span class="dotx"></span><span class="line"></span></span><span class="bx"><span class="t">Qabul qilindi</span><div class="w">23-avg 15:02 — ofisga yetdi</div></span></div>
+          <div class="step done"><span class="rail"><span class="dotx"></span><span class="line"></span></span><span class="bx"><span class="t">Ko'rib chiqilmoqda</span><div class="w">23-avg 15:02</div></span></div>
+          <div class="step bad"><span class="rail"><span class="dotx"></span><span class="line"></span></span><span class="bx"><span class="t">Rad etildi</span><div class="w">24-avg 10:05 — sabab yuqorida</div></span></div>
+        </div>
+      </div>
+      <div class="cta">
+        <button class="btn">Tuzatib qaytadan kiritish</button>
+        <div class="editnote">Yuborilgan yozuv o'zgartirilmaydi — yangi yozuv ochiladi, bu tarix saqlanadi.</div>
+      </div>
+    </div>
+  </figure>
+
+</div>
+</body>
+</html>

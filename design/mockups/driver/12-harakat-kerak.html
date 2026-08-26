@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>DS-02 · X4 — Harakat kerak (terminal xato)</title>
+<style>
+  :root{
+    --kok-50:#EFF4FB;--kok-100:#DCE7F6;--kok-200:#B9CFED;--kok-300:#8FB4E8;--kok-500:#3A6DB6;
+    --kok-600:#1B4F9C;--kok-800:#113363;--kok-950:#07172D;
+    --amber-400:#E8862D;
+    --n-0:#FFFFFF;--n-50:#F7F8FA;--n-100:#EFF1F5;--n-200:#E3E6EB;--n-300:#CDD2DA;--n-400:#A8AFBB;
+    --n-500:#808896;--n-600:#5F6672;--n-700:#474D58;--n-900:#1F232A;--n-950:#121417;
+    --qizil-50:#FCEEED;--qizil-100:#F7D5D3;--qizil-600:#B3261E;--qizil-800:#6E1713;
+    --yashil-50:#ECF5ED;--yashil-200:#A9D2AC;--yashil-600:#2E7D32;--yashil-800:#1C4E1F;
+    --font-ui:Inter,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  .app{
+    --surface-page:var(--n-50);--surface-raised:var(--n-0);--surface-sunken:var(--n-100);
+    --text-primary:var(--n-900);--text-secondary:var(--n-700);--text-muted:var(--n-500);
+    --border-default:var(--n-200);--border-strong:var(--n-400);
+    --act-bg:var(--kok-600);--act-text:var(--n-0);
+    --e1:0 1px 2px rgb(15 23 42/.06),0 1px 3px rgb(15 23 42/.08);
+    --e3:0 12px 32px rgb(15 23 42/.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#E9EBEF;font-family:var(--font-ui);-webkit-font-smoothing:antialiased;padding:48px 24px 80px}
+  .pagehead{max-width:1100px;margin:0 auto 36px}
+  .pagehead h1{font-size:22px;font-weight:700;color:#1F232A;letter-spacing:-.3px}
+  .pagehead p{font-size:14px;color:#5F6672;margin-top:6px;line-height:1.55;max-width:820px}
+  .canvas{display:flex;gap:44px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .unit>figcaption{font-size:13px;font-weight:600;color:#474D58;margin-bottom:12px;text-align:center}
+  .unit>figcaption small{display:block;font-weight:400;color:#808896;margin-top:2px}
+  .phone{width:390px;height:844px;border-radius:36px;background:var(--surface-page);
+    box-shadow:0 0 0 10px #14161A,0 0 0 11px #3a3f47,0 28px 60px rgb(15 23 42/.35);
+    overflow:hidden;display:flex;flex-direction:column;position:relative}
+  .osbar{height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 26px;font-size:13.5px;font-weight:600;color:var(--text-primary);flex:none}
+  .osbar .ic{letter-spacing:2px;font-size:11px;color:var(--text-secondary)}
+  .osbar .off{color:var(--n-500);font-weight:700}
+  .apphead{display:flex;align-items:center;gap:8px;padding:10px 20px 0;flex:none}
+  .back{font-size:15px;font-weight:500;color:var(--kok-600);padding:12px;margin:-12px}
+  .content{flex:1;overflow:hidden;padding:8px 20px 0}
+
+  .badge{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border-radius:999px;
+    background:var(--qizil-50);border:1px solid var(--qizil-100);color:var(--qizil-800);font-size:13.5px;font-weight:600}
+  h2.scr{font-size:25px;font-weight:700;color:var(--text-primary);letter-spacing:-.3px;margin-top:12px;line-height:1.3}
+
+  .reccard{margin-top:16px;background:var(--surface-raised);border:1px solid var(--border-default);
+    border-radius:16px;padding:16px;box-shadow:var(--e1)}
+  .reccard .amt{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text-primary)}
+  .reccard .amt small{font-size:14px;color:var(--text-muted);font-weight:600}
+  .reccard .m{font-size:14px;color:var(--text-secondary);margin-top:4px;line-height:1.5}
+
+  .three{margin-top:16px}
+  .tr{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border-default)}
+  .tr:last-child{border-bottom:none}
+  .tr .i{flex:none;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+  .tr .i.ok{background:var(--yashil-50);color:var(--yashil-600)}
+  .tr .i.no{background:var(--qizil-50);color:var(--qizil-600)}
+  .tr .i.next{background:var(--kok-50);color:var(--kok-600)}
+  .tr .t{font-size:14px;font-weight:700;color:var(--text-primary)}
+  .tr p{font-size:14px;color:var(--text-secondary);margin-top:2px;line-height:1.5}
+  .tr p b{color:var(--text-primary)}
+
+  .cta{flex:none;padding:12px 20px 24px}
+  .btn{width:100%;height:58px;border:none;border-radius:14px;background:var(--act-bg);color:var(--act-text);
+    font:inherit;font-size:17px;font-weight:600}
+  .btn.ghost{background:transparent;color:var(--qizil-600);border:none;margin-top:8px;font-weight:500;font-size:15px;height:48px}
+
+  .scrim{position:absolute;inset:0;background:rgb(7 23 45/.5)}
+  .dialog{position:absolute;left:20px;right:20px;top:50%;transform:translateY(-50%);
+    background:var(--surface-raised);border-radius:20px;box-shadow:var(--e3);padding:24px 22px}
+  .dialog h3{font-size:20px;font-weight:700;color:var(--text-primary);line-height:1.3}
+  .dialog p{font-size:15px;color:var(--text-secondary);margin-top:10px;line-height:1.55}
+  .dialog p b{color:var(--text-primary)}
+  .dbtn{width:100%;height:56px;border:none;border-radius:14px;font:inherit;font-size:17px;font-weight:600}
+  .dbtn.cancel{background:var(--act-bg);color:var(--act-text);margin-top:18px}
+  .dbtn.destroy{background:transparent;color:var(--qizil-600);margin-top:8px;font-weight:500;font-size:15px}
+</style>
+</head>
+<body>
+<div class="pagehead">
+  <h1>DS-02 · X4 — Harakat kerak (terminal xato)</h1>
+  <p>Spetsifikatsiya: <b>ds-02-ekranlar.md §X4</b>; siyosat ADR-003 (OPEN-002). Terminal — faqat
+  server aniq biznes-rad kodi qaytargan hol. Ekran har doim uchta narsani aytadi: nima saqlangan /
+  nima bo'lmadi / keyingi qadam kimda. «Qayta urinish» tugmasi yo'q — terminal qayta urinib hal
+  bo'lmaydi. «Ochiq tark etish» — DST tasdiq bilan (yozuv serverda rad sifatida qayd etilgan,
+  fakt yo'qolmaydi). Ekran to'liq offline ishlaydi.</p>
+</div>
+<div class="canvas">
+
+  <figure class="unit">
+    <figcaption>X4 · HAP + DIS<small>uch qismli halol tushuntirish; harakatlar faqat ADR-003 ruxsat berganlari</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>18:33</span><span class="ic">▲ ▮▮▮▯ ▊</span></div>
+      <div class="apphead"><a class="back" href="#">← Xarajatlarim</a></div>
+      <div class="content">
+        <span class="badge">❗ Harakat kerak</span>
+        <h2 class="scr">Bu yozuvni ofis qabul qilmadi</h2>
+        <div class="reccard">
+          <div class="amt">1 250 000 <small>UZS · Ta'mirlash</small></div>
+          <div class="m">Kiritilgan: 24-avg 17:20 · Toshkent → Samarqand reysi<br>«Old g'ildirak podshipnigi, Jizzax ustaxona»</div>
+        </div>
+        <div class="three">
+          <div class="tr">
+            <span class="i ok">✓</span>
+            <div><div class="t">Yozuvingiz saqlanib qolgan</div><p>Hech narsa yo'qolmadi — mazmuni tepada, qurilmangizda turibdi.</p></div>
+          </div>
+          <div class="tr">
+            <span class="i no">×</span>
+            <div><div class="t">Ofisga o'tmadi</div><p>Server javobi: <b>reys allaqachon yakunlangan</b> — unga yangi xarajat bog'lab bo'lmaydi.</p></div>
+          </div>
+          <div class="tr">
+            <span class="i next">→</span>
+            <div><div class="t">Keyingi qadam sizda</div><p>Xarajatni <b>umumiy</b> sifatida yoki to'g'ri reys bilan qaytadan kiriting. Operator ham bu yozuvni konsolда ko'rib turibdi.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="cta">
+        <button class="btn">Tuzatib qayta kiritish</button>
+        <button class="btn ghost">Ochiq tark etish…</button>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="unit">
+    <figcaption>X4 · DST — ochiq tark etish tasdig'i<small>fakt serverda qayd etilgan; Bekor qilish dominant</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>18:34</span><span class="ic">▲ ▮▮▮▯ ▊</span></div>
+      <div class="apphead"><a class="back" href="#">← Xarajatlarim</a></div>
+      <div class="content" aria-hidden="true">
+        <span class="badge">❗ Harakat kerak</span>
+        <h2 class="scr">Bu yozuvni ofis qabul qilmadi</h2>
+        <div class="reccard">
+          <div class="amt">1 250 000 <small>UZS · Ta'mirlash</small></div>
+          <div class="m">Kiritilgan: 24-avg 17:20 · Toshkent → Samarqand reysi</div>
+        </div>
+      </div>
+      <div class="scrim"></div>
+      <div class="dialog" role="alertdialog">
+        <h3>Yozuvni tark etasizmi?</h3>
+        <p><b>1 250 000 UZS · Ta'mirlash</b> yozuvi «harakat kerak» ro'yxatidan olib tashlanadi
+        va qaytadan kiritilmasa hisobingizga tushmaydi.</p>
+        <p>Rad fakti ofisda qayd etilgan — operator konsolida ko'rinadi, hech narsa izsiz yo'qolmaydi.</p>
+        <button class="dbtn cancel">Bekor qilish — ro'yxatda qolsin</button>
+        <button class="dbtn destroy">Tark etish</button>
+      </div>
+    </div>
+  </figure>
+
+</div>
+</body>
+</html>

@@ -20,6 +20,12 @@ Kontent — realistik namuna (haqiqiy shaxs emas): haydovchi *Baxtiyor Ergashev*
 | [`driver/06-qayta-tasdiqlash.html`](driver/06-qayta-tasdiqlash.html) | A7, A9 | sheet+PEND · yordam (OFF, to'liq foydali) |
 | [`driver/07-sessiya-chiqish.html`](driver/07-sessiya-chiqish.html) | A11, A12 | HAP+PEND · OFF+DST dialog |
 
+| [`driver/08-reyslar.html`](driver/08-reyslar.html) | T1 | HAP (ACTIVE dominant) · OFF (shtamp) · EMPTY |
+| [`driver/09-reys-detal.html`](driver/09-reys-detal.html) | T2 | HAP · OFF+PEND (xarajat qo'shish ishlaydi) |
+| [`driver/10-xarajat-forma.html`](driver/10-xarajat-forma.html) | X1 | HAP+OFF · ERR-V · saqlash tasdig'i (Saqlandi ≠ Qabul qilindi) |
+| [`driver/11-xarajatlarim.html`](driver/11-xarajatlarim.html) | X2, X3 | ro'yxat+filtr+AttentionSection · rad etilgan detal + StatusTimeline |
+| [`driver/12-harakat-kerak.html`](driver/12-harakat-kerak.html) | X4 | terminal xato (uch qismli) · DST tark etish |
+
 `A3` (kompaniya tanlash) MVP da render qilinmaydi (OPEN-011) — maket chizilmagan.
 
 ## Operator (web, 1440px frame)
