@@ -19,14 +19,13 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   validatsiya); mock adapter DC-03 ga pinlangan: 0-asosli pagination, kodlar katalogi
   (`FIN_/TRP_/FLT_/ORG_/VALIDATION_FAILED`), `fieldErrors` massiv parsing, kategoriya
   lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-022.
-- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`) yo'q.** Kanon qoida
-  (`architecture/system.md` §Web, DS-03 §2/§5.1): server har yozuv uchun mavjud harakatlarni
-  e'lon qiladi (`available` / `disabled+sabab`), klient status yoki rol nomidan xulosa
-  chiqarmaydi. `api/contract-v1.md` javob shakllari (TripResponse, ExpenseResponse) bunday
-  maydonni tashimaydi. Web mock kanon bo'yicha `actions` e'lon qiladi; jonli integratsiya (B4)
-  dan oldin kontrakt/backend `actions[]` (yoki ekvivalent) bilan kengaytirilishi yoki qoidaning
-  amaliy shakli egasining qarori bilan aniqlanishi kerak. DS-03 §5.1 `disabled+sabab` shakli ham
-  shu qarorga kiradi.
+- **OPEN-022 — Server-e'lon-qilgan harakatlar shakli. YOPILDI (egasi, 2026-08-26).** Qaror:
+  **to'liq `actions[]` + disabled sabab, barcha resurslarda birdan.** Har resurs javobida:
+  `actions: [{name, available, disabledReason?: {code, message}}]` — klient hech narsa
+  chiqarmaydi, o'chirilgan harakat sababi bilan ko'rinadi (DS-03 §2 qoidalari o'zgarishsiz).
+  Qamrov: Expense, Trip, Driver, Vehicle, Assignment, Ledger yozuvi, Settlement, Member —
+  hammasi bir kontrakt kengaytmasida (v1.1). Implementatsiya: backend har javobda jonli
+  rol/holat bo'yicha hisoblaydi; web mock'dagi shakl kontraktga ko'chiriladi.
 
 ## Yopilgan (egasining yozma qarori bilan)
 
