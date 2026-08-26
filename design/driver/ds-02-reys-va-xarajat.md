@@ -5,10 +5,9 @@ Teg konvensiyasi va holatlar katalogi: [`README.md`](README.md). Ekran spetsifik
 [`ds-01-kirish-oqimi.md`](ds-01-kirish-oqimi.md).
 
 > **Bog'liqlik eslatmasi.** [FAKT: `roadmap/tasks.md`] DS-02 `DC-02` (ADR-003 — terminal-xato
-> siyosati) ga bog'liq; ADR-003 hali yozilmagan (`decisions.md` OPEN-002 ochiq). Bu hujjat
-> **mexanizmni** kanon bo'yicha to'liq chizadi va **siyosat** talab qilinadigan har nuqtani
-> [SAVOL → OPEN-002] bilan belgilaydi. ADR-003 qabul qilingach shu belgilangan nuqtalargina
-> to'ldiriladi — strukturaga tegilmaydi.
+> siyosati) ga bog'liq. Siyosatning o'zi egasining 2026-08-26 yozma qarori bilan yopilgan
+> (`decisions.md` OPEN-002 §Yopilgan) va bu hujjatga kiritilgan; ADR-003 matni endi shu qaror
+> ustida mexanik yoziladi.
 
 ## 0. Kanon chegaralar
 
@@ -45,7 +44,7 @@ tarjima:
 | `PENDING` / `RETRY_WAIT` | **Kutilmoqda** | Ofisga yuborish navbatда; aloqa qaytганда o'zi ketadi. |
 | `SENDING` | **Yuborilmoqda** | Hozir ketmoqda. |
 | `ACKNOWLEDGED` | **Qabul qilindi** | Ofis oldi. Endi qurilma o'chsa ham yozuv serverda. |
-| `REQUIRES_USER_ACTION` | **Yuborib bo'lmadi — harakat kerak** | Terminal muammo; o'z-o'zidan hal bo'lmaydi. Nima ko'rsatiladi va kim javobgar — [SAVOL → OPEN-002]. |
+| `REQUIRES_USER_ACTION` | **Yuborib bo'lmadi — harakat kerak** | Terminal muammo; o'z-o'zidan hal bo'lmaydi. [FAKT: OPEN-002 yopilgan] Terminal = server aniq biznes-rad kodi qaytargan hol; yozuv haydovchida ham, operator konsolida ham ko'rinadi; tarmoq/server texnik xatolari hech qachon terminal emas (cheksiz sekin retry). |
 
 **Biznes qatlami** (ofis xarajatga nima dedi?) — `Expense` lifecycle'idan:
 
@@ -69,7 +68,7 @@ stateDiagram-v2
         Kutilmoqda --> Yuborilmoqda: aloqa bor
         Yuborilmoqda --> QabulQilindi: server ACK
         Yuborilmoqda --> Kutilmoqda: vaqtinchalik xato (RETRY_WAIT)
-        Yuborilmoqda --> HarakatKerak: terminal xato (siyosat OPEN-002)
+        Yuborilmoqda --> HarakatKerak: terminal xato (biznes-rad)
     }
     state "Biznes (server)" as B {
         KoribChiqilmoqda --> Tasdiqlandi: operator
@@ -114,7 +113,7 @@ flowchart TD
     QUEUE -->|ha| SEND[Yuborilmoqda -> Qabul qilindi]
     QUEUE -->|yo'q| WAIT[Kutilmoqda - navbatda\nilova yopilsa ham saqlanadi]
     WAIT -->|aloqa qaytdi| SEND
-    SEND -->|terminal xato| ACTION[X4 Harakat kerak\nsiyosat OPEN-002]
+    SEND -->|terminal xato: biznes-rad| ACTION[X4 Harakat kerak]
     SEND --> BIZ[Ko'rib chiqilmoqda -> Tasdiqlandi / Rad etildi]
 ```
 
@@ -158,10 +157,16 @@ Qadam niyatlari:
 ## 5. J8 — Terminal xato («harakat kerak»)
 
 [FAKT: `ai/MASTER_PROMPT.md` §10] Charchagan/terminal ish ko'rinadi, indamay tashlanmaydi.
-[FAKT: `decisions.md` OPEN-002] Qaysi javoblar terminal, haydovchiga nima ko'rsatiladi, kim
-javobgar — ADR-003 hal qiladi.
+[FAKT: `decisions.md` OPEN-002 yopilgan, egasining qarori 2026-08-26] Siyosat: **terminal —
+faqat server aniq biznes-rad kodi bilan javob bergan hol** (masalan reys bekor qilingan,
+qoida buzilgan); tarmoq va server texnik xatolari hech qachon terminal emas — ular cheksiz,
+sekinlashuvchi retry bilan `Kutilmoqda`da qoladi. Terminal yozuv **ikkala tomonga ko'rinadi**
+(haydovchida «harakat kerak», operator konsolida rad sifatida); haydovchi tuzatib **yangi
+yozuv** sifatida qayta kiritadi (eski `client_request_id` qayta ishlatilmaydi — idempotency
+kaliti bilan ziddiyat yo'q, eski yozuv tarixda qoladi); operator ham o'z tomonidan hal qila
+oladi.
 
-[TAKLIF] ADR-003 dan qat'i nazar o'zgarmaydigan struktura:
+Struktura:
 
 1. Terminal holatga tushgan yozuv X2 da alohida, e'tibor tortadigan bo'limда turadi va
    `ConnectionStatusBar` uni hisobga oladi.
@@ -169,9 +174,10 @@ javobgar — ADR-003 hal qiladi.
    yo'qolmagan), **nima bo'lmadi** (ofisga yetmadi), **keyingi qadam kim tomonidan**.
 3. Yozuvni o'chirish yoki tark etish hech qachon avtomatik emas — faqat haydovchining ochiq
    harakati bilan va DS-01 `DST` qoidalari bilan.
-4. [SAVOL → OPEN-002] Uchinchi banddagi «keyingi qadam» matni, ma'suliyat taqsimoti (haydovchi
-   tuzatadimi / operator hal qiladimi), va qaysi server javoblari bu ekranga olib kelishi —
-   ADR-003 dan keyin to'ldiriladi.
+4. [FAKT: OPEN-002 yopilgan] «Keyingi qadam»: xato haydovchi tuzata oladigan bo'lsa —
+   «Tuzatib qayta kiritish» (X1 oldindan to'ldirilgan, yangi yozuv); bo'lmasa — «Ofis ko'radi»
+   (yozuv operator konsolida allaqachon ko'rinadi). Qaysi server kodlari terminal ro'yxatiga
+   kirishi `DC-03` kontraktida sanab o'tiladi.
 
 ## 6. DS-02 dan chiqqan savollar — holati
 
@@ -180,6 +186,9 @@ Egasining 2026-08-26 qarorlari bilan yopildi (`decisions.md` §Yopilgan): chek/d
 majburiy), tranzaksiya vaqti (OPEN-010 — haydovchi kiritgan lahza), reys aktyori (OPEN-011 —
 MVP da faqat operator).
 
+Keyinchalik yopilgan (2026-08-26 qarorlari): terminal-xato siyosati (OPEN-002 — 5-bo'lim),
+vaqt mintaqasi (OPEN-004 — kompaniya mintaqasi, standart Asia/Tashkent).
+
 Ochiq qolgan: [SAVOL → `DC-03`] valyutalar ro'yxati va standart valyuta manbai (kompaniya
-bazaviy valyutasimi, oxirgi ishlatilganmi — server aytadi); [SAVOL → OPEN-002] terminal-xato
-siyosati (5-bo'lim).
+bazaviy valyutasimi, oxirgi ishlatilganmi — server aytadi); terminal kodlar ro'yxati ham
+kontraktda sanab o'tiladi.

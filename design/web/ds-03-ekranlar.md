@@ -47,7 +47,7 @@ Barchasi [TAKLIF]; kanon iqtiboslar teglangan.
 |---|---|
 | `HAP` | Navigatsiya + kontent. |
 | `LOAD` | Birinchi yuklanish: shell skeleti; navigatsiya darhol, kontent keyin. |
-| `EMPTY` | Foydalanuvchida nol faol a'zolik: «Sizga kompaniya biriktirilmagan» + kim bilan bog'lanish — DS-01 `A3 EMPTY` ekvivalenti. |
+| `EMPTY` | Foydalanuvchida kompaniya yo'q: «Kompaniya yaratish» oqimiga taklif (STIR autofill bilan, [FAKT: OPEN-013 yopilgan]); a'zoligi to'xtatilgan foydalanuvchiga esa «kim bilan bog'lanish» ko'rsatiladi. |
 | `OFF` | Banner: «Aloqa yo'q — ko'rsatilayotgan ma'lumot HH:MM holati». Har bo'limdagi harakatlar `DIS`. Aloqa qaytganda banner o'zi yo'qoladi, ish davom etadi. |
 | `ERR` | Butun bo'lim yuklanmasa: bo'lim ichida xabar + retry; navigatsiya ishlayveradi — bitta bo'lim xatosi konsolni o'ldirmaydi. |
 | `DIS` | Butun bo'lim ruxsatsiz bo'lsa navigatsiyada ko'rinmaydi ([FAKT: server e'lon qiladi]); qisman ruxsat — bo'lim ichida harakat darajasida. |
@@ -131,11 +131,9 @@ takrorlamaydi.
 
 ## 5. DS-03 dan chiqadigan savollar — holati
 
-Yopilgan (egasining 2026-08-26 qarorlari, `decisions.md`): konsol tili — o'zbek + rus
-(OPEN-003); FX «tranzaksiya vaqti» — haydovchi kiritgan lahza (OPEN-010).
-
-Ochiq qolgan:
-
-- [SAVOL → egasiga] Operator kirish oqimi (kanon: «keyinroq») — alohida dizayn task kerak.
-- [SAVOL → egasiga] Kompaniya yaratish/onboarding yuzasi qayerda yashaydi (STIR autofill bilan).
-- [SAVOL → OPEN-004] Vaqt mintaqasi ko'rsatish qoidasi.
+Barchasi yopilgan (egasining 2026-08-26 qarorlari, `decisions.md` §Yopilgan): konsol tili —
+o'zbek + rus (OPEN-003); FX «tranzaksiya vaqti» — haydovchi kiritgan lahza (OPEN-010); vaqt —
+kompaniya mintaqasi, standart Asia/Tashkent (OPEN-004); operator kirishi — email + parol,
+2FA keyinroq (OPEN-012); onboarding — konsol ichida birinchi kirishda, STIR autofill bilan
+(OPEN-013). Operator kirish ekrani va onboarding oqimining batafsil dizayni WB-01
+bajarilishida shu qarorlar asosida chiziladi.

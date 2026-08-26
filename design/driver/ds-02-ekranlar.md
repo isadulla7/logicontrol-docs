@@ -16,7 +16,7 @@ DS-01 komponentlari (`ConnectionStatusBar`, `QueueSummaryLine`, `InlineMessage`,
 | `X1` | Xarajat kiritish | J6 | Offline-first forma |
 | `X2` | Xarajatlarim | J7 | Ro'yxat + ikki qatlam statusi; navbat yuzasi ham shu |
 | `X3` | Xarajat detali | J7 | Status tarixi, operator sababi |
-| `X4` | Harakat kerak (terminal xato) | J8 | Siyosati [SAVOL → OPEN-002] |
+| `X4` | Harakat kerak (terminal xato) | J8 | Siyosat: [FAKT: OPEN-002 yopilgan] biznes-rad; ikkala tomonga ko'rinadi; qayta kiritish yangi yozuv sifatida |
 
 ## 2. Qamrov matritsasi
 
@@ -45,7 +45,8 @@ Butun matritsa [TAKLIF].
   cheklanishi mumkin [TAXMIN, `DC-03` tasdiqlaydi]; keshdagi ro'yxat ko'rsatilaveradi, yangilash
   vaqtincha o'chadi.
 - **`DST` faqat `X4` da.** Yagona qaytarib bo'lmas harakat — terminal yozuvni ochiq tark etish
-  (agar ADR-003 shunday yo'l bersa). Xarajat kiritish, tahrirlash, ro'yxat — hech biri hech
+  ([FAKT: OPEN-002 yopilgan] bu yo'l mavjud — yozuv serverda rad sifatida qayd etilgani uchun
+  fakt yo'qolmaydi). Xarajat kiritish, tahrirlash, ro'yxat — hech biri hech
   narsani o'chirmaydi.
 - **`T2`/`X3` da `DIS`.** Server e'lon qilmagan harakat ko'rsatilmaydi yoki sabab bilan
   o'chiriladi ([FAKT: `business-rules.md` #10] klient holatdan harakat xulosasini chiqarmaydi —
@@ -87,7 +88,7 @@ o'qish rejimi.
 | `LOAD` | Skeleton; `T1` dan kelgan ma'lum maydonlar (yo'nalish, mijoz) darhol ko'rsatiladi. |
 | `OFF` | Keshdagi detal + holat shtampi. Xarajat qo'shish **to'liq ishlaydi** — bu ekranning offline'da ham yashashga haqqi bor. |
 | `ERR-S` | Detal yangilanmadi: kesh + retry. |
-| `DIS` | Server bu reysga xarajat qo'shishni e'lon qilmagan bo'lsa tugma sabab bilan o'chadi [TAXMIN, `DC-03`: mavjud harakatlar serverdan keladi]. Offline'da esa tugma ochiq qoladi — oxirgi ma'lum ruxsat amal qiladi va yakuniy hukmni server sinxronda chiqaradi [SAVOL → OPEN-002: rad etilsa terminal siyosat]. |
+| `DIS` | Server bu reysga xarajat qo'shishni e'lon qilmagan bo'lsa tugma sabab bilan o'chadi [TAXMIN, `DC-03`: mavjud harakatlar serverdan keladi]. Offline'da esa tugma ochiq qoladi — oxirgi ma'lum ruxsat amal qiladi va yakuniy hukmni server sinxronda chiqaradi; rad etsa yozuv [FAKT: OPEN-002 yopilgan] terminal qoidasi bilan «harakat kerak»ka tushadi. |
 | `PEND` | Shu reysning yuborilmagan xarajatlari soni ko'rinadi. |
 
 ### `X1` — Xarajat kiritish
@@ -166,7 +167,7 @@ O'zgarmas struktura ([`ds-02-reys-va-xarajat.md`](ds-02-reys-va-xarajat.md) §5)
 |---|---|
 | `HAP` | Yozuvning to'liq mazmuni (haydovchi mehnati ko'rinadi, yo'qolmaganiga ishonch) + holat tushuntirishi. |
 | `OFF` | Ekran to'liq offline ishlaydi — yozuv lokalda. |
-| `DIS` | [SAVOL → OPEN-002] Qaysi harakatlar mavjud (qayta urinish? tuzatib qayta yuborish? operatorga topshirish?) — ADR-003 dan; server e'lon qilmagan harakat ko'rsatilmaydi. |
+| `DIS` | [FAKT: OPEN-002 yopilgan] Harakatlar: «Tuzatib qayta kiritish» (yangi yozuv, X1 oldindan to'ldirilgan) va «Ochiq tark etish» (DST bilan); «qayta urinish» yo'q — terminal qayta urinib hal bo'lmaydi. Server e'lon qilmagan harakat ko'rsatilmaydi. |
 | `PEND` | Terminal yozuvlar soni statusbar hisobida alohida og'irlik bilan turadi. |
 | `DST` | Yozuvni ochiq tark etish (agar ADR-003 ruxsat bersa): DS-01 `DestructiveDialog` qoidalari — aniq mazmun aytiladi, standart tanlov «Bekor qilish». |
 

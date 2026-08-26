@@ -17,9 +17,11 @@ Teg konvensiyasi va holatlar katalogi: [`README.md`](README.md). Ekran spetsifik
 - [FAKT: `product/business-rules.md` #1; `ai/MASTER_PROMPT.md` §8] Har so'rovda zanjir:
   Authentication → Company Context → Permission → tenant avtorizatsiya. A'zolik holati jonli
   server holatidan olinadi, sessiya claim'i sifatida ishonilmaydi.
-- [FAKT: `decisions.md` OPEN-001] Grace-oyna kunlari, rate-limit qiymatlari, operator
-  verifikatsiya protsedurasi — ochiq; ADR-002 (`DC-01`) yopadi. Bu hujjat ularni **qiymat
-  sifatida ishlatmaydi**, faqat joyini ko'rsatadi.
+- [FAKT: `decisions.md` OPEN-001 yopilgan, egasining qarori 2026-08-26] Qiymatlar: grace-oyna
+  **30 kun**; aktivatsiya kodi **6 raqam / 15 daqiqa / SMS + operator og'zaki**, qayta yuborish
+  60 soniyadan keyin; PIN **4 raqam** (5 noto'g'ri urinish → 30 s pauza, ikki baravar o'sadi);
+  server rate-limit **5 urinish → 15 daqiqa** (kod so'rovlari soatiga 3, kuniga 10); sessiya
+  **90 kun sliding**; **1 faol qurilma**. ADR-002 (`DC-01`) shu qarorlarni hujjatlashtiradi.
 - [FAKT: `decisions.md` OPEN-003 yopilgan, egasining qarori 2026-08-26] Interfeys tillari:
   o'zbek + rus, parity bilan — til tanlash ekrani (`A0`) doimiy qismga aylandi.
 - [FAKT: `decisions.md` OPEN-005 yopilgan] MVP da bir haydovchi — bitta faol a'zolik; kompaniya
@@ -39,7 +41,7 @@ implement qilishi `DC-01`/`BK-03` ishi.
 | `ACTIVATING` | Aktivatsiya urinishi ketmoqda. |
 | `ACTIVE_VERIFIED` | Sessiya bor va backend uni yaqinда qabul qilgan. |
 | `ACTIVE_UNVERIFIED` | Sessiya bor, backend'ga yaqinda yetib borilmagan, lekin grace-oyna ichida. **Ilova autentifikatsiyalanganiga ishonadi, lekin bilmaydi.** |
-| `GRACE_EXPIRED` | Grace-oyna server aloqasisiz tugadi. Qiymati [SAVOL → OPEN-001]. |
+| `GRACE_EXPIRED` | Grace-oyna (30 kun [FAKT: OPEN-001 yopilgan]) server aloqasisiz tugadi. |
 | `SESSION_REJECTED` | Backend sessiyani aniq rad etdi (muddati o'tgan / bekor qilingan / a'zolik to'xtatilgan). |
 
 **O'q 2 — lokal qulf** [TAKLIF]: `LOCKED` (PIN/biometrik hali yechilmagan) /
@@ -57,7 +59,7 @@ stateDiagram-v2
     ACTIVATING --> NO_IDENTITY: bekor qilindi / rate-limit
     ACTIVE_VERIFIED --> ACTIVE_UNVERIFIED: aloqa uzildi
     ACTIVE_UNVERIFIED --> ACTIVE_VERIFIED: har muvaffaqiyatli autentifikatsiyalangan so'rov
-    ACTIVE_UNVERIFIED --> GRACE_EXPIRED: grace-oyna tugadi (qiymati OPEN-001)
+    ACTIVE_UNVERIFIED --> GRACE_EXPIRED: grace-oyna (30 kun) tugadi
     GRACE_EXPIRED --> ACTIVE_VERIFIED: ulanish qaytdi, sessiya hali kuchda
     GRACE_EXPIRED --> SESSION_REJECTED: ulanish qaytdi, sessiya rad etildi
     ACTIVE_VERIFIED --> SESSION_REJECTED: backend rad etdi
@@ -84,7 +86,7 @@ lekin hech qaerda to'g'ridan-to'g'ri aytilmagan.
 
 ```mermaid
 flowchart TD
-    START[Ilova birinchi ochilishi\nNO_IDENTITY] --> LANG[A0 Til tanlash\nSHARTLI - OPEN-003]
+    START[Ilova birinchi ochilishi\nNO_IDENTITY] --> LANG[A0 Til tanlash\nO'zbekcha / Русский]
     LANG --> PHONE[A1 Telefon raqami]
     PHONE -->|tarmoq yo'q| WALL[A10 Ulanish kerak\nkiritilgan raqam saqlanadi]
     WALL -->|ulanish qaytdi| PHONE
@@ -112,13 +114,13 @@ Qadam niyatlari:
   har doim A2 ga o'tadi; muvaffaqiyatsizlik A2 da neytral xabar bilan chiqadi («kod kelmadi yoki
   mos kelmadi») — ro'yxatdan o'tgan/o'tmagan farqi hech qaysi javobda, vaqtda yoki ekranda
   bilinmaydi.
-- [SAVOL → OPEN-001] Kod yetkazish kanali (SMS avtomatik? operator og'zaki aytadimi?), kod
-  uzunligi, amal muddati, qayta yuborish intervali — ADR-002 belgilaydi. Dizayn ikkala kanalga
-  chidamli: kod qaysi yo'l bilan kelsa ham A2 qo'lda kiritishga qurilgan, SMS autofill —
-  ustiga qo'yiladigan qulaylik, shart emas.
+- [FAKT: OPEN-001 yopilgan] Kod: **6 raqam, 15 daqiqa amal qiladi**; SMS avtomatik yuboriladi,
+  kelmasa operator telefonda og'zaki aytadi (tungi/aloqasiz holat zaxirasi); qayta yuborish
+  60 soniyadan keyin ochiladi. Dizayn ikkala kanalga chidamli: A2 qo'lda kiritishga qurilgan,
+  SMS autofill — ustiga qo'yiladigan qulaylik, shart emas.
 - [TAKLIF] **A4 PIN o'rnatish majburiy, A5 biometrik ixtiyoriy.** Sensor yo'q yoki ishlamaydigan
-  qurilma bor; biometrik rad etilsa ham PIN bilan ishlash to'liq. [SAVOL → OPEN-001] PIN
-  uzunligi/qoidasi ADR-002 da; klient hech qanday kuchlilik ko'rsatkichi o'ylab topmaydi.
+  qurilma bor; biometrik rad etilsa ham PIN bilan ishlash to'liq. [FAKT: OPEN-001 yopilgan] PIN
+  **4 raqam**; klient hech qanday kuchlilik ko'rsatkichi o'ylab topmaydi.
 - [FAKT: OPEN-005 yopilgan] **A3 MVP da render qilinmaydi** — bir haydovchi bitta faol a'zolik,
   kontekst har doim jim o'rnatiladi. Spetsifikatsiya keyingi bosqich (ko'p a'zolik ochilganda)
   uchun saqlanadi; nol faol a'zolik holati esa MVP da ham ishlanadi (`A9` ga yo'naltiriladi).
@@ -158,7 +160,8 @@ flowchart TD
 - [TAKLIF] `GRACE_EXPIRED` da: chiqarib yuborilmaydi, lokal ma'lumot o'chmaydi, navbat
   bo'shatilmaydi — faqat **yangi biznes yozuvlar** to'xtaydi va sabab ko'rsatiladi
   ([`ds-01-ekranlar.md`](ds-01-ekranlar.md) A7/A10). Oynaning o'zi tugashidan oldin haydovchi
-  ogohlantiriladi. [SAVOL → OPEN-001] Oyna qiymati va ogohlantirish momenti ADR-002 da.
+  ogohlantiriladi. [FAKT: OPEN-001 yopilgan] Oyna 30 kun; [TAKLIF] ogohlantirish oxirgi 5 kunda
+boshlanadi (aniq momentni ADR-002 matni tasdiqlaydi).
 
 ## 4. J3 — Qayta tasdiqlash (sessiya rad etilganda)
 
@@ -186,9 +189,10 @@ A7  "O'zingizni tasdiqlang"  — telefon raqami ko'rsatiladi, qayta terilmaydi
   kodi yoki operator orqali) — kanon parol yo'qligini aytadi, qayta tasdiqlash mexanizmini
   aytmaydi; ekran «bitta proof maydoni» sifatida spetsifikatsiya qilingan, mexanizmni ADR-002
   to'ldiradi.
-- [FAKT: `decisions.md` OPEN-002] Rad etilgan sessiya paytida navbatdagi operatsiyalar terminal
-  bo'ladimi, kim javobgar — OPEN-002/ADR-003 hududi. Bu hujjat kollizияni qayd etadi va **hal
-  qilmaydi**; DS-02 shu siyosatga quriladi.
+- [FAKT: `decisions.md` OPEN-002 yopilgan, egasining qarori] Sessiya rad etilishi navbatdagi
+  yozuvlarni terminal qilmaydi — terminal faqat server yozuvning o'zini aniq biznes-rad kodi
+  bilan qaytargan hol. Rad etilgan sessiyada navbat ushlab turiladi va qayta tasdiqlangach
+  davom etadi; DS-02 shu siyosatga qurilgan.
 - [TAKLIF] A7 sheet'i **offline yopiladigan** bo'lishi shart: aloqasiz hududda sessiyasi rad
   etilgan haydovchi hali ham reysini o'qiy olishi va o'z identifikatsiyasi ostidagi lokal
   ma'lumotni ko'ra olishi kerak; qondirib bo'lmaydigan sheet ortida qulflab qo'yish — aynan shu
@@ -210,8 +214,10 @@ saqlanadi — demak chiqish navbatni indamay o'chira olmaydi.
 | Navbat bo'sh emas, onlayn | «Avval yuborish» taklif qilinadi: soni ko'rsatiladi, jarayon ko'rinadi, navbat bo'shagach chiqadi. Eng oson yo'l — shu. |
 | Navbat bo'sh emas, offline | **Qaytarib bo'lmas tasdiq** (`DST`): aniq son va oqibat haydovchi tilida aytiladi, standart tanlov — «Bekor qilish». |
 
-[SAVOL → OPEN-002] Navbat umuman drenaj bo'lmasa (terminal xato) chiqish nima qiladi — ADR-003
-hal qiladi. [FAKT: OPEN-006 yopilgan, egasining qarori] Umumiy qurilma stsenariysi (bitta
+[FAKT: OPEN-002 yopilgan] Terminal (biznes-rad) yozuv chiqish uchun to'siq emas: u server
+tomonda rad sifatida allaqachon qayd etilgan va operator konsolida ko'rinadi — chiqishda
+yo'qoladigan va'da yo'q. Faqat hali yetmagan (kutilmoqda/yuborilmoqda) yozuvlar `DST`
+qoidasini ishga soladi. [FAKT: OPEN-006 yopilgan, egasining qarori] Umumiy qurilma stsenariysi (bitta
 mashina telefonida ikki haydovchi): **identifikatsiya almashish bloklanadi** — A haydovchining
 yuborilmagan navbati turganda B kira olmaydi; ekran A ning N ta yozuvi yuborilmaganini aytadi va
 avval aloqaga chiqib yuborishni so'raydi. Moliyaviy fakt boshqa odam sessiyasi ostida ketmaydi
@@ -223,23 +229,31 @@ ADR'larida mustahkamlanadi.
 - [FAKT: `product/business-rules.md` #10] Klient o'zi hech narsani sanamaydi: qolgan urinishlar
   soni, kutish vaqti — faqat server yuborsa ko'rsatiladi. Server vaqt yubormasa, ekran halol
   «keyinroq urinib ko'ring» deydi va A9 (yordam) yo'lini beradi; o'ylab topilgan countdown yo'q.
-- [SAVOL → OPEN-001] Rate-limit chegaralari va davomiyligi ADR-002 da; [TAXMIN, `DC-03`
-  tasdiqlaydi] javobda `retry-after` ekvivalenti keladi deb kutiladi.
+- [FAKT: OPEN-001 yopilgan] Rate-limit: 5 noto'g'ri urinish → 15 daqiqa blok; kod so'rovlari
+  soatiga 3, kuniga 10; har blok audit yozuvi bilan. [TAXMIN, `DC-03` tasdiqlaydi] javobda
+  `retry-after` ekvivalenti keladi — klient baribir o'zi sanamaydi, server vaqtini ko'rsatadi.
 - [FAKT: sessiya prompti] Har qanday pre-auth xato javobi ro'yxatdan o'tgan raqamni oshkor
   qilmaydi: «raqam topilmadi», «kod eskirgan», «a'zolik to'xtatilgan» — bularning bari A2 da
   bitta neytral xabar ko'rinishida; farqlar faqat autentifikatsiyadan keyingi ekranlarda ochiladi.
 - [TAKLIF] Xato hech qachon haydovchi terган maydonni tozalamaydi; loading hech qachon boshlagan
   tugmani yo'qotmaydi; ulanish uzilishi kiritilgan qiymatlarni saqlaydi.
 
-## 7. ADR-002 (`DC-01`) uchun bu dizayndan chiqadigan savollar ro'yxati
+## 7. ADR-002 (`DC-01`) uchun savollar — javoblari
 
-[SAVOL → OPEN-001] Quyidagilarning har biri qiymat kutadi; dizayn ularsiz ham strukturaviy
-to'liq, lekin matnlar (copy) va animatsiya vaqtlari shu qiymatlarga bog'liq:
+[FAKT: OPEN-001 yopilgan, egasining yozma qarorlari 2026-08-26 — `decisions.md` §Yopilgan]
+ADR-002 endi shu qiymatlar ustida mexanik yoziladi:
 
-1. Aktivatsiya kodi: uzunligi, amal muddati, yetkazish kanali, qayta yuborish intervali.
-2. PIN: uzunligi, lokal noto'g'ri urinish siyosati (lokal lockout bormi).
-3. Grace-oyna: davomiyligi, ogohlantirish momenti, `GRACE_EXPIRED` da o'qish ruxsati saqlanishi.
-4. Rate-limit: chegara, davomiylik, javobda vaqt kelishi.
-5. Qayta tasdiqlash mexanizmi (yangi kod? operator?) va operator verifikatsiya protsedurasi.
-6. Sessiya yashash muddati va yangilash strategiyasi.
-7. Qurilmalar ro'yxati: bitta haydovchi nechta qurilma; eski qurilmani kim o'chiradi.
+1. Aktivatsiya kodi: 6 raqam; 15 daqiqa amal qiladi; SMS avtomatik + operator og'zaki zaxira;
+   qayta yuborish 60 soniyadan keyin.
+2. PIN: 4 raqam; lokal siyosat — 5 noto'g'ri urinishdan keyin 30 soniya pauza, har keyingi
+   5 tada ikki baravar o'sadi; hech qachon ma'lumot o'chirilmaydi.
+3. Grace-oyna: 30 kun; tugaganda faqat yangi yozuv to'xtaydi, o'qish qoladi; [TAKLIF]
+   ogohlantirish oxirgi 5 kunda.
+4. Rate-limit: 5 noto'g'ri urinish → 15 daqiqa; kod so'rovlari soatiga 3, kuniga 10; javobda
+   vaqt keladi.
+5. Qayta tasdiqlash: operator yangi aktivatsiya kodi beradi (SMS yoki og'zaki) — o'z-o'ziga
+   xizmat reset yo'q.
+6. Sessiya: 90 kun, har muvaffaqiyatli server aloqasida qayta uzayadi (sliding).
+7. Qurilmalar: 1 faol qurilma; yangi aktivatsiya eskisini bekor qiladi (eski qurilmaning
+   yuborilmagan navbati server tomonidan baribir qabul qilinadi — OPEN-006 qoidasi); operator
+   konsoldan qurilmani bekor qila oladi.

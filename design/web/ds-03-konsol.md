@@ -19,9 +19,9 @@ Teglar va kontekst: [`README.md`](README.md). Ekranlar: [`ds-03-ekranlar.md`](ds
   majburiy bo'lishi shundan.
 - [FAKT: `roadmap/tasks.md` WB-01..03] MVP web qamrovi: shell + jadval/holat tizimi + xarajat
   tasdiqlash navbati. Qolgan bo'limlar IA'da joy oladi, lekin MVP da qurilmaydi.
-- [FAKT: `architecture/system.md` §Backend] Operator autentifikatsiyasi «keyinroq» — kanon hali
-  belgilamagan. [SAVOL → egasiga] Operator kirish oqimi (parol? SSO?) alohida qaror; bu hujjat
-  «operator allaqachon kirgan» nuqtasidan boshlanadi.
+- [FAKT: OPEN-012 yopilgan, egasining qarori 2026-08-26] Operator kirishi: **email + parol**,
+  «parolni unutdim» email orqali; 2FA keyingi bosqichda. Kirish ekranining o'zi WB-01 da
+  standart shaklda quriladi; bu hujjatning qolgani «operator kirgan» nuqtasidan boshlanadi.
 
 ## 1. Axborot arxitekturasi (IA)
 
@@ -48,9 +48,10 @@ Teglar va kontekst: [`README.md`](README.md). Ekranlar: [`ds-03-ekranlar.md`](ds
   almashtirish butun konsol kontekstini almashtiradi, URL'da aks etadi (`/c/<company>/...`) —
   ikki kompaniya ma'lumoti bitta ekranda hech qachon aralashmaydi [FAKT: `business-rules.md`
   #1 oqibati].
-- [SAVOL → egasiga] Kompaniya yaratish/onboarding (STIR orqali ihamkor.uz autofill —
-  `architecture/system.md`) qaysi yuzada yashaydi: konsol ichidami, alohida signup oqimidami?
-  MVP gate'lariga kirmagan; IA bu savolga joy qoldiradi.
+- [FAKT: OPEN-013 yopilgan, egasining qarori 2026-08-26] Kompaniya yaratish/onboarding —
+  **konsol ichida, birinchi kirishda**: kompaniyasiz foydalanuvchi kirgach «Kompaniya yaratish»
+  oqimi ochiladi (STIR → ihamkor.uz autofill → tasdiqlash, xatoda bo'sh forma —
+  `architecture/system.md` qoidalari). `W0` ning `EMPTY` holati shu oqimga olib boradi.
 
 ## 2. Ruxsatga sezgir holatlar — umumiy qoida
 
@@ -102,8 +103,9 @@ qoladi).
   snapshot bo'yicha [FAKT: #3]) yonida ikkilamchi uslubda — operator qarorni asl summada qabul
   qiladi, taqqoslashni bazaviyda qiladi. [TAXMIN → `DC-03`] Snapshot qiymati javobda keladi;
   klient hech qachon o'zi kurs hisoblamaydi.
-- [SAVOL → OPEN-004] Vaqt mintaqasi ko'rsatish qoidasi ochiq; dizayn DS-01 `A11` qoidasini
-  meros oladi (absolyut + nisbiy birga).
+- [FAKT: OPEN-004 yopilgan, egasining qarori 2026-08-26] Vaqt kompaniya mintaqasida
+  ko'rsatiladi (sozlanadi, standart `Asia/Tashkent`) — haydovchi ham, operator ham bitta
+  yozuvda bir xil soatni ko'radi. Format: absolyut + nisbiy birga (DS-01 `A11` qoidasi).
 
 ## 5. `DC-03` ga kirish sifatida — bu dizayn kutayotgan kontrakt shakllari
 

@@ -113,16 +113,16 @@ ichida proof yuzasi sifatida. **Chiqish:** `A3` yoki `A4`.
 Yuqorida terilayotgan raqam oddiy matn sifatida ko'rinadi (haydovchi to'g'ri raqam terganини
 orqaga qaytmasdan ko'rsin). Alohida katakli raqam kiritish, oldinga avto-o'tish, orqaga erkin
 tahrir, oxirgi raqamda avto-submit + qo'lda submit ham bor. SMS autofill — qulaylik, shart emas
-([SAVOL → OPEN-001] kanal ADR-002 da).
+([FAKT: OPEN-001 yopilgan] 6 raqam, 15 daqiqa; SMS avtomatik + operator og'zaki zaxira).
 
 | Holat | Mazmun |
 |---|---|
 | `HAP` | A'zolik soniga qarab `A3` yoki `A4`. |
 | `LOAD` | Kataklar qulflanadi, raqamlar ko'rinib turadi, progress joyida. |
-| `ERR-V` | Kod to'liq terilmagan. Kutilgan uzunlik ADR-002 dan keladi, bu yerda o'ylab topilmaydi. |
+| `ERR-V` | Kod to'liq terilmagan (6 raqam kutiladi [FAKT: OPEN-001 yopilgan]). |
 | `ERR-S` | Bitta neytral xabar: «Kod mos kelmadi yoki muddati o'tgan. Qaytadan urinib ko'ring yoki ofisga murojaat qiling.» — noto'g'ri kod / noma'lum raqam / to'xtatilgan a'zolik farqi bilinmaydi [FAKT: sessiya prompti]. Kataklar tozalanadi, fokus birinchisiga. Qolgan urinishlar soni faqat server yuborsa ko'rsatiladi [FAKT: `business-rules.md` #10]. |
 | `DIS` | Qayta yuborish tugmasi: server ruxsat bergunча DIS, sabab («keyinroq») bilan. Klient-tomonlama o'ylab topilgan countdown yo'q. |
-| `RLT` | Ikki sabab farqlanadi (juda ko'p noto'g'ri kod / juda ko'p kod so'rovi) — ikkalasi `A8` ga, har xil matn bilan; chegaralar [SAVOL → OPEN-001]. |
+| `RLT` | Ikki sabab farqlanadi (juda ko'p noto'g'ri kod / juda ko'p kod so'rovi) — ikkalasi `A8` ga, har xil matn bilan; chegaralar [FAKT: OPEN-001 yopilgan]: 5 noto'g'ri urinish → 15 daqiqa; kod so'rovlari soatiga 3, kuniga 10. |
 | `OFF` | `A10` ga; **terilgan raqamlar saqlanadi** — SMS orqali kelgan kod data-aloqa yo'qligida ham kuchda, raqamlarni yo'qotish qayta yuborishga majburlaydi. |
 
 ### `A3` — Kompaniya tanlash
@@ -150,7 +150,7 @@ render qilinmaydi; spetsifikatsiya ko'p a'zolik ochiladigan keyingi bosqich uchu
 **Maqsad:** kunlik kirish uchun lokal faktor. **Kirish:** `A2`/`A3` dan. **Chiqish:** `A5`.
 
 Ikki bosqich: terish → takrorlash. Foyda haydovchi tilida: «Kodni boshqa termaysiz — shu PIN
-bilan kirasiz». [SAVOL → OPEN-001] Uzunlik/qoida ADR-002 da; kuchlilik ko'rsatkichi, taqiqlangan
+bilan kirasiz». [FAKT: OPEN-001 yopilgan] PIN 4 raqam; kuchlilik ko'rsatkichi, taqiqlangan
 kombinatsiya ro'yxati — klient o'ylab topmaydi [FAKT: `business-rules.md` #10].
 
 | Holat | Mazmun |
@@ -184,10 +184,10 @@ ko'rinadi**, muvaffaqiyatsiz urinishlar ortiga yashirilmaydi.
 |---|---|
 | `HAP` | To'g'ri ilovaga. |
 | `LOAD` | Faqat kalit yechish lahzasi. |
-| `ERR-V` | Noto'g'ri PIN. Urinish feedback'i lokal siyosatdan ([SAVOL → OPEN-001]); bu spetsifikatsiya holатni nomlaydi, chegara nomlamaydi. |
+| `ERR-V` | Noto'g'ri PIN. Lokal siyosat [FAKT: OPEN-001 yopilgan]: 5 noto'g'ri urinishdan keyin 30 soniya pauza, har keyingi 5 tada muddat ikki baravar o'sadi; hech qachon ma'lumot o'chirilmaydi. |
 | `ERR-S` | Biometrik kalit enrolment o'zgarishi bilan bekor bo'lgan: PIN yo'liga tushadi, ma'lumot o'chmaydi, `A1` ga qaytarilmaydi. |
-| `RLT` | Lokal lockout (agar ADR-002 belgilasa) server `A8` idan farqli ko'rinadi — biri kutib o'tkaziladi, boshqasi ofis talab qilishi mumkin. |
-| `DIS` | `GRACE_EXPIRED`: qulf ochiladi, lekin ilova «faqat o'qish» rejimida ekani shu yerda aytiladi — yangi yozuv tugmalari DIS, sabab banner'da: «Ofis bilan aloqa X dan beri yo'q. Ko'rish mumkin, yangi yozuv uchun ulanish kerak.» [SAVOL → OPEN-001] Oyna qiymati. |
+| `RLT` | Lokal pauza (30 s → ikki baravar [FAKT: OPEN-001 yopilgan]) server `A8` idan farqli ko'rinadi — biri kutib o'tkaziladi, boshqasi ofis talab qilishi mumkin. |
+| `DIS` | `GRACE_EXPIRED`: qulf ochiladi, lekin ilova «faqat o'qish» rejimida ekani shu yerda aytiladi — yangi yozuv tugmalari DIS, sabab banner'da: «Ofis bilan aloqa 30 kundan beri yo'q. Ko'rish mumkin, yangi yozuv uchun ulanish kerak.» Oyna 30 kun [FAKT: OPEN-001 yopilgan]. |
 | `OFF` / `PEND` | `~` doimiy status indikatoridan: qulf ekranida ham «N ta yozuv kutmoqda» ko'rinadi — ochishга arziydimi, haydovchi shu yerda biladi. |
 
 ### `A7` — Qayta tasdiqlash (sheet)
@@ -227,8 +227,9 @@ biometrik kalit bekor. **Kirish:** `A2`–`A8` dan. **Chiqish:** orqaga.
 [TAXMIN, `DC-01` tasdiqlaydi] Bu bozorda tiklanish — dispetcherga qo'ng'iroq (kompaniya
 haydovchini biladi va qayta kod bera oladi); o'z-o'ziga xizmat reset yo'q. Shakli qat'iy: bitta
 ekran, odam bilan bog'lanishning bitta aniq yo'li, haydovchining raqami o'qib berish uchun
-ko'rinadi, ilovani qayta o'rnatishга majburlaydigan boshi berk yo'l yo'q. [SAVOL → OPEN-001]
-Aniq protsedura (kim tasdiqlaydi, qanday kanalda) ADR-002 da.
+ko'rinadi, ilovani qayta o'rnatishга majburlaydigan boshi berk yo'l yo'q. [FAKT: OPEN-001
+yopilgan] Tiklanish yo'li: operator qayta aktivatsiya kodi beradi (SMS yoki og'zaki);
+protsedura tafsiloti ADR-002 matnida.
 
 | Holat | Mazmun |
 |---|---|
@@ -253,7 +254,9 @@ urinilgan har auth qadami. **Chiqish:** retry yoki orqaga (kiritilganlar saqlang
 Profil ichida, auth oqimida emas. **Kirish:** profil. **Chiqish:** `A12`, `A0`.
 
 Ko'rsatadi: kim kirgan, qaysi kompaniya konteksti, ofis bilan oxirgi aloqa vaqti, nechta yozuv
-kutmoqda, faol qurilmalar (agar ADR-002 qurilma ro'yxatini kiritsa — [SAVOL → OPEN-001]).
+kutmoqda, joriy qurilma va oxirgi aktivatsiya vaqti. [FAKT: OPEN-001 yopilgan] Model — 1 faol
+qurilma: ro'yxat o'rniga joriy qurilma ko'rsatiladi; yangi qurilmada aktivatsiya eskisini
+bekor qiladi, operator ham konsoldan bekor qila oladi.
 
 | Holat | Mazmun |
 |---|---|
@@ -275,5 +278,5 @@ Xulq navbatga qarab ([`ds-01-kirish-oqimi.md`](ds-01-kirish-oqimi.md) §5):
 | `HAP` | Navbat bo'sh: oddiy tasdiq, chiqish. |
 | `LOAD` | Navbat bo'sh emas, onlayn: «avval yuborish» — progress ko'rinadi, drenajdан keyin chiqadi. Eng oson yo'l shu bo'lsin. |
 | `PEND` | Son har doim ko'rinadi, ish sifatida aytiladi. |
-| `ERR-S` | Navbat drenaj bo'lmayapti → [SAVOL → OPEN-002] terminal siyosat ADR-003 da; bu ekran o'zicha hal qilmaydi. |
+| `ERR-S` | Navbat drenaj bo'lmayapti → [FAKT: OPEN-002 yopilgan] terminal (biznes-rad) yozuv serverda qayd etilgan, chiqishga to'siq emas; hali yetmagan yozuvlar esa `OFF`+`DST` qoidasiga tushadi. |
 | `OFF` + `DST` | Navbat bo'sh emas, offline: qaytarib bo'lmas tasdiq. Aniq son va oqibat: «3 ta xarajat yozuvi ofisga yetmagan. Hozir chiqsangiz ular yo'qoladi va tiklab bo'lmaydi.» Standart tanlov — **Bekor qilish**; halokatli tugma vizual dominant emas. [FAKT: `business-rules.md` #7] «Qabul qilindi» va'dasi indamay buzilmaydi — shu dialog va'dani ochiq buzishga rozilik so'raydi. |
