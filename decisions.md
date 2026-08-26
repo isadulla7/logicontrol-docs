@@ -2,25 +2,115 @@
 
 Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
 
-- **OPEN-001 — Haydovchi autentifikatsiyasining yakuniy modeli.** Yo'nalish tanlangan (telefon +
-  aktivatsiya kodi + qurilmada PIN/biometrik, parolsiz — avvalgi iteratsiya ADR-019 tahlili
-  asosida), lekin V2 da o'z ADR'i bilan qayta tasdiqlanishi kerak: grace-oyna kunlari, rate-limit
-  qiymatlari, operator verifikatsiya protsedurasi ham o'shanda. B1 dan oldin.
-- **OPEN-002 — Sync terminal-xato siyosati.** Navbatdagi operatsiya hech qachon muvaffaqiyatli
-  bo'lolmasligi aniqlanganda: qaysi javoblar terminal, haydovchiga nima ko'rsatiladi, kim
-  javobgar. B3 dan oldin.
-- **OPEN-003 — Mahsulot tillari.** Interfeys tili (o'zbek? rus? ikkalasi?). Web repo ochilishidan
-  va Android matnlari ko'payishidan oldin. *Holat izohi (2026-08-26, WB-01):* web repo ochildi;
-  qaror kutilayotgani uchun barcha UI matnlari vaqtincha o'zbekcha va bitta lug'at modulda
-  (`logicontrol-web/src/lib/i18n/strings.ts`) markazlashtirilgan — til qarori chiqqach
-  almashtirish arzon. Bu izoh qarorni yopmaydi.
-- **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi.** Saqlash `TIMESTAMPTZ`; ko'rsatish qoidasi
-  ochiq. B2 dan oldin hal qilinsa arzon. *Holat izohi (2026-08-26, WB-01):* web konsolda qaror
-  chiqquncha brauzer lokal vaqti ishlatiladi; barcha formatlash bitta modul orqali
-  (`logicontrol-web/src/lib/format/datetime.ts`). Bu izoh qarorni yopmaydi.
-- **OPEN-005 — Xarajatni rad etishda sabab majburiymi?** Biznes qoidasi #9 muhim harakatlar
-  auditida sababni talab qiladi, ledger reversal'da sabab aniq majburiy; lekin operator
-  xarajatni rad etganda sabab kiritish majburiy yoki ixtiyoriy ekani kanonda yozilmagan.
-  Haydovchi ilovasi rad etilgan xarajatni sabab bilan ko'rsatishi kutiladi (DS-02) — bu
-  majburiylik foydasiga argument. Web (WB-03) hozircha sabab maydonini ixtiyoriy qilib
-  ko'rsatadi; `BK-07` va DC-03 kontraktidan oldin hal qilinishi kerak.
+## Ochiq
+
+- **OPEN-007 — ihamkor.uz javob namunasi. YOPILDI (egasi namunani berdi, 2026-08-26).**
+  Real javob `integrations/ihamkor-sample.json` da, tahlili `integrations/ihamkor.md` da.
+  Asosiy topilmalar: qidiruv fuzzy (aniq `tin` filtri shart) va holat maydonlari o'zaro zid
+  bo'lishi mumkin (`state` ≠ `stateid`) — holatga biznes qaror bog'lanmaydi. Kurs manbai
+  MANUAL qoladi, CBU provayderi keyingi bosqichda. Parserга pinlash + real-namunali regressiya
+  testi — `BK-09` davomi sifatida qolgan ishlar ro'yxatida.
+
+- **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash.** Web yo'nalishi (WB-01..03)
+  OPEN-003/004 qarorlaridan oldin qurilgan: UI matnlari vaqtincha faqat o'zbekcha
+  (`logicontrol-web/src/lib/i18n/strings.ts`), vaqt brauzer lokalida
+  (`logicontrol-web/src/lib/format/datetime.ts`). Endi qarorlar bor: til — uz+ru, vaqt —
+  Asia/Tashkent. Web moduli markazlashtirilgani uchun moslash arzon; DC-03 kontrakti ham chiqdi —
+  mock adapter kontraktga pinlanishi kerak. Web yo'nalishining keyingi taskiga kiradi.
+
+## Yopilgan (egasining yozma qarori bilan)
+
+- **OPEN-001 — Haydovchi autentifikatsiya modeli. YOPILDI (ADR-002, 2026-08-26).** Telefon +
+  aktivatsiya kodi + qurilmada PIN/biometrik; qiymatlar va invariantlar ADR-002 da. Keyinga
+  qoldirilganlar (rate-limit middleware, SMS, operator verifikatsiya protsedurasi) ADR-002 ning
+  "Keyinga qoldirilgan" bo'limida.
+- **OPEN-002 — Sync terminal-xato siyosati. YOPILDI (ADR-003, 2026-08-26).** 4xx biznes-rad —
+  terminal: navbatdan chiqadi, haydovchiga sababi bilan ko'rsatiladi, yozuv lokalda saqlanadi,
+  tahrirlab qayta yuborish yangi clientRequestId bilan. To'liq jadval ADR-003 da.
+- **OPEN-003 — Mahsulot tillari. YOPILDI (egasi, 2026-08-26).** O'zbek (lotin) va rus — ikkala
+  til MVP'dan boshlab. Android va web matn resurslari boshidan ikki tilda yuritiladi; klient
+  server xato matniga emas, `code` ga qarab tarjima ko'rsatadi (DC-03 katalogi).
+- **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi. YOPILDI (egasi, 2026-08-26).** Saqlash UTC
+  (`TIMESTAMPTZ`); barcha klientlar ekranda Asia/Tashkent (UTC+5) da ko'rsatadi.
+- **OPEN-005 — Rol modelining chegaralari. YOPILDI (egasi, 2026-08-26).** Qaror: bir kompaniyada
+  bir nechta OWNER bo'lishi mumkin; a'zolarni qo'shish/suspend qilishni operator
+  autentifikatsiyasi kelganda OWNER ham MANAGER ham bajara oladi; oxirgi faol OWNER suspend
+  qilinmaydi (lockoutdan himoya). Qo'shimcha rol (DISPATCHER va h.k.) hozircha kiritilmaydi.
+  Joriy implementatsiya (BK-01) aynan shu modelda — kod o'zgarishi talab qilinmaydi; operator
+  RBAC majburlash web-konsol autentifikatsiyasi bilan birga keladi.
+- **OPEN-006 — Autentifikatsiya siyosat qiymatlari. YOPILDI (egasi, 2026-08-26).** Qaror: joriy
+  konservativ defaultlar ADR-002 ning rasmiy qiymatlari bo'ladi — aktivatsiya kodi 6 raqam,
+  TTL 15 daqiqa, maksimal 5 urinish, yangi kod eskisini bekor qiladi; sessiya 30 kun, refresh'da
+  token aylantiriladi. Manba: `identity/application/IdentityPolicy.java`. ADR-002 hujjati
+  yozilganda shu qiymatlar ko'chiriladi (qolgan detallar OPEN-001 da).
+- **OPEN-008 — Spend Policy qiymatlari. YOPILDI (egasi, 2026-08-26).** Qaror: hozirgi model
+  qoladi — har kompaniya o'z bazaviy valyutasida thresholdni o'zi o'rnatadi
+  (`PUT /api/v1/companies/{id}/spend-policy`); threshold ostida MANAGER tasdiqlaydi, ustida
+  faqat OWNER; siyosat o'rnatilmagan kompaniyada konservativ default — hamma xarajat OWNER
+  tasdig'ini talab qiladi. Standart threshold kiritilmaydi, ikki daraja yetarli. Valyuta kursi
+  masalasi OPEN-007 bilan birga hal qilindi: MANUAL snapshot qoladi, CBU provayderi keyinroq.
+- **OPEN-020 — Operator xarajat kiritishi. YOPILDI (egasi, 2026-08-26).** Egasining ko'rsatmasi:
+  xarajatni haydovchidan tashqari operator ham kirita olishi kerak. Yozma javoblar: (1) operator =
+  mavjud MANAGER (va OWNER) roli, yangi rol kiritilmaydi; (2) operator kiritgan xarajat har doim
+  aniq bir haydovchiga bog'lanadi (ledger o'sha haydovchi hisobiga yoziladi), haydovchisiz
+  "kompaniya xarajati" MVP'da yo'q; (3) boshlang'ich holat — darhol APPROVED (kirituvchi ayni
+  tasdiqlovchi), ledger'ga o'sha tranzaksiyada postlanadi; kim kiritgani `decidedBy` auditida.
+  Cheklovlar merosga mos: spend-policy darajasi kirituvchiga qo'llanadi (threshold ustida faqat
+  OWNER), hech kim o'z xarajatini kirita olmaydi (to'rt ko'z), xato storno (reversal) bilan
+  tuzatiladi. Implementatsiya: `BK-10` — `POST /companies/{c}/expenses`.
+- **(sobiq web OPEN-005) Xarajat rad etish sababi. YOPILDI (BK-07 / DC-03, 2026-08-26).** Sabab
+  **majburiy**: backend `reject` sabab matnisiz qabul qilmaydi (biznes qoidasi 9 — muhim harakat
+  auditsiz o'tmaydi), DC-03 kontraktida `{approverMemberId, reason}` majburiy maydonlar,
+  haydovchi ilovasi rad etilgan xarajatni sababi bilan ko'rsatadi (ADR-003). WB-03 dagi
+  ixtiyoriy sabab maydoni majburiy qilinishi kerak (OPEN-009 ishiga kiradi).
+
+## Yopilgan — dizayn sessiyasi qarorlari (egasi, 2026-08-26)
+
+Quyidagilar dizayn sessiyasida egasining yozma javoblari bilan yopildi. Raqamlar main
+registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangilangan).
+
+- **OPEN-010 — ADR-002 «keyinga qoldirilgan» bandlarning qiymatlari. YOPILDI:**
+  - Kod yetkazish: **SMS avtomatik + operator og'zaki zaxira**; qayta yuborish 60 soniyadan
+    keyin. SMS integratsiyasi alohida task sifatida rejalashtiriladi; kelguncha operator kanali
+    (ADR-002 joriy oqimi) ishlayveradi.
+  - Per-telefon rate-limit: **5 noto'g'ri urinish → 15 daqiqa blok; kod so'rovlari soatiga 3,
+    kuniga 10**; javobda kutish vaqti keladi, klient o'zi sanamaydi.
+  - PIN (qurilma tomonida): **4 raqam**; lokal siyosat — 5 noto'g'ri urinishdan keyin 30 soniya
+    pauza, har keyingi 5 tada ikki baravar; hech qachon ma'lumot o'chirilmaydi.
+  - Qurilmalar: **1 faol qurilma** — yangi aktivatsiya eskisining sessiyasini bekor qiladi
+    (eski qurilmaning yuborilmagan navbati baribir qabul qilinadi); operator konsoldan bekor
+    qila oladi.
+  - Tiklanish: operator qayta aktivatsiya kodi beradi; o'z-o'ziga xizmat reset yo'q.
+  - **Sessiya/grace ziddiyati hal (egasi, tie-break):** ADR-002 ning 30 kunlik aylanuvchi
+    tokeni qoladi (90-kun varianti bekor). Offline chidamlilik = tokenning 30 kunlik amal
+    muddati; dizayndagi «grace-oyna 30 kun» aynan shu — alohida mexanizm kerak emas.
+    Tugashidan oldin ilova ogohlantiradi (dizayn: oxirgi 5 kun), tugaganda faqat yangi yozuv
+    to'xtaydi, hech narsa o'chmaydi.
+- **OPEN-011 — Ko'p kompaniyaga a'zolik. YOPILDI: MVP da bitta faol a'zolik**; ma'lumot modeli
+  ko'p a'zolikka tayyor qoladi. Kompaniya tanlash ekrani (`A3`) MVP da render qilinmaydi;
+  nol faol a'zolik holati ishlanadi (`A9` ga yo'naltiriladi).
+- **OPEN-012 — Umumiy qurilma / identifikatsiya almashish. YOPILDI: bloklanadi** — A
+  haydovchining yuborilmagan navbati turganda B kira olmaydi; ekran A ning ishini avval
+  yuborishni so'raydi. Moliyaviy fakt boshqa odam sessiyasi ostida ketmaydi (qoida #9).
+- **OPEN-013 — Form-faktor. YOPILDI: MVP portrait-lock.** Qulf (`A6`) va qayta tasdiqlash
+  (`A7`) ekranlariga kronshteyn stsenariysi talabi: `design/driver/ds-01-komponentlar.md` §4.
+- **OPEN-014 — MVP chek/dalil. YOPILDI: matn izoh + operatsion tartib** («qog'oz chek davr
+  yakunigacha saqlanib topshiriladi»); foto `FileAsset` bosqichida.
+- **OPEN-015 — Xarajat turlari. YOPILDI: tizim lug'ati, majburiy.** Server e'lon qiladi,
+  klientga qotirilmaydi; ro'yxatning o'zi `BK-07`/`DC-03` da belgilanadi.
+- **OPEN-016 — Offline xarajatning FX «tranzaksiya vaqti». YOPILDI: haydovchi kiritgan lahza.**
+  Qurilma kiritish vaqtini yozuvda yuboradi; kurs o'sha sanaga muzlatiladi; server qurilma
+  soatiga aqlga sig'arlik chegara tekshiruvi qo'yadi. BK-07/DC-03 joriy holati shu semantikaga
+  tekshirilib, farq bo'lsa moslash keyingi backend taskiga kiradi.
+- **OPEN-017 — Reys harakatlari aktyori. YOPILDI: MVP da faqat operator** ochadi/boshlaydi/
+  yakunlaydi; haydovchi ilovasi faqat ko'radi. Haydovchi boshlash/yakunlash keyingi bosqich
+  nomzodi.
+- **OPEN-018 — Operator kirish oqimi. YOPILDI: email + parol**, «parolni unutdim» email orqali;
+  2FA keyingi bosqichda. (Main OPEN-005 dagi «operator autentifikatsiyasi kelganda» shu
+  mexanizmda keladi.)
+- **OPEN-019 — Kompaniya yaratish/onboarding. YOPILDI: konsol ichida, birinchi kirishda** —
+  kompaniyasiz foydalanuvchi kirgach «Kompaniya yaratish» oqimi (STIR → ihamkor.uz autofill →
+  tasdiqlash; xatoda bo'sh forma). Alohida signup sayti MVP dan tashqari.
+- **Vaqt mintaqasi aniqlashtirildi (egasi, tie-break):** main OPEN-004 qarori qoladi — MVP da
+  qat'iy `Asia/Tashkent`, sozlama yo'q; kompaniya-sozlanadigan mintaqa kelajak kengaytma
+  sifatida qayd etildi.
