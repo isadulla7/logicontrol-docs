@@ -10,7 +10,7 @@ SESSION_STATUS: BLOCKED
 TASK_ID: DS-FIGMA
 TASK_NAME: DS-01..DS-03 vizual maketlarini Figma'ga native ko'chirish
 PHASE: Design V2 — vizual qatlam
-PROGRESS: 60%
+PROGRESS: 65%
 
 CURRENT_OBJECTIVE:
 Barcha DS ekranlarini (DS-01 A0-A12, DS-02 T1-X4, DS-03 W-L/W1+W2/W-O, tokenlar
@@ -18,19 +18,14 @@ sahifasi) Figma faylida native qatlamlar sifatida chizib chiqish — rasm/screen
 emas, auto-layout + haqiqiy matn + token ranglari bilan tahrirlanadigan.
 
 CURRENT_STEP:
-Parallel agent (design-agent-1) DS-05 xato-matn katalogini merge qilgan; mening
-maketlarim va Figma skriptlarimdagi xato matnlari shu kanonga moslandi (A8, A7,
-X4, W-L). Mock qayta ijro: 27/27 OK, 0 ogohlantirish. Commit qilinmoqda.
+Mustaqil ish tugadi va push qilindi (mock validatsiya + 2 runtime tuzatish + DS-05
+matn moslash). Figma ijrosi tashqi blok ostida — egasining plan qarori kutilmoqda.
 
 WORKING_NOW:
-* DS-05 matn katalogiga moslashtirilgan maketlar/skriptlarni commit qilish
-* qolgan matn ziddiyatini design-agent-1 ga savol sifatida qayd etish
+* NONE — blok ochilishini kutmoqda (Figma plan yoki egasining qarori)
 
 CURRENT_FILES:
-* design/mockups/driver/03-kod.html, 06-qayta-tasdiqlash.html, 12-harakat-kerak.html
-* design/mockups/web/01-login.html
-* design/figma/scripts/07-a7-sheet.js, 08-a8-blok.js, 19-x4-terminal.js
-* design/figma/tools/mock-figma.mjs, run-mock.mjs
+* NONE
 
 COMPLETED_THIS_SESSION:
 * design/system/tokens.md — to'liq token spetsifikatsiyasi (palitra light/dark,
@@ -107,9 +102,9 @@ BUILD_STATUS:
 NOT RUN
 
 UNCOMMITTED_CHANGES:
-YES
+NO
 LAST_COMMIT:
-28ecdd7 Figma skriptlarini mock harness bilan validatsiya + 2 runtime xato tuzatildi
+(quyidagi status commit'i — repo stop-hook'i toza ishchi daraxtni talab qiladi)
 PUSHED:
 YES
 MERGED:
@@ -127,4 +122,4 @@ SAFE_TO_SWITCH_AGENT:
 YES
 
 LAST_UPDATE:
-2026-08-26T13:35:00+05:00
+2026-08-26T13:40:00+05:00
