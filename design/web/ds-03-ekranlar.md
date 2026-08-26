@@ -58,7 +58,8 @@ Barchasi [TAKLIF]; kanon iqtiboslar teglangan.
 standart bo'lim. **Chiqish:** `W2` (qator ochilganda, o'ng panel).
 
 Jadval ustunlari: haydovchi, summa (asl valyuta; bazaviy ekvivalent ikkilamchi), tur
-([SAVOL → OPEN-009]), reys, kiritilgan vaqt, holat. Standart filtr: **Ko'rib chiqilmagan**
+([FAKT: OPEN-009 yopilgan] tizim lug'ati — filtrlashga barqaror asos), reys, kiritilgan vaqt,
+holat. Standart filtr: **Ko'rib chiqilmagan**
 (`SUBMITTED`). Boshqa filtrlar: holat, haydovchi, sana oralig'i, summa oralig'i.
 
 Klaviatura navbat rejimi: `↑/↓` qator, `Enter` panel, `A` tasdiqlash, `R` rad etish (fokus
@@ -81,10 +82,11 @@ ko'rsatiladi).
 **Chiqish:** qaror → panel yopiladi, keyingi yozuv ochiladi (navbat rejimi) yoki ro'yxatga.
 
 Ko'rsatadi: hamma maydon; haydovchi kiritgan vaqt va sinxron yetib kelgan vaqt **alohida**
-([TAKLIF] offline kiritishda ikkalasi kunlar bilan farq qilishi normal — operator buni
-ko'rishi kerak; qaysi biri FX «tranzaksiya vaqti» — [SAVOL → `DC-03`, DS-02 §3 bilan bitta
-savol]); FX snapshot (kurs, sana, manba [FAKT: `domain/model.md` FxSnapshot]); haydovchining
-shu davrdagi boshqa xarajatlariga kontekst havolasi.
+([TAKLIF] offline kiritishda ikkalasi kunlar bilan farq qilishi normal — operator buni ko'rishi
+kerak; [FAKT: OPEN-010 yopilgan] FX «tranzaksiya vaqti» — haydovchi kiritgan lahza, server
+soat-chegara tekshiruvi bilan; farq katta bo'lsa operatorga belgilab ko'rsatiladi); FX snapshot
+(kurs, sana, manba [FAKT: `domain/model.md` FxSnapshot]); haydovchining shu davrdagi boshqa
+xarajatlariga kontekst havolasi.
 
 Qaror harakatlari — faqat server e'lon qilganlari:
 
@@ -127,10 +129,13 @@ takrorlamaydi.
 | `StaleBanner` | W0 | «HH:MM holati bo'yicha» + aloqa qaytganda o'zi yo'qoladi. |
 | `ConflictNotice` | W2 | `409`: kim, qachon, yangi holat; harakatlar qayta e'lon bo'yicha. |
 
-## 5. DS-03 dan chiqadigan savollar
+## 5. DS-03 dan chiqadigan savollar — holati
+
+Yopilgan (egasining 2026-08-26 qarorlari, `decisions.md`): konsol tili — o'zbek + rus
+(OPEN-003); FX «tranzaksiya vaqti» — haydovchi kiritgan lahza (OPEN-010).
+
+Ochiq qolgan:
 
 - [SAVOL → egasiga] Operator kirish oqimi (kanon: «keyinroq») — alohida dizayn task kerak.
 - [SAVOL → egasiga] Kompaniya yaratish/onboarding yuzasi qayerda yashaydi (STIR autofill bilan).
-- [SAVOL → OPEN-003] Konsol tili (haydovchi ilovasi bilan bitta qaror).
 - [SAVOL → OPEN-004] Vaqt mintaqasi ko'rsatish qoidasi.
-- [SAVOL → `DC-03`] FX «tranzaksiya vaqti» semantikasi (DS-02 §3 bilan bitta savol).

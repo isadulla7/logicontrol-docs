@@ -10,10 +10,10 @@ PEND / DST`).
 
 | ID | Ekran | Jurney | Shartli? |
 |---|---|---|---|
-| `A0` | Til tanlash | J1 | [SAVOL → OPEN-003] bir nechta til tanlansagina mavjud |
+| `A0` | Til tanlash | J1 | — ([FAKT: OPEN-003 yopilgan] o'zbek + rus, ekran doimiy) |
 | `A1` | Telefon raqami | J1 | — |
 | `A2` | Aktivatsiya kodi | J1, J3 | — |
-| `A3` | Kompaniya tanlash | J1 | faol a'zolik > 1 bo'lgandagina render ([SAVOL → OPEN-005]) |
+| `A3` | Kompaniya tanlash | J1 | [FAKT: OPEN-005 yopilgan] MVP da render qilinmaydi; spetsifikatsiya keyingi bosqichga saqlanadi |
 | `A4` | PIN o'rnatish | J1 | — |
 | `A5` | Biometrik taklif | J1 | qurilmada sensor va enrolment borida |
 | `A6` | Lokal qulf | J2 | — |
@@ -80,8 +80,8 @@ bu bosqichda yo'q.
 **Maqsad:** haydovchi oqimning qolganini o'qiy olsin. **Kirish:** birinchi ochilish
 (`NO_IDENTITY`); keyinroq `A11` dan. **Chiqish:** `A1`.
 
-To'liq enli variantlar (har biri ≥64dp), har til o'z yozuvida, qurilma tili oldindan belgilangan
-lekin avto-tasdiqlanmagan. [SAVOL → OPEN-003] Tillar ro'yxati egasidan; bitta til — ekran yo'q.
+To'liq enli variantlar (har biri ≥64dp), har til o'z yozuvida — `O'zbekcha` / `Русский`
+[FAKT: OPEN-003 yopilgan] — qurilma tili oldindan belgilangan lekin avto-tasdiqlanmagan.
 
 | Holat | Mazmun |
 |---|---|
@@ -141,9 +141,9 @@ Har kompaniya — to'liq enli qator (≥64dp), faqat nomi. Logotip, hisoblagich,
 | `ERR-S` | Tanlangan kompaniya ishlatishda rad etildi (ro'yxat va tanlov orasida a'zolik to'xtagan). Ro'yxatga qaytadi, qator «mavjud emas» belgisida. |
 | `OFF` | Ro'yxat server tomonда [TAXMIN, `DC-03` tasdiqlaydi] — qadam offline yakunlanmaydi, `A10` ga. |
 
-Bitta a'zolik — ekran render qilinmaydi, savol berilmaydi. [SAVOL → OPEN-005] Ko'p a'zolik
-umuman mumkinmi — egasi hal qiladi; «yo'q» javobi bitta ekranни o'chiradi, boshqa hech narsani
-o'zgartirmaydi.
+[FAKT: OPEN-005 yopilgan] MVP da bitta a'zolik majburlanadi — bu ekran MVP da hech qachon
+render qilinmaydi; spetsifikatsiya ko'p a'zolik ochiladigan keyingi bosqich uchun saqlanadi.
+`EMPTY` (nol faol a'zolik) holati esa MVP da ham yashaydi va `A2 → A9` yo'lida ishlanadi.
 
 ### `A4` — PIN o'rnatish
 

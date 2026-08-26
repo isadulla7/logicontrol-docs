@@ -76,7 +76,7 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | Task | Holat |
 |---|---|
 | B0 poydevor (docs, backend skeleti, android skeleti) | ✅ DONE — backend `mvn clean verify` lokal yashil; Android CI gate |
-| `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md` (oqim, ekranlar+holatlar matritsasi, komponentlar); ochiq qiymatlar OPEN-001 ga, yangi savollar OPEN-005..007 sifatida `decisions.md` da |
-| `DS-02` haydovchi reys va xarajat UX | ✅ DONE (ADR-003 kutayotgan nuqtalari belgilangan) — `design/driver/ds-02-*.md`; terminal-xato ekrani strukturasi tayyor, siyosat matni OPEN-002/ADR-003 dan keyin to'ldiriladi; yangi savollar OPEN-008..009 |
+| `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md` (oqim, ekranlar+holatlar matritsasi, komponentlar); ochiq qiymatlar OPEN-001 ga, yangi savollar OPEN-005..007 sifatida yozilgan va egasining 2026-08-26 qarorlari bilan yopilgan (`decisions.md` §Yopilgan) |
+| `DS-02` haydovchi reys va xarajat UX | ✅ DONE (ADR-003 kutayotgan nuqtalari belgilangan) — `design/driver/ds-02-*.md`; terminal-xato ekrani strukturasi tayyor, siyosat matni OPEN-002/ADR-003 dan keyin to'ldiriladi; yangi savollar OPEN-008..011 egasining 2026-08-26 qarorlari bilan yopilgan (`decisions.md` §Yopilgan) |
 | `DS-03` operator konsoli dizayni | ✅ DONE (DC-03 kutayotgan [TAXMIN] ro'yxati bilan) — `design/web/ds-03-*.md`; IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, server-e'lon-qilgan-harakatlar qoidalari; kontrakt kutilmalari `ds-03-konsol.md` §5 da `DC-03` ga kirish sifatida |
 | Boshqa hammasi | Boshlanmagan |

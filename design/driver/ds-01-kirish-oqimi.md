@@ -20,8 +20,10 @@ Teg konvensiyasi va holatlar katalogi: [`README.md`](README.md). Ekran spetsifik
 - [FAKT: `decisions.md` OPEN-001] Grace-oyna kunlari, rate-limit qiymatlari, operator
   verifikatsiya protsedurasi — ochiq; ADR-002 (`DC-01`) yopadi. Bu hujjat ularni **qiymat
   sifatida ishlatmaydi**, faqat joyini ko'rsatadi.
-- [FAKT: `decisions.md` OPEN-003] Interfeys tili hal qilinmagan — til tanlash ekrani shartli
-  spetsifikatsiya qilinadi.
+- [FAKT: `decisions.md` OPEN-003 yopilgan, egasining qarori 2026-08-26] Interfeys tillari:
+  o'zbek + rus, parity bilan — til tanlash ekrani (`A0`) doimiy qismga aylandi.
+- [FAKT: `decisions.md` OPEN-005 yopilgan] MVP da bir haydovchi — bitta faol a'zolik; kompaniya
+  tanlash ekrani (`A3`) MVP da render qilinmaydi, spetsifikatsiyasi keyingi bosqichga saqlanadi.
 
 ## 1. Qurilma sessiya modeli — ikki mustaqil o'q
 
@@ -92,7 +94,7 @@ flowchart TD
     CODE -->|kod qabul qilindi| MEMB{Faol a'zolik soni?}
     MEMB -->|0| HELP[A9 Kira olmayapman\nofisga murojaat]
     MEMB -->|1| PIN[A4 PIN o'rnatish]
-    MEMB -->|>1| COMPANY[A3 Kompaniya tanlash]
+    MEMB -->|>1 - MVP da yuz bermaydi| COMPANY[A3 Kompaniya tanlash\nkeyingi bosqich]
     COMPANY --> PIN
     PIN --> BIO[A5 Biometrik taklif\nskippable]
     BIO --> HOME[Ilova bosh ekrani]
@@ -101,9 +103,8 @@ flowchart TD
 Qadam niyatlari:
 
 - [TAKLIF] **A0 til birinchi.** O'qiy olmagan haydovchi sozlamalarga yetib bormaydi, shuning
-  uchun til tanlovi (agar OPEN-003 bir nechta tilni tanlasa) birinchi maydondan oldin turadi va
-  har til o'z yozuvida ko'rsatiladi. [SAVOL → OPEN-003] Qaysi tillar — egasi hal qiladi; bitta
-  til tanlansa A0 ekrani umuman render qilinmaydi.
+  uchun til tanlovi birinchi maydondan oldin turadi va har til o'z yozuvida ko'rsatiladi:
+  `O'zbekcha` / `Русский` [FAKT: OPEN-003 yopilgan — o'zbek + rus].
 - [TAKLIF] **A1 bitta maydon, bitta klaviatura.** Raqamli klaviatura, davlat prefiksi tanlagich
   emas — o'zgarmas matn sifatida; asosiy tugma ekranning pastki uchdan birida (qo'lqopli bosh
   barmoq zonasi).
@@ -118,10 +119,9 @@ Qadam niyatlari:
 - [TAKLIF] **A4 PIN o'rnatish majburiy, A5 biometrik ixtiyoriy.** Sensor yo'q yoki ishlamaydigan
   qurilma bor; biometrik rad etilsa ham PIN bilan ishlash to'liq. [SAVOL → OPEN-001] PIN
   uzunligi/qoidasi ADR-002 da; klient hech qanday kuchlilik ko'rsatkichi o'ylab topmaydi.
-- [TAKLIF] **A3 faqat haqiqiy savol bo'lganda.** Bitta faol a'zolik — ekran ko'rsatilmaydi,
-  kontekst jim o'rnatiladi. [SAVOL → OPEN-005 taklifi] Haydovchi bir vaqtda bir nechta
-  kompaniyaga a'zo bo'la oladimi — kanon jim; ekran ikkala javobga ham chidamli qilib
-  spetsifikatsiya qilingan (javob «yo'q» bo'lsa bitta ekran o'chadi, boshqa hech nima o'zgarmaydi).
+- [FAKT: OPEN-005 yopilgan] **A3 MVP da render qilinmaydi** — bir haydovchi bitta faol a'zolik,
+  kontekst har doim jim o'rnatiladi. Spetsifikatsiya keyingi bosqich (ko'p a'zolik ochilganda)
+  uchun saqlanadi; nol faol a'zolik holati esa MVP da ham ishlanadi (`A9` ga yo'naltiriladi).
 
 ## 3. J2 — Har keyingi ochilish (sessiya tiklash)
 
@@ -211,11 +211,12 @@ saqlanadi — demak chiqish navbatni indamay o'chira olmaydi.
 | Navbat bo'sh emas, offline | **Qaytarib bo'lmas tasdiq** (`DST`): aniq son va oqibat haydovchi tilida aytiladi, standart tanlov — «Bekor qilish». |
 
 [SAVOL → OPEN-002] Navbat umuman drenaj bo'lmasa (terminal xato) chiqish nima qiladi — ADR-003
-hal qiladi. [SAVOL → OPEN-006 taklifi] Umumiy qurilma stsenariysi: bitta mashina telefonida ikki
-haydovchi. A haydovchining navbati bo'sh bo'lmaganda B kirsa, A ning ishini B sessiyasi ostida
-yuborish moliyaviy faktni noto'g'ri attributsiya qiladi ([FAKT: `product/business-rules.md` #9
-audit talabi bilan zid]). [TAKLIF] Dizayn almashtirishni A navbati hal bo'lgunча bloklaydi;
-backend siyosati ochiq savol.
+hal qiladi. [FAKT: OPEN-006 yopilgan, egasining qarori] Umumiy qurilma stsenariysi (bitta
+mashina telefonida ikki haydovchi): **identifikatsiya almashish bloklanadi** — A haydovchining
+yuborilmagan navbati turganda B kira olmaydi; ekran A ning N ta yozuvi yuborilmaganini aytadi va
+avval aloqaga chiqib yuborishni so'raydi. Moliyaviy fakt boshqa odam sessiyasi ostida ketmaydi
+([FAKT: `product/business-rules.md` #9 audit talabi]). Backend tomonda qoida `DC-01`/`DC-02`
+ADR'larida mustahkamlanadi.
 
 ## 6. Rate-limit va xato ko'rsatish printsiplari (butun oqim uchun)
 

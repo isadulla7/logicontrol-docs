@@ -43,10 +43,11 @@ Teglar va kontekst: [`README.md`](README.md). Ekranlar: [`ds-03-ekranlar.md`](ds
 
 - [TAKLIF] **Xarajatlar birinchi va standart ochiladigan bo'lim** — operatorning kunlik ishi
   tasdiqlash navbati ([FAKT: tasks.md WB-03 «operatorning asosiy ekrani»]).
-- [TAKLIF] Kompaniya tanlagichi faqat foydalanuvchi bir nechta kompaniyada a'zo bo'lsa
-  ko'rinadi (DS-01 `A3` bilan bir xil qoida, [SAVOL → OPEN-005]); almashtirish butun konsol
-  kontekstini almashtiradi va URL'da aks etadi (`/c/<company>/...`) — ikki kompaniya ma'lumoti
-  bitta ekranda hech qachon aralashmaydi [FAKT: `business-rules.md` #1 oqibati].
+- [FAKT: OPEN-005 yopilgan — MVP da bitta a'zolik] Kompaniya tanlagichi MVP da ko'rinmaydi;
+  kontekst avtomatik. [TAKLIF] Ko'p a'zolik ochilganda tanlagich shu joyga qaytadi va
+  almashtirish butun konsol kontekstini almashtiradi, URL'da aks etadi (`/c/<company>/...`) —
+  ikki kompaniya ma'lumoti bitta ekranda hech qachon aralashmaydi [FAKT: `business-rules.md`
+  #1 oqibati].
 - [SAVOL → egasiga] Kompaniya yaratish/onboarding (STIR orqali ihamkor.uz autofill —
   `architecture/system.md`) qaysi yuzada yashaydi: konsol ichidami, alohida signup oqimidami?
   MVP gate'lariga kirmagan; IA bu savolga joy qoldiradi.

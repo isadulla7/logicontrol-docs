@@ -98,15 +98,18 @@ saqlash tasdig'i → orqaga.
 
 Maydonlar (tartib — chastota bo'yicha): **summa + valyuta** (bitta kompozit maydon, raqamli
 klaviatura; valyuta yonida [FAKT: `business-rules.md` #4] — juftlik ajralmas), **tur**
-([SAVOL → OPEN-009] lug'at serverdan), **reys** (T2 dan avtomatik; FAB dan: tanlash yoki
-«umumiy» [FAKT: `domain/model.md` — reysga bog'liq yoki umumiy]), **izoh** (ixtiyoriy).
-Chek foto maydoni yo'q [FAKT: `domain/model.md` — `FileAsset` MVP dan tashqari;
-[SAVOL → OPEN-008]].
+([FAKT: OPEN-009 yopilgan] tizim lug'ati, server e'lon qiladi, **majburiy**), **reys** (T2 dan
+avtomatik; FAB dan: tanlash yoki «umumiy» [FAKT: `domain/model.md` — reysga bog'liq yoki
+umumiy]), **izoh** (ixtiyoriy; [FAKT: OPEN-008 yopilgan] MVP da chekning yagona izi — shu matn,
+shuning uchun maydon ko'zga tashlanadigan joyda va placeholder chek rekvizitlarini eslatadi).
+Chek foto maydoni yo'q [FAKT: `FileAsset` MVP dan tashqari; OPEN-008 bo'yicha keyingi bosqich].
+[TAKLIF] Tur lug'ati aktivatsiyada (u majburan onlayn) va har sinxronda keshga olinadi — shuning
+uchun majburiy maydon offline'da ham har doim to'ldirila oladi.
 
 | Holat | Mazmun |
 |---|---|
 | `HAP` | Saqlash **darhol** lokal tasdiq bilan yakunlanadi: «Saqlandi. Aloqa bo'lganda o'zi yuboriladi.» + joriy navbat soni. Tarmoq kutilmaydi, spinner yo'q. |
-| `LOAD` | Faqat lokal yozish lahzasi (sezilmas); tur lug'ati birinchi ochilishda serverdan kelmagan bo'lsa — keshdagi oxirgi lug'at, u ham yo'q bo'lsa «tur» maydoni keyin to'ldiriladigan bo'lib qoladi [SAVOL → OPEN-009: majburiymi]. |
+| `LOAD` | Faqat lokal yozish lahzasi (sezilmas). Tur lug'ati keshdan (aktivatsiyada va har sinxronda yangilanadi) — forma lug'at kutib turmaydi. |
 | `ERR-V` | Summa bo'sh/nol, valyuta tanlanmagan, majburiy maydon yetishmayapti — `InlineMessage`, maydon tozalanmaydi. Valyuta standarti [TAXMIN, `DC-03`]: server ro'yxati; oxirgi ishlatilgan oldindan tanlanadi [TAKLIF]. |
 | `OFF` | **Farqsiz ishlaydi** — bu formaning bor bo'lish sababi. Bitta belgi: status barда «aloqa yo'q, yozuv navbatga qo'shiladi». |
 | `DIS` | Saqlash tugmasi faqat `LOAD` paytida takror-bosishга yopiq. |

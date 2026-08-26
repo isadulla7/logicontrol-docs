@@ -36,8 +36,8 @@ chiqadigan qoidalar [TAKLIF]:
   joyida turadi.
 - **Timeout:** hech bir ekran timeout'da terilganни o'chirmaydi; `A2` ayniqsa — raqamlar aloqa
   uzilishidan omon qoladi.
-- **Til:** [SAVOL → OPEN-003] tanlangan tillar bir xil layout byudjetida — uzunroq til asosiy
-  tugmani qirqmasligi shart.
+- **Til:** [FAKT: OPEN-003 yopilgan] o'zbek + rus parity bilan, bir xil layout byudjetida —
+  ruscha satrlar uzunroq keladi va asosiy tugmani qirqmasligi shart (bog'lovchi holat — rus tili).
 - **Screen reader / katta shrift:** har holat xabari announce qilinadi; eng katta tizim shrift
   masshtabida asosiy tugma qirqилmaydi, matn qayta oqadi.
 - **Bir qo'l:** J2 yo'li (ochish → qulf → ilova) telefonni qayta ushlamasdan bosh barmoq bilan
@@ -61,9 +61,18 @@ chiqadigan qoidalar [TAKLIF]:
 
 ## 4. Form-faktor
 
-[SAVOL → OPEN-007 taklifi] Landscape qo'llab-quvvatlash — mahsulot darajasidagi qaror (kabinada
-kronshteyndagi telefon ko'pincha landscape'da, va sessiya aynan haydash paytida tugashi mumkin —
-`A6`/`A7` shu holatда ochiladi). Bu narx butun ilovaga tegishli, faqat auth'ga emas — dizayner
-yakka hal qilmaydi. Portrait-lock tanlansa, `A6`/`A7` uchun kronshteyn stsenariysiga alohida
-javob kerak bo'ladi. Minimal en 320dp — baza (minSdk 26 davri qurilmalari [FAKT:
-`architecture/system.md` §Android]); planshet/foldable layout MVP da yo'q.
+[FAKT: OPEN-007 yopilgan, egasining qarori 2026-08-26] **MVP portrait-lock.** Minimal en
+320dp — baza (minSdk 26 davri qurilmalari [FAKT: `architecture/system.md` §Android]);
+planshet/foldable layout MVP da yo'q.
+
+**Kronshteyn rejimi talabi** (qaror sharti sifatida): `A6` (lokal qulf) va `A7` (qayta
+tasdiqlash) portretda o'rnatilgan yoki qo'l uzatib ishlatiladigan qurilmada ham bir imo-ishorada
+o'tiladigan bo'lishi shart. [TAKLIF] Buni ta'minlaydigan qoidalar:
+
+1. `A6` da biometrik prompt avtomatik; PIN pad tugmalari 64dp — kronshteyndagi telefonga
+   cho'zilgan qo'l bilan ham bosiladi; hech qanday element ekranning yuqori 15% ida emas.
+2. `A7` sheet'i harakat paytida chiqsa hech narsani bloklamaydi (offline yopiladi, DS-01
+   ekranlar A7 qoidasi); tasdiqlashni haydovchi to'xtagach bajaradi — sheet shoshirmaydi,
+   taymer yo'q.
+3. Landscape'da ochilgan tizim oynalari (masalan biometrik dialog) OS ixtiyorida; ilova o'z
+   ekranlarини portretda ushlaydi va rotatsiyada kiritilgan qiymatlar saqlanadi.

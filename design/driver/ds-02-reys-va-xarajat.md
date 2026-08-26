@@ -95,10 +95,10 @@ flowchart TD
   holat» aniq ko'rinadi («Bugun 14:20 holati bo'yicha»). Bu xato emas, normal rejim.
 - [TAXMIN, `DC-03` tasdiqlaydi] Ro'yxat serverdan sahifalab keladi (kontrakt pagination qoidasi);
   lokal keshda haydovchining joriy va yaqin reyslari to'liq turadi.
-- [FAKT: tasks.md AN-05] Reys ustida haydovchi harakati yo'q (boshlash/yakunlash tugmasi
-  chizilmaydi). [SAVOL → egasiga] Haydovchi reysni boshlashi/yakunlashi keyingi bosqichda
-  rejalashtirilganmi — bo'lsa, T2 ga harakat paneli keyin qo'shiladi; bu dizayn joyini
-  band qilib qo'ymaydi.
+- [FAKT: tasks.md AN-05; OPEN-011 yopilgan, egasining qarori] MVP da reys harakatlarining
+  aktyori faqat operator — haydovchi ilovasida boshlash/yakunlash tugmasi chizilmaydi.
+  Haydovchi boshlash/yakunlash keyingi bosqich nomzodi; `T2` ga harakat paneli keyin qo'shiladi,
+  bu dizayn joyini band qilib qo'ymaydi.
 
 ## 3. J6 — Xarajat kiritish (offline-first, asosiy stsenariy)
 
@@ -128,16 +128,17 @@ Qadam niyatlari:
 - [FAKT: `business-rules.md` #8] Takror bosish, retry, ilovani o'chirib yoqish — ikkinchi yozuv
   yaratmaydi (`client_request_id`). [TAKLIF] Shuning uchun UI da «qayta yuborish» tugmasi
   xavfsiz va har doim ko'rsatsa bo'ladi.
-- [TAKLIF] Forma maydonlari (batafsil X1 da): summa + valyuta (majburiy juftlik), reysga
-  bog'lash (T2 dan kirilganda avtomatik), izoh. [SAVOL → OPEN-009 taklifi] Xarajat turlari
-  katalogi kanonда yo'q — server lug'ati bo'lishi kerak, klientга qotirib yozilmaydi.
-- [SAVOL → OPEN-008 taklifi] Chek foto MVP da yo'q (`FileAsset` keyinroq) — lekin vizyon
-  «yo'qolgan cheklar»ni muammo deb ataydi. Qog'oz chekni haydovchi qayerga qo'yadi, MVP da
-  qanday izlanadi — egasi hal qilsin; forma foto maydonisiz chiziladi, keyin qo'shishга joy bor.
-- [SAVOL → `DC-03`] Xarajatning «tranzaksiya vaqti» qaysi payt — haydovchi kiritgan lahzami
-  (qurilma soati) yoki server qabul qilgan paytmi? Kurs shu vaqtga muzlatiladi
-  ([FAKT: `business-rules.md` #3]), offline'da ikkalasi kunlar bilan farq qilishi mumkin.
-  Klient har yozuvda kiritilgan lahzani yuboradi [TAKLIF]; qaysi biri rasmiy — kontrakt qarori.
+- [TAKLIF] Forma maydonlari (batafsil X1 da): summa + valyuta (majburiy juftlik), tur, reysga
+  bog'lash (T2 dan kirilganda avtomatik), izoh. [FAKT: OPEN-009 yopilgan] Xarajat turi —
+  **tizim lug'ati, majburiy**: server e'lon qiladi, klientga qotirib yozilmaydi; ro'yxatning
+  o'zi `BK-07`/`DC-03` da.
+- [FAKT: OPEN-008 yopilgan] Chek foto MVP da yo'q (`FileAsset` keyinroq); MVP siyosati — matn
+  izoh + operatsion tartib («qog'oz chek davr yakunigacha saqlanib topshiriladi», onboarding
+  materialida). Forma foto maydonisiz chiziladi, keyin qo'shishга joy bor.
+- [FAKT: OPEN-010 yopilgan, egasining qarori] Xarajatning «tranzaksiya vaqti» — **haydovchi
+  kiritgan lahza** (qurilma soati yozuvda ketadi, kurs o'sha sanaga muzlatiladi
+  [FAKT: `business-rules.md` #3]). Server qurilma soatiga aqlga sig'arlik chegara tekshiruvini
+  qo'yadi — aniq qoida `DC-03`/`BK-07` da.
 
 ## 4. J7 — Xarajatlarim va navbat holati
 
@@ -172,10 +173,13 @@ javobgar — ADR-003 hal qiladi.
    tuzatadimi / operator hal qiladimi), va qaysi server javoblari bu ekranga olib kelishi —
    ADR-003 dan keyin to'ldiriladi.
 
-## 6. DS-02 dan chiqadigan yangi savollar
+## 6. DS-02 dan chiqqan savollar — holati
 
-- [SAVOL → OPEN-008 taklifi] MVP da chek/dalil siyosati (foto yo'q — matn izoh yetarlimi).
-- [SAVOL → OPEN-009 taklifi] Xarajat turlari lug'ati: kim belgilaydi, server e'lon qiladimi.
-- [SAVOL → `DC-03`] Tranzaksiya vaqti semantikasi (3-bo'lim); valyutalar ro'yxati va standart
-  valyuta manbai (kompaniya bazaviy valyutasimi, oxirgi ishlatilganmi — server aytadi).
-- [SAVOL → egasiga] Haydovchi reysni boshlash/yakunlashi keyingi bosqichdami (2-bo'lim).
+Egasining 2026-08-26 qarorlari bilan yopildi (`decisions.md` §Yopilgan): chek/dalil siyosati
+(OPEN-008 — matn izoh + operatsion tartib), xarajat turlari (OPEN-009 — tizim lug'ati,
+majburiy), tranzaksiya vaqti (OPEN-010 — haydovchi kiritgan lahza), reys aktyori (OPEN-011 —
+MVP da faqat operator).
+
+Ochiq qolgan: [SAVOL → `DC-03`] valyutalar ro'yxati va standart valyuta manbai (kompaniya
+bazaviy valyutasimi, oxirgi ishlatilganmi — server aytadi); [SAVOL → OPEN-002] terminal-xato
+siyosati (5-bo'lim).
