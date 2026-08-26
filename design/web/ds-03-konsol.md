@@ -59,9 +59,11 @@ Teglar va kontekst: [`README.md`](README.md). Ekranlar: [`ds-03-ekranlar.md`](ds
 
 ## 2. Ruxsatga sezgir holatlar — umumiy qoida
 
-[FAKT: sessiya prompti] Klient harakat xulosasini chiqarmaydi. [TAXMIN → `DC-03`] Kontraktdan
-kutiladigan shakl: har yozuv (yoki sahifa) javobida `actions` ro'yxati keladi; har harakat
-`available` yoki `disabled(sabab kodi)` holatida bo'ladi.
+[FAKT: sessiya prompti] Klient harakat xulosasini chiqarmaydi. [FAKT: OPEN-022 yopilgan,
+egasining qarori 2026-08-26] Kontrakt shakli: har resurs javobida
+`actions: [{name, available, disabledReason?: {code, message}}]` — barcha resurslarda
+(Expense, Trip, Driver, Vehicle, Assignment, Ledger, Settlement, Member); kontrakt v1.1
+kengaytmasi bilan keladi.
 
 [TAKLIF] UI qoidalari:
 
