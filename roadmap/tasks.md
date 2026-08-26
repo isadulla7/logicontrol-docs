@@ -63,6 +63,19 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `WB-02` | web | **Jadval va holat tizimi.** DataTable, pagination, barcha holat komponentlari. `WB-01` bilan fayl kesishmasa parallel. | `WB-01` |
 | `WB-03` | web | **Xarajat tasdiqlash navbati.** Operatorning asosiy ekrani. | `WB-02`, `BK-07` |
 
+## Web kengaytmasi — egasi tasdiqlagan (2026-08-26)
+
+Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni qamraydi
+(asl reja faqat `WB-01..03` edi). Hammasi mock qatlam ustida; jonli integratsiya B4 gate'ida.
+
+| ID | Repo / modul | Ish | Bog'liqlik |
+|---|---|---|---|
+| `WB-04` | web | **Reys yaratish/boshqarish.** Yaratish formasi, detal, server e'lon qilgan lifecycle harakatlari (start/complete/cancel), optimistic-lock. | `WB-02` |
+| `WB-05` | web | **Flot boshqaruvi.** Haydovchi/mashina ro'yxatlari, qo'shish, biriktirish. | `WB-02` |
+| `WB-06` | web | **Haydovchi hisobi.** Balanslar, append-only yozuvlar tarixi, avans berish. | `WB-02` |
+| `WB-07` | web | **Hisob-kitob.** Davr bo'yicha ochish, balans, yopish. | `WB-06` |
+| `WB-08` | web | **Provisional vizual dizayn tizimi.** Sidebar shell, dashboard, karta/tugma/forma uslublari. DS-03 chiqqach rasmiylashtiriladi yoki almashtiriladi. | — |
+
 ## Faza gate'lari (roadmap `v2.md` bilan moslik)
 
 - **B1 gate** = `BK-01`+`BK-02`+`BK-03` merged, cross-tenant negativ testlar yashil, haydovchi
@@ -106,8 +119,14 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `WB-01` web shell | ✅ DONE — Next.js (App Router) + TS + Tailwind + TanStack Query; `/c/[companyId]` scope; ApiClient interfeysi + in-memory mock (DC-03 kutilmoqda); problem+json + correlation ID; server-e'lon-qilgan-harakatlar turi; CI gate (lint+typecheck+test+build) birinchi commitda. Eslatma: DC-03/DS-03 hali yo'q — mock kontrakt DC-03 chiqqach moslashtiriladi; UI tili vaqtincha o'zbekcha, markazlashtirilgan lug'atda (OPEN-003) |
 | `WB-02` jadval va holat tizimi | ✅ DONE — generic DataTable (sahifalash majburiy) + Pagination; holat komponentlari katalogi: loading/empty/error (problem `code` + correlation ID)/ruxsat-yo'q/offline; offline banner; Reyslar sahifasi mock bilan (kompaniya izolyatsiyasi, 403 problem+json testlari) |
 | `WB-03` xarajat tasdiqlash navbati | ✅ DONE (soddalashtirilgan) — SUBMITTED navbat sahifalangan jadvalda; tugmalar faqat server e'lon qilgan harakatlar uchun (klientda rol/daraja logikasi yo'q); approve/reject optimistic-lock versiya bilan, 409 konfliktda navbat yangilanadi; rad etishda sabab maydoni (majburiyligi — OPEN-005). Eslatma: DS-03 dizayni hali yo'q — ekran atayin sodda (jadval + sabab paneli), dizayn kelgach taqdimot qatlami boyitiladi; BK-07 hali yo'q — mock adapter, jonli integratsiya B4 gate'ida |
+| `WB-04` reys boshqaruvi | ✅ DONE — yaratish/detal/lifecycle harakatlari serverdan; mock lifecycle testlari |
+| `WB-05` flot | ✅ DONE — haydovchi/mashina tablari, qo'shish, biriktirish (eski biriktirish avtomatik bo'shatiladi) |
+| `WB-06` haydovchi hisobi | ✅ DONE — balanslar, append-only tarix, avans; tasdiqlangan xarajat mock'da ledger'ga postlanadi |
+| `WB-07` hisob-kitob | ✅ DONE — ochish (balans hisoblanadi), yopish (SETTLEMENT yozuvi), bitta ochiq hisob-kitob qoidasi mock'da |
+| `WB-08` vizual dizayn | ✅ DONE (provisional) — sidebar shell, dashboard KPI, yagona karta/tugma/forma uslublari; DS-03 chiqdi — moslash `OPEN-009` doirasida |
 | `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md`: sessiya modeli, 4 jurney, 13 ekran + holatlar matritsasi, komponentlar; ADR-002 qiymatlariga moslangan |
 | `DS-02` haydovchi reys va xarajat UX | ✅ DONE — `design/driver/ds-02-*.md`: ikki qatlam status modeli (transport/biznes), offline xarajat kiritish, terminal-xato ekrani ADR-003 siyosati bilan |
 | `DS-03` operator konsoli dizayni | ✅ DONE — `design/web/ds-03-*.md`: IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, server-e'lon-qilgan-harakatlar qoidalari; WB-01..03 taqdimot qatlamini boyitishga kirish |
 | Egasining dizayn-sessiya qarorlari | ✅ OPEN-010..019 yopildi (`decisions.md`); sessiya/vaqt ziddiyatlari tie-break bilan hal: 30 kun token, qat'iy Asia/Tashkent |
-| Qolganlari (`AN-06` offline xarajat kiritish; `OPEN-009` web moslash) | Boshlanmagan |
+| `DS-04` konsol kengaytmasi dizayni | ✅ DONE — `design/web/ds-04-konsol-kengaytma.md`: operator kirish (OPEN-018) va onboarding (OPEN-019), operator xarajat kiritish UI (BK-10/OPEN-020), reys/flot/hisob/hisob-kitob ekranlari (WB-04..07 ga kirish), WB-08 bilan kelishuv qoidasi; topilma: kontrakt v1 da operator auth endpointlari yo'q — v1.1 kengaytmasi kerak |
+| Qolganlari (`AN-06` offline xarajat kiritish; `OPEN-009` web moslash; `BK-09` davomi — parserni `integrations/ihamkor-sample.json` ga pinlash + regressiya testi; `BK-10` operator xarajati; kontrakt v1.1 — operator auth endpointlari) | Boshlanmagan |

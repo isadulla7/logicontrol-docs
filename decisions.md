@@ -4,11 +4,12 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
 
 ## Ochiq
 
-- **OPEN-007 — ihamkor.uz javob namunasi (qisman ochiq).** Egasining qarori (2026-08-26):
-  namuna keyinroq beriladi; kurs manbai hozircha MANUAL qoladi, CBU provayderi keyingi bosqichda
-  (alohida ADR bilan). Namuna kelguncha `BK-09` parseri universal (noma'lum maydonlarga chidamli)
-  holida ishlayveradi; namuna kelganda parser aniq shaklga pinlab, real-namunali regressiya
-  testi qo'shiladi.
+- **OPEN-007 — ihamkor.uz javob namunasi. YOPILDI (egasi namunani berdi, 2026-08-26).**
+  Real javob `integrations/ihamkor-sample.json` da, tahlili `integrations/ihamkor.md` da.
+  Asosiy topilmalar: qidiruv fuzzy (aniq `tin` filtri shart) va holat maydonlari o'zaro zid
+  bo'lishi mumkin (`state` ≠ `stateid`) — holatga biznes qaror bog'lanmaydi. Kurs manbai
+  MANUAL qoladi, CBU provayderi keyingi bosqichda. Parserга pinlash + real-namunali regressiya
+  testi — `BK-09` davomi sifatida qolgan ishlar ro'yxatida.
 
 - **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash.** Web yo'nalishi (WB-01..03)
   OPEN-003/004 qarorlaridan oldin qurilgan: UI matnlari vaqtincha faqat o'zbekcha
