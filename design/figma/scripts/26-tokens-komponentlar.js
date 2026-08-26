@@ -9,7 +9,7 @@ f.appendChild(T('Tipografika — ikki zichlik (haydovchi sp / operator px)', 20,
 function trow(rol, dSample, dSize, dW, oSample, oSize, oW, last) {
   const r = AL('HORIZONTAL', { itemSpacing: 16, counterAxisAlignItems: 'BASELINE' });
   f.appendChild(r); fillH(r); pad(r, 10, 0, 10, 0);
-  const lab = T(rol, 12, 'Semi Bold', N500); r.appendChild(lab); lab.resize(150, lab.height);
+  r.appendChild(T(rol, 12, 'Semi Bold', N500, { w: 150 })); // {w} → textAutoResize='HEIGHT' + resize (auto-width matnni resize qilib bo'lmaydi)
   const d = AL('VERTICAL', {}); r.appendChild(d); d.layoutSizingHorizontal = 'FILL';
   d.appendChild(T(dSample, dSize, dW, N900));
   const o = AL('VERTICAL', {}); r.appendChild(o); o.layoutSizingHorizontal = 'FILL';

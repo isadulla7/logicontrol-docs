@@ -9,14 +9,17 @@ p.appendChild(c); fillH(c); c.layoutSizingVertical = 'FILL'; pad(c, 8, 16, 8, 16
 c.appendChild(T('Reyslarim', 26, 'Bold', N900));
 c.appendChild(T('HOZIRGI', 12, 'Semi Bold', N500, { ls: 0.6 }));
 
-// ACTIVE — dominant karta (amber marker + qalin chegara)
-const act = AL('HORIZONTAL', { itemSpacing: 0, cornerRadius: 16, name: 'TripCard / ACTIVE' });
+// ACTIVE — dominant karta (amber aksent + qalin chegara)
+// Eslatma: aksent yuqorida (HTML maketda chapda) — chap chiziq HUG balandlikdagi
+// auto-layout'da FILL bilan siqilib qoladi (figma-use gotchas: "HUG parents collapse
+// FILL children"), yuqori bar esa counter o'qda ishonchli.
+const act = AL('VERTICAL', { itemSpacing: 0, cornerRadius: 16, name: 'TripCard / ACTIVE' });
 act.fills = F(N0); act.strokes = F(K600); act.strokeWeight = 2; act.clipsContent = true;
 c.appendChild(act); fillH(act);
 const strip = figma.createFrame(); strip.fills = F(AMB);
-act.appendChild(strip); strip.resize(5, 10); strip.layoutSizingVertical = 'FILL';
+act.appendChild(strip); strip.resize(300, 5); strip.layoutSizingHorizontal = 'FILL';
 const actIn = AL('VERTICAL', { itemSpacing: 6 });
-act.appendChild(actIn); actIn.layoutSizingHorizontal = 'FILL'; pad(actIn, 16, 16, 14, 14);
+act.appendChild(actIn); actIn.layoutSizingHorizontal = 'FILL'; pad(actIn, 16, 16, 14, 16);
 const actTop = AL('HORIZONTAL', { primaryAxisAlignItems: 'SPACE_BETWEEN', counterAxisAlignItems: 'CENTER' });
 actIn.appendChild(actTop); fillH(actTop);
 actTop.appendChild(T('Toshkent → Andijon', 21, 'Bold', N900));

@@ -37,6 +37,25 @@ takrorlanishni oldini olish uchun ular bitta faylda saqlanadi.
 Byudjet: ~27 chaqiruv + har sahifadan keyin 1 ta `get_screenshot` tekshiruv + tuzatishlar
 ≈ 35–40 chaqiruv. Professional kunlik 200 limitiga bemalol sig'adi.
 
+## Lokal tekshiruv (Figma chaqiruvisiz)
+
+`design/figma/tools/` — Plugin API mock harness. Skriptlarni Figma'ga yubormasdan
+lokal ijro etadi va runtime xatolarini tutadi: auto-layout `FILL`/`HUG` qoidalari,
+rang diapazoni (0..1), paint ichida `a` maydoni, yuklanmagan shrift,
+`lineHeight`/`letterSpacing` formati, auto-width matnni `resize()` qilish,
+`primaryAxisSizingMode` enum aralashuvi.
+
+```bash
+node design/figma/tools/run-mock.mjs
+```
+
+Natija: `27/27 skript mock'da muvaffaqiyatli ijro etildi` + siqilish ogohlantirishlari
+ro'yxati (hozir bo'sh). Skript o'zgartirilgach shu buyruq qayta ishga tushiriladi —
+Figma chaqiruv kvotasini sarflamasdan.
+
+Mock haqiqiy Figma emas: u strukturaviy qoidalarni tekshiradi, vizual natijani emas.
+Ijrodan keyin baribir `get_screenshot` bilan ko'z bilan tekshiriladi.
+
 ## Tekshiruv
 
 Har sahifa tugagach `get_screenshot` (nodeId = sahifadagi section/freym ID) bilan vizual
