@@ -10,6 +10,8 @@ tayanadi va o'zi hech qanday biznes yoki xavfsizlik qoidasini o'ylab topmaydi.
 | DS-01 | [`ds-01-kirish-oqimi.md`](ds-01-kirish-oqimi.md) | Sessiya modeli, oqim diagrammalari, to'rt jurney (aktivatsiya, qayta ochish, qayta tasdiqlash, chiqish) |
 | DS-01 | [`ds-01-ekranlar.md`](ds-01-ekranlar.md) | Ekran inventari, holatlar qamrov matritsasi, ekranma-ekran spetsifikatsiya |
 | DS-01 | [`ds-01-komponentlar.md`](ds-01-komponentlar.md) | Komponent ro'yxati (`AN-01` dizayn tizimiga kirish) va ergonomika bazasi |
+| DS-02 | [`ds-02-reys-va-xarajat.md`](ds-02-reys-va-xarajat.md) | Ikki qatlam status modeli, reys ko'rish, offline xarajat kiritish, terminal-xato strukturasi |
+| DS-02 | [`ds-02-ekranlar.md`](ds-02-ekranlar.md) | `T*`/`X*` ekranlar, holatlar matritsasi, qo'shimcha komponentlar |
 
 ## Teg konvensiyasi
 

@@ -77,4 +77,5 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 |---|---|
 | B0 poydevor (docs, backend skeleti, android skeleti) | ✅ DONE — backend `mvn clean verify` lokal yashil; Android CI gate |
 | `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md` (oqim, ekranlar+holatlar matritsasi, komponentlar); ochiq qiymatlar OPEN-001 ga, yangi savollar OPEN-005..007 sifatida `decisions.md` da |
+| `DS-02` haydovchi reys va xarajat UX | ✅ DONE (ADR-003 kutayotgan nuqtalari belgilangan) — `design/driver/ds-02-*.md`; terminal-xato ekrani strukturasi tayyor, siyosat matni OPEN-002/ADR-003 dan keyin to'ldiriladi; yangi savollar OPEN-008..009 |
 | Boshqa hammasi | Boshlanmagan |

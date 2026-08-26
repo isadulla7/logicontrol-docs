@@ -28,3 +28,10 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   mumkin. Landscape qo'llab-quvvatlash narxi butun ilovaga tegishli — mahsulot qarori. `AN-01`
   va `AN-04` dan oldin hal qilinsa arzon; portrait-lock tanlansa kronshteyn stsenariysiga
   alohida dizayn javobi kerak.
+- **OPEN-008 — MVP da chek/dalil siyosati.** (`DS-02` taklifi.) `FileAsset` MVP dan tashqarida
+  (foto yo'q), lekin vizyon «yo'qolgan cheklar»ni asosiy muammo deb ataydi. MVP da qog'oz chek
+  qanday izlanadi — matn izoh yetarlimi, operatsion tartib bormi? `AN-06`/`BK-07` dan oldin
+  hal qilinsa arzon.
+- **OPEN-009 — Xarajat turlari lug'ati.** (`DS-02` taklifi.) Kanonda xarajat turi/kategoriya
+  tushunchasi yo'q, lekin operator tasdiqlashi va keyingi tahlil usiz qiyin. Kim belgilaydi,
+  server e'lon qiladimi, majburiymi — `BK-07`/`DC-03` dan oldin.
