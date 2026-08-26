@@ -34,3 +34,10 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   `https://ihamkor.uz/api/search/quick?q=<real STIR>` ning xom JSON javobidan bitta namuna
   bering — parser aniq shaklga pinlab, real-namunali regressiya testi qo'shiladi. Adapter
   hozircha ishlaydi: topilmasa/ulanmasa forma bo'sh ochiladi (boyitish printsipi buzilmaydi).
+- **OPEN-008 — Spend Policy qiymatlari va valyuta kursi manbai.** `BK-07` da mexanizm to'liq:
+  kompaniya bazaviy valyutasida threshold (`PUT /api/v1/companies/{id}/spend-policy`), threshold
+  ostida MANAGER tasdiqlaydi, ustida faqat OWNER; siyosat o'rnatilmagan kompaniyada konservativ
+  default — hamma xarajat OWNER tasdig'ini talab qiladi. Egadan savollar: (1) standart threshold
+  qiymati bo'lishi kerakmi yoki har kompaniya o'zi o'rnatadimi (hozirgidek)? (2) ikki daraja
+  yetarlimi yoki ko'proq zina kerakmi? (3) valyuta kursi: hozir kiritilgan kurs (MANUAL) bilan
+  snapshot muzlatiladi — CBU (cbu.uz) avtomatik kurs provayderi qachon ulansin (alohida ADR)?
