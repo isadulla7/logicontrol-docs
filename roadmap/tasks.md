@@ -76,4 +76,5 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | Task | Holat |
 |---|---|
 | B0 poydevor (docs, backend skeleti, android skeleti) | ✅ DONE — backend `mvn clean verify` lokal yashil; Android CI gate |
+| `WB-01` web shell | ✅ DONE — Next.js (App Router) + TS + Tailwind + TanStack Query; `/c/[companyId]` scope; ApiClient interfeysi + in-memory mock (DC-03 kutilmoqda); problem+json + correlation ID; server-e'lon-qilgan-harakatlar turi; CI gate (lint+typecheck+test+build) birinchi commitda. Eslatma: DC-03/DS-03 hali yo'q — mock kontrakt DC-03 chiqqach moslashtiriladi; UI tili vaqtincha o'zbekcha, markazlashtirilgan lug'atda (OPEN-003) |
 | Boshqa hammasi | Boshlanmagan |
