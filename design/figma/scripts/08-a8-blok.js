@@ -15,14 +15,14 @@ clock.resize(46, 46); ic.appendChild(clock);
 
 const h = T("Urinishlar vaqtincha to'xtatildi", 24, 'Bold', N900, { a: 'CENTER' });
 c.appendChild(h); h.textAutoResize = 'HEIGHT'; h.layoutSizingHorizontal = 'FILL';
-const lead = T("Juda ko'p noto'g'ri kod kiritildi. Bu xavfsizlik cheklovi — hisobingizga hech narsa bo'lgani yo'q.", 16, 'Regular', N700, { a: 'CENTER', lh: 24 });
+const lead = T("Juda ko'p urinish. 15 daqiqadan keyin qaytadan urinib ko'ring.", 16, 'Regular', N700, { a: 'CENTER', lh: 24 });
 c.appendChild(lead); lead.textAutoResize = 'HEIGHT'; lead.layoutSizingHorizontal = 'FILL';
 
 const tb = AL('VERTICAL', { itemSpacing: 2, counterAxisAlignItems: 'CENTER', cornerRadius: 14, name: 'Vaqt kartasi' });
 tb.fills = F(N0); tb.strokes = F(N200); tb.strokeWeight = 1;
 c.appendChild(tb); pad(tb, 14, 22, 14, 22);
 tb.appendChild(T('14:41 gacha', 26, 'Bold', N900));
-tb.appendChild(T("Server ko'rsatgan vaqt · taxminan 15 daqiqa", 13, 'Regular', N500));
+tb.appendChild(T("Ofis belgilagan kutish vaqti", 13, 'Regular', N500));
 spacer(c);
 btn(c, 'Qaytish — 14:41 da ochiladi', null, N500, { stroke: N200, fs: 16 });
 c.appendChild(T("Shoshilinch bo'lsa: ofisga qo'ng'iroq qiling", 15, 'Medium', K600));

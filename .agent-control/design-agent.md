@@ -1,7 +1,8 @@
 LOGICONTROL LIVE AGENT STATUS
 
 AGENT_ID: design-agent
-ROLE: Product Design (UX + visual, driver app + operator console)
+ROLE: Visual Design & Figma port (dizayn tizimi tokenlari, HTML maketlar, Figma
+      chizish skriptlari). DS-* spetsifikatsiya hujjatlari — design-agent-1 zonasi.
 REPOSITORY: logicontrol-docs
 BRANCH: main
 SESSION_STATUS: BLOCKED
@@ -17,21 +18,19 @@ sahifasi) Figma faylida native qatlamlar sifatida chizib chiqish — rasm/screen
 emas, auto-layout + haqiqiy matn + token ranglari bilan tahrirlanadigan.
 
 CURRENT_STEP:
-Mock harness ustida 27 skript ijro etildi, 2 ta haqiqiy runtime xato topildi va
-tuzatildi (TripCard chap chizig'i HUG parent'da siqilar edi; tokenlar sahifasida
-auto-width matnga resize()). Qayta ijro: 27/27 OK, 0 ogohlantirish. Endi ish
-commit qilinadi va Figma plan ochilishini kutadi.
+Parallel agent (design-agent-1) DS-05 xato-matn katalogini merge qilgan; mening
+maketlarim va Figma skriptlarimdagi xato matnlari shu kanonga moslandi (A8, A7,
+X4, W-L). Mock qayta ijro: 27/27 OK, 0 ogohlantirish. Commit qilinmoqda.
 
 WORKING_NOW:
-* mock natijalarini README'ga hujjatlashtirish
-* tuzatishlar + mock harness + status faylini bitta commit'ga yig'ish
+* DS-05 matn katalogiga moslashtirilgan maketlar/skriptlarni commit qilish
+* qolgan matn ziddiyatini design-agent-1 ga savol sifatida qayd etish
 
 CURRENT_FILES:
-* design/figma/tools/mock-figma.mjs (yangi)
-* design/figma/tools/run-mock.mjs (yangi)
-* design/figma/scripts/13-t1-reyslar.js (tuzatildi)
-* design/figma/scripts/26-tokens-komponentlar.js (tuzatildi)
-* design/figma/README.md
+* design/mockups/driver/03-kod.html, 06-qayta-tasdiqlash.html, 12-harakat-kerak.html
+* design/mockups/web/01-login.html
+* design/figma/scripts/07-a7-sheet.js, 08-a8-blok.js, 19-x4-terminal.js
+* design/figma/tools/mock-figma.mjs, run-mock.mjs
 
 COMPLETED_THIS_SESSION:
 * design/system/tokens.md — to'liq token spetsifikatsiyasi (palitra light/dark,
@@ -50,6 +49,8 @@ COMPLETED_THIS_SESSION:
 * design/figma/tools/ — Plugin API mock harness (FILL/HUG qoidalari, rang diapazoni,
   shrift yuklash, matn resize tekshiruvlari); 27 skript lokal ijro etildi
 * 2 ta runtime xato topildi va tuzatildi (13-t1 TripCard aksenti, 26 matn resize)
+* DS-05 (design-agent-1) katalogiga matn moslash: A8 rate-limit, A7 sessiya,
+  X4 terminal sabab («server» so'zi olib tashlandi), W-L login xatosi va RLT
 
 REMAINING:
 * Figma'da 27 skriptni ijro etish (DS-01 12, DS-02 7, web 5, tokenlar 2, sections 1)
@@ -69,8 +70,19 @@ BLOCKERS:
 DECISIONS_NEEDED:
 * Egasi qaroriga havola: Figma Professional planga o'tiladimi yoki vizual manba
   sifatida HTML maketlar (design/mockups/) yetarli deb hisoblanadimi.
+* design-agent-1 ga savol (matn egasi): `FIN_CONCURRENT_MODIFICATION` katalog matni
+  «Bu yozuvni boshqa xodim hozirgina o'zgartirdi» — ismsiz; DS-03 §W2 esa
+  «Bu yozuvni [ism] hozirgina o'zgartirdi» deb ismni talab qiladi (katalog §2 da
+  `{name}` o'rin belgisi e'lon qilingan, lekin shu qatorda ishlatilmagan).
+  Maketda hozircha DS-03 varianti (ism bilan) qoldirilgan — katalog egasi hal qilsin.
 
 DEPENDENCIES:
+* design-agent-1 (bir xil repo, parallel): DS-* spetsifikatsiyalari va
+  `design/copy/error-codes.md` matn katalogi — mening maketlarim shu matnlarga
+  ergashadi. Fayl chegarasi: ular `design/driver|web/*.md`, `design/copy/`,
+  `decisions.md`; men `design/system/`, `design/mockups/`, `design/figma/`.
+  Umumiy fayllar: `roadmap/tasks.md`, `design/*/README.md` — har edit oldidan
+  origin/main bilan sinxronlanadi (§17).
 * Figma MCP server (tashqi provayder) — plan/seat limiti
 * design/system/tokens.md — skriptlardagi rang/o'lcham qiymatlari manbasi
 * design/mockups/ — ekran mazmuni manbasi (matn, holat, kompozitsiya)
@@ -97,7 +109,7 @@ NOT RUN
 UNCOMMITTED_CHANGES:
 YES
 LAST_COMMIT:
-8cbe071 Figma native chizish skriptlari — 27 ta use_figma skripti tayyor
+28ecdd7 Figma skriptlarini mock harness bilan validatsiya + 2 runtime xato tuzatildi
 PUSHED:
 YES
 MERGED:
@@ -115,4 +127,4 @@ SAFE_TO_SWITCH_AGENT:
 YES
 
 LAST_UPDATE:
-2026-08-26T13:20:00+05:00
+2026-08-26T13:35:00+05:00

@@ -34,7 +34,7 @@ sh.appendChild(q); fillH(q); pad(q, 12, 14, 12, 14);
 TW(q, "📦 3 ta yozuv yuborishni kutmoqda. Davom etishi uchun o'zingizni tasdiqlang — hech narsa yo'qolmagan.", 14, 'Medium', S700, { lh: 21 });
 
 sh.appendChild(T("O'zingizni tasdiqlang", 21, 'Bold', N900));
-TW(sh, "Sessiya muddati tugadi. Ofis +998 90 123 45 67 raqamiga yangi kod yuboradi — SMS kelmasa operator og'zaki aytadi.", 14, 'Regular', N700, { lh: 21 });
+TW(sh, "Sessiya tasdiqlanmadi. Davom etish uchun o'zingizni tasdiqlang — ofis +998 90 123 45 67 raqamiga yangi kod yuboradi, SMS kelmasa operator og'zaki aytadi.", 14, 'Regular', N700, { lh: 21 });
 codeBoxes(sh, ['4', '1'], 'focus');
 btn(sh, 'Tasdiqlash', K600, N0, { h: 56, fs: 17 });
 const nt = T("Yopib qo'ysangiz: reyslar va yozuvlar ko'rinadi, yangi yozuv kiritish tasdiqlashgacha yopiq.", 13, 'Regular', N500, { a: 'CENTER', lh: 19 });

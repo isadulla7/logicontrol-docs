@@ -33,7 +33,7 @@ function tri(kind, bg, fg, sym, t, body) {
   TW(bx, body, 14, 'Regular', N700, { lh: 21 });
 }
 tri('ok', G50, G600, '✓', 'Yozuvingiz saqlanib qolgan', "Hech narsa yo'qolmadi — mazmuni tepada, qurilmangizda turibdi.");
-tri('no', R50, R600, '×', "Ofisga o'tmadi", 'Server javobi: reys allaqachon yakunlangan — unga yangi xarajat bog\'lab bo\'lmaydi.');
+tri('no', R50, R600, '×', "Ofisga o'tmadi", 'Reysning hozirgi holatida bu amalni bajarib bo\'lmaydi: reys allaqachon yakunlangan.');
 tri('next', K50, K600, '→', 'Keyingi qadam sizda', "Xarajatni umumiy sifatida yoki to'g'ri reys bilan qaytadan kiriting. Operator ham bu yozuvni konsolda ko'rib turibdi.");
 
 spacer(c);
