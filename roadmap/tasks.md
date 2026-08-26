@@ -79,4 +79,5 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `BK-01` typed ID'lar + organization moduli | ✅ DONE — `mvn clean verify` yashil (Testcontainers PostgreSQL bilan, 0 skipped); ArchUnit tenant-scope qoidasi (bare `findById` taqiqi) faol; rol modeli bo'yicha `OPEN-005` ochildi |
 | `BK-02` xato kontrakti + correlation ID | ✅ DONE — `mvn clean verify` yashil; `problem+json` barqaror `code` bilan, correlation filter + har ProblemDetail'ga muhrlash; konvensiya: modul advice `@Order(0)` |
 | `BK-03` identity — haydovchi autentifikatsiyasi | ✅ DONE — `mvn clean verify` yashil; aktivatsiya kodi juftlik bilan, atomik iste'mol, bir vaqtda bitta amal kod; jonli membership har so'rovda; pre-auth javoblar bayt-bay bir xil (integratsiya testi bilan isbotlangan); append-only auth audit. Siyosat qiymatlari `OPEN-006`da, ADR-002 kutmoqda |
+| `BK-04` fleet moduli | ✅ DONE — `mvn clean verify` yashil; Driver/Vehicle/Assignment to'liq slice; organization'ga faqat typed ID orqali; bitta ochiq biriktirish qoidasi partial unique index bilan; davlat raqami normallashtirilgan, kompaniya ichida unique |
 | Boshqa hammasi | Boshlanmagan |
