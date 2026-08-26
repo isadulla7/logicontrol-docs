@@ -13,3 +13,10 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   va Android matnlari ko'payishidan oldin.
 - **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi.** Saqlash `TIMESTAMPTZ`; ko'rsatish qoidasi
   ochiq. B2 dan oldin hal qilinsa arzon.
+- **OPEN-005 — Rol modelining chegaralari.** `BK-01` da kanon (vision/business-rules) asosida
+  uch rol kiritildi: `OWNER`, `MANAGER`, `DRIVER`; kompaniya har doim kamida bitta faol OWNER
+  saqlashi shart (oxirgi faol OWNER suspend qilinmaydi — lockoutdan himoya). Egadan tasdiq
+  kutilayotgan savollar: (1) bir kompaniyada bir nechta OWNER bo'lishi mumkinmi (hozir texnik
+  ruxsat etilgan)? (2) a'zolarni kim qo'shadi/suspend qiladi — faqat OWNER'mi yoki MANAGER ham?
+  (operator autentifikatsiyasi kelgach RBAC'da majburlanadi). (3) DISPATCHER kabi qo'shimcha
+  rol kerakmi? Javob rol modelini o'zgartirsa — migratsiya bilan, ADR'da qayd etiladi.
