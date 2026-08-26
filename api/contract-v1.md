@@ -134,6 +134,11 @@ Barchasi Bearer talab qiladi, `activate` dan tashqari.
 
 **Finance**
 - `GET /companies/{c}/expenses?status&page&size` · `GET /companies/{c}/expenses/{id}`
+- `POST /companies/{c}/expenses` `{clientRequestId, driverMemberId, recordedBy, category,
+  description, amount, currency, fxRate?, tripId?}` → 201 ExpenseResponse (APPROVED) —
+  operator (jonli MANAGER/OWNER) haydovchi nomidan kiritadi, bitta qadamda tasdiqlanib
+  ledger'ga postlanadi; spend-policy darajasi kirituvchiga qo'llanadi; hech kim o'z xarajatini
+  kirita olmaydi; `(company, clientRequestId)` bo'yicha idempotent
 - `POST /companies/{c}/expenses/{id}/approve` `{approverMemberId}` — tasdiq va ledger'ga
   postlash bitta atom fakt
 - `POST /companies/{c}/expenses/{id}/reject` `{approverMemberId, reason}`

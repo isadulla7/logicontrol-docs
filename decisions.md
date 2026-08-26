@@ -48,6 +48,15 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   faqat OWNER; siyosat o'rnatilmagan kompaniyada konservativ default — hamma xarajat OWNER
   tasdig'ini talab qiladi. Standart threshold kiritilmaydi, ikki daraja yetarli. Valyuta kursi
   masalasi OPEN-007 bilan birga hal qilindi: MANUAL snapshot qoladi, CBU provayderi keyinroq.
+- **OPEN-010 — Operator xarajat kiritishi. YOPILDI (egasi, 2026-08-26).** Egasining ko'rsatmasi:
+  xarajatni haydovchidan tashqari operator ham kirita olishi kerak. Yozma javoblar: (1) operator =
+  mavjud MANAGER (va OWNER) roli, yangi rol kiritilmaydi; (2) operator kiritgan xarajat har doim
+  aniq bir haydovchiga bog'lanadi (ledger o'sha haydovchi hisobiga yoziladi), haydovchisiz
+  "kompaniya xarajati" MVP'da yo'q; (3) boshlang'ich holat — darhol APPROVED (kirituvchi ayni
+  tasdiqlovchi), ledger'ga o'sha tranzaksiyada postlanadi; kim kiritgani `decidedBy` auditida.
+  Cheklovlar merosga mos: spend-policy darajasi kirituvchiga qo'llanadi (threshold ustida faqat
+  OWNER), hech kim o'z xarajatini kirita olmaydi (to'rt ko'z), xato storno (reversal) bilan
+  tuzatiladi. Implementatsiya: `BK-10` — `POST /companies/{c}/expenses`.
 - **(sobiq web OPEN-005) Xarajat rad etish sababi. YOPILDI (BK-07 / DC-03, 2026-08-26).** Sabab
   **majburiy**: backend `reject` sabab matnisiz qabul qilmaydi (biznes qoidasi 9 — muhim harakat
   auditsiz o'tmaydi), DC-03 kontraktida `{approverMemberId, reason}` majburiy maydonlar,
