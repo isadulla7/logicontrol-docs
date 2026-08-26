@@ -85,13 +85,19 @@ Barchasi Bearer talab qiladi, `activate` dan tashqari.
 | `GET /driver/me` | — | `{companyId, memberId, fullName, role}` |
 | `GET /driver/devices` | — | `[{id, name, registeredAt}]` |
 | `GET /driver/trips?page&size` | — | sahifa: TripResponse (faqat o'z reyslari, yangisi birinchi) |
-| `POST /driver/expenses` | `{clientRequestId, category, description, amount, currency, fxRate?, tripId?}` | ExpenseResponse (DRAFT) |
+| `POST /driver/expenses` | `{clientRequestId, category, description, amount, currency, fxRate?, tripId?, enteredAt?}` | ExpenseResponse (DRAFT) |
 | `POST /driver/expenses/{id}/submit` | `{clientRequestId}` | ExpenseResponse (SUBMITTED) |
 | `GET /driver/expenses?page&size` | — | sahifa: ExpenseResponse (faqat o'ziniki) |
 
-`category`: `FUEL, TOLL, PARKING, REPAIR, FOOD, LODGING, FINE, OTHER`.
+`category`: lug'atni server e'lon qiladi (OPEN-015) — `GET /expense-categories` (autentifikatsiyasiz)
+→ `{items:[{code}]}`; joriy kodlar: `FUEL, TOLL, PARKING, REPAIR, FOOD, LODGING, FINE, OTHER`.
+Klient kodga qarab o'z uz/ru yorlig'ini ko'rsatadi; noma'lum kod — matn, xato emas.
 `fxRate` — valyuta kompaniya bazaviy valyutasidan farq qilsa **majburiy** (aks holda
 `FIN_FX_RATE_REQUIRED`); bazaviy valyutada yuborilsa **taqiqlangan**.
+`enteredAt` (ISO-8601 UTC, ixtiyoriy) — xarajat kiritilgan lahza (OPEN-016): FX sanasi shu
+lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara: kelajakka
++5 daqiqagacha skew toleransi, 31 kundan eski — `FIN_INVALID_VALUE` (400). ExpenseResponse
+`enteredAt` (biznes lahzasi) va `createdAt` (server yozgan vaqt) ni alohida tashiydi.
 
 ## 4. Operator endpointlari (kompaniya doirasida)
 
@@ -135,7 +141,7 @@ Barchasi Bearer talab qiladi, `activate` dan tashqari.
 **Finance**
 - `GET /companies/{c}/expenses?status&page&size` · `GET /companies/{c}/expenses/{id}`
 - `POST /companies/{c}/expenses` `{clientRequestId, driverMemberId, recordedBy, category,
-  description, amount, currency, fxRate?, tripId?}` → 201 ExpenseResponse (APPROVED) —
+  description, amount, currency, fxRate?, tripId?, enteredAt?}` → 201 ExpenseResponse (APPROVED) —
   operator (jonli MANAGER/OWNER) haydovchi nomidan kiritadi, bitta qadamda tasdiqlanib
   ledger'ga postlanadi; spend-policy darajasi kirituvchiga qo'llanadi; hech kim o'z xarajatini
   kirita olmaydi; `(company, clientRequestId)` bo'yicha idempotent

@@ -96,11 +96,16 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
 - **OPEN-014 — MVP chek/dalil. YOPILDI: matn izoh + operatsion tartib** («qog'oz chek davr
   yakunigacha saqlanib topshiriladi»); foto `FileAsset` bosqichida.
 - **OPEN-015 — Xarajat turlari. YOPILDI: tizim lug'ati, majburiy.** Server e'lon qiladi,
-  klientga qotirilmaydi; ro'yxatning o'zi `BK-07`/`DC-03` da belgilanadi.
+  klientga qotirilmaydi; ro'yxatning o'zi `BK-07`/`DC-03` da belgilanadi. **Bajarildi (BK-11,
+  2026-08-26):** `GET /api/v1/expense-categories` → `{items:[{code}]}`; Android onlaynda shu
+  lug'atdan yangilanadi, offline'da lokal zaxira ro'yxat; noma'lum kod matn sifatida
+  ko'rsatiladi (AN-07).
 - **OPEN-016 — Offline xarajatning FX «tranzaksiya vaqti». YOPILDI: haydovchi kiritgan lahza.**
   Qurilma kiritish vaqtini yozuvda yuboradi; kurs o'sha sanaga muzlatiladi; server qurilma
-  soatiga aqlga sig'arlik chegara tekshiruvi qo'yadi. BK-07/DC-03 joriy holati shu semantikaga
-  tekshirilib, farq bo'lsa moslash keyingi backend taskiga kiradi.
+  soatiga aqlga sig'arlik chegara tekshiruvi qo'yadi. **Bajarildi (BK-11, 2026-08-26):**
+  `enteredAt` maydoni (haydovchi va operator kiritishida), FX sanasi shu lahzadan; chegaralar —
+  kelajakka +5 daqiqa skew toleransi, 31 kundan eski (30 kunlik sessiya + zaxira) rad —
+  `FIN_INVALID_VALUE`; Android saqlash lahzasini payload'da yuboradi (AN-07).
 - **OPEN-017 — Reys harakatlari aktyori. YOPILDI: MVP da faqat operator** ochadi/boshlaydi/
   yakunlaydi; haydovchi ilovasi faqat ko'radi. Haydovchi boshlash/yakunlash keyingi bosqich
   nomzodi.
