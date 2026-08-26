@@ -18,8 +18,8 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   Asia/Tashkent (`src/lib/format/datetime.ts`); rad etish sababi majburiy (UI + mock
   validatsiya); mock adapter DC-03 ga pinlangan: 0-asosli pagination, kodlar katalogi
   (`FIN_/TRP_/FLT_/ORG_/VALIDATION_FAILED`), `fieldErrors` massiv parsing, kategoriya
-  lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-021.
-- **OPEN-021 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`) yo'q.** Kanon qoida
+  lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-022.
+- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`) yo'q.** Kanon qoida
   (`architecture/system.md` §Web, DS-03 §2/§5.1): server har yozuv uchun mavjud harakatlarni
   e'lon qiladi (`available` / `disabled+sabab`), klient status yoki rol nomidan xulosa
   chiqarmaydi. `api/contract-v1.md` javob shakllari (TripResponse, ExpenseResponse) bunday
