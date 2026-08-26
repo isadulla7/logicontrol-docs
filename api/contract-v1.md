@@ -131,15 +131,25 @@ lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara
 > (`approverMemberId`, `issuedBy`, `closedBy`, `requestedBy`) ko'rsatiladi — rol va faollik
 > serverda jonli tekshiriladi. Bayroq yoqilgach aktyor sessiyadan keladi.
 >
-> **OPEN-022 — server harakatlarni e'lon qiladi:** javoblar `actions[]` tashiydi:
-> `[{name, available, disabledReason?: {code, message}}]`. Hozircha Expense va Trip'da
-> (BK-15); qolgan resurslar (Driver/Vehicle/Assignment/Ledger/Settlement/Member) — v1.1
-> sweep (BK-17). Expense (operator ro'yxati/detali): SUBMITTED'da `approve`/`reject`;
-> ixtiyoriy `?actorMemberId=` bilan aniqlik — `disabledReason.code` qiymatlari:
-> `NOT_A_MEMBER`, `OWN_EXPENSE`, `OWNER_REQUIRED`, `ROLE_FORBIDDEN`. Trip: PLANNED →
-> `start`/`cancel`, ACTIVE → `complete`/`cancel`, terminal → bo'sh; haydovchi read-modelida
-> har doim bo'sh (OPEN-017 — haydovchi faqat ko'radi). Klient e'lon qilinganini chizadi,
-> hech qachon status/roldan xulosa chiqarmaydi.
+> **OPEN-022 — server harakatlarni e'lon qiladi (v1.1, BK-15 + BK-17):** javoblar `actions[]`
+> tashiydi: `[{name, available, disabledReason?: {code, message}}]`. Klient e'lon qilinganini
+> chizadi, hech qachon status yoki roldan xulosa chiqarmaydi; `disabledReason.code` — barqaror
+> kalit (tarjima klientda), `message` — inson o'qiydigan izoh.
+>
+> | Resurs | Harakatlar | `disabledReason.code` |
+> |---|---|---|
+> | Expense (operator) | SUBMITTED'da `approve`, `reject`; qaror qabul qilingach bo'sh | `NOT_A_MEMBER`, `OWN_EXPENSE`, `OWNER_REQUIRED`, `ROLE_FORBIDDEN` (ixtiyoriy `?actorMemberId=` berilganda aniq hisoblanadi) |
+> | Trip (operator) | PLANNED → `start`, `cancel`; ACTIVE → `complete`, `cancel`; terminal → bo'sh | — |
+> | Trip (haydovchi read-modeli) | har doim bo'sh (OPEN-017 — haydovchi faqat ko'radi) | — |
+> | Driver, Vehicle | ACTIVE → `deactivate`; INACTIVE → `activate` | — |
+> | Assignment | ochiq → `end`; tugagan → bo'sh (tarix) | — |
+> | Member | ACTIVE → `suspend` (+ DRIVER bo'lsa `issue-activation-code`); SUSPENDED → `activate` | `LAST_ACTIVE_OWNER` — kompaniya oxirgi faol OWNER'ini yo'qotmaydi |
+> | Ledger yozuvi | `reverse` — har yozuvga bir marta | `ALREADY_REVERSED` |
+> | Settlement | bo'sh — yopilgan davr muzlagan tarix; tuzatish ledger reversal'i orqali | — |
+>
+> Har e'lon aynan serverda majburlanadigan qoidani aks ettiradi — deklaratsiya yangi qoida
+> o'ylab topmaydi. Bayroq yoqilgach Expense aktyori sessiyadan olinadi va `actorMemberId`
+> parametri kontraktdan chiqadi.
 
 **Organization**
 - `POST /companies` `{name, baseCurrency, owner{fullName, phoneNumber}}` → 201 `{companyId, ownerMemberId}`

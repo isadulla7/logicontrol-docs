@@ -26,11 +26,14 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   Qamrov: Expense, Trip, Driver, Vehicle, Assignment, Ledger yozuvi, Settlement, Member —
   hammasi bir kontrakt kengaytmasida (v1.1). Implementatsiya: backend har javobda jonli
   rol/holat bo'yicha hisoblaydi; web mock'dagi shakl kontraktga ko'chiriladi.
-  **Birinchi qadam bajarildi (BK-15, 2026-08-26):** Expense (SUBMITTED'da approve/reject,
+  **BAJARILDI (BK-15 + BK-17, 2026-08-26):** Expense (SUBMITTED'da approve/reject,
   `?actorMemberId=` bilan aniq availability, sabab kodlari `NOT_A_MEMBER`/`OWN_EXPENSE`/
   `OWNER_REQUIRED`/`ROLE_FORBIDDEN`) va Trip (holatdan lifecycle; haydovchi read-modelida
-  bo'sh — OPEN-017) qaror shaklida `actions[]` tashiydi. Qolgan resurslarga kengaytirish —
-  kontrakt v1.1 sweep'i (`BK-17`, navbatda).
+  bo'sh — OPEN-017) qaror shaklida `actions[]` tashiydi; `BK-17` bilan qamrov yakunlandi —
+  Driver/Vehicle (deactivate/activate), Assignment (`end`, tugagach bo'sh), Member
+  (`suspend` + `LAST_ACTIVE_OWNER` sababi, `activate`, DRIVER uchun `issue-activation-code`),
+  Ledger yozuvi (`reverse` + `ALREADY_REVERSED`), Settlement (bo'sh — muzlagan tarix).
+  To'liq jadval: `api/contract-v1.md` §4.
 
 ## Yopilgan (egasining yozma qarori bilan)
 
