@@ -78,6 +78,8 @@ Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni 
 | `WB-07` | web | **Hisob-kitob.** Davr bo'yicha ochish, balans, yopish. | `WB-06` |
 | `WB-08` | web | **Provisional vizual dizayn tizimi.** Sidebar shell, dashboard, karta/tugma/forma uslublari. DS-03 chiqqach rasmiylashtiriladi yoki almashtiriladi. | — |
 | `WB-09` | web | **OPEN-009 moslash.** uz+ru i18n, qat'iy Asia/Tashkent, majburiy rad sababi, mock adapterni DC-03 ga pinlash, DS-03 W2 detal paneli, bir qadamli settlement. | `DC-03`, `DS-03` |
+| `WB-10` | web | **DS-04 moslash.** Operator xarajat kiritish (W5/BK-10 UI), ledger storno (W8), aktivatsiya kodi dialogi (W7), kategoriya lug'ati endpointi, OPEN-021 valyuta to'plami. | `DS-04`, `WB-09` |
+| `WB-11` | web | **OPEN-022 shakli.** `actions[{name, available, disabledReason}]` — disabled+sabab rendering, mock v1.1 shaklda. | `WB-10` |
 
 ## Faza gate'lari (roadmap `v2.md` bilan moslik)
 
@@ -129,6 +131,8 @@ Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni 
 | `WB-07` hisob-kitob | ✅ DONE — ochish (balans hisoblanadi), yopish (SETTLEMENT yozuvi), bitta ochiq hisob-kitob qoidasi mock'da |
 | `WB-08` vizual dizayn | ✅ DONE (provisional) — sidebar shell, dashboard KPI, yagona karta/tugma/forma uslublari; DS-03 chiqdi — moslash `OPEN-009` doirasida |
 | `WB-09` OPEN-009 moslash | ✅ DONE — uz+ru i18n (lug'atlar bir shaklda, almashtirgich, tanlov saqlanadi); qat'iy Asia/Tashkent; rad sababi majburiy; mock DC-03 ga pinlangan (0-asosli pagination, kodlar katalogi, `fieldErrors` massiv, kategoriya lug'ati, ledger `memberId`, bir qadamli settlement); DS-03 W2 detal paneli (fx snapshot, bazaviy ekvivalent, kiritilgan/yuborilgan vaqt alohida, 409 da navbat yangilanadi). Qolgan farq: DC-03 da `actions[]` yo'q — `OPEN-022`; klaviatura navbat rejimi va filtrlar keyingi web taskiga |
+| `WB-10` DS-04 moslash | ✅ DONE — W5 operator xarajat formasi (server kategoriya lug'ati, OPEN-021 valyutalari, fxRate qoidalari, `enteredAt`, `clientRequestId` idempotent, «darhol tasdiqlanadi» ogohlantirishi); W8 storno (sabab majburiy, juftlik bog'lanadi, «o'chirish» so'zi yo'q); W7 aktivatsiya kodi dialogi (katta raqamlar, muddat, eski kod bekor ogohlantirishi). W-L/W-O (operator kirish/onboarding) kontrakt v1.1 auth endpointlarini kutadi |
+| `WB-11` OPEN-022 shakli | ✅ DONE — `actions[{name, available, disabledReason{code,message}}]`; uch rejim: yo'q/ochiq/disabled+sabab (kod bo'yicha uz-ru tarjima); mock'da threshold misoli `FIN_APPROVAL_NOT_ALLOWED`; 75 test yashil |
 | `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md`: sessiya modeli, 4 jurney, 13 ekran + holatlar matritsasi, komponentlar; ADR-002 qiymatlariga moslangan |
 | `DS-02` haydovchi reys va xarajat UX | ✅ DONE — `design/driver/ds-02-*.md`: ikki qatlam status modeli (transport/biznes), offline xarajat kiritish, terminal-xato ekrani ADR-003 siyosati bilan |
 | `DS-03` operator konsoli dizayni | ✅ DONE — `design/web/ds-03-*.md`: IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, server-e'lon-qilgan-harakatlar qoidalari; WB-01..03 taqdimot qatlamini boyitishga kirish |
