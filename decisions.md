@@ -90,6 +90,12 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
     (eski qurilmaning yuborilmagan navbati baribir qabul qilinadi); operator konsoldan bekor
     qila oladi.
   - Tiklanish: operator qayta aktivatsiya kodi beradi; o'z-o'ziga xizmat reset yo'q.
+  - **Backend bajarildi (BK-13, 2026-08-26):** bitta faol qurilma (yangi aktivatsiya eski
+    sessiyalarni bekor qiladi), per-telefon blok (5 xato → 15 daq, audit izidan hisoblanadi,
+    noma'lum telefonga ham bir xil — enumeration oracle emas), kod so'rovi 3/soat 10/kun,
+    429 `AUTH_RATE_LIMITED` + `retryAfterSeconds`, operator kill-switch
+    (`POST .../sessions/revoke`). SMS yetkazish va qurilma-tomonidagi PIN siyosati mos
+    ravishda alohida task va Android tomonida.
   - **Sessiya/grace ziddiyati hal (egasi, tie-break):** ADR-002 ning 30 kunlik aylanuvchi
     tokeni qoladi (90-kun varianti bekor). Offline chidamlilik = tokenning 30 kunlik amal
     muddati; dizayndagi «grace-oyna 30 kun» aynan shu — alohida mexanizm kerak emas.
