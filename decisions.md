@@ -62,3 +62,54 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   auditsiz o'tmaydi), DC-03 kontraktida `{approverMemberId, reason}` majburiy maydonlar,
   haydovchi ilovasi rad etilgan xarajatni sababi bilan ko'rsatadi (ADR-003). WB-03 dagi
   ixtiyoriy sabab maydoni majburiy qilinishi kerak (OPEN-009 ishiga kiradi).
+
+## Yopilgan — dizayn sessiyasi qarorlari (egasi, 2026-08-26)
+
+Quyidagilar dizayn sessiyasida egasining yozma javoblari bilan yopildi. Raqamlar main
+registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangilangan).
+
+- **OPEN-010 — ADR-002 «keyinga qoldirilgan» bandlarning qiymatlari. YOPILDI:**
+  - Kod yetkazish: **SMS avtomatik + operator og'zaki zaxira**; qayta yuborish 60 soniyadan
+    keyin. SMS integratsiyasi alohida task sifatida rejalashtiriladi; kelguncha operator kanali
+    (ADR-002 joriy oqimi) ishlayveradi.
+  - Per-telefon rate-limit: **5 noto'g'ri urinish → 15 daqiqa blok; kod so'rovlari soatiga 3,
+    kuniga 10**; javobda kutish vaqti keladi, klient o'zi sanamaydi.
+  - PIN (qurilma tomonida): **4 raqam**; lokal siyosat — 5 noto'g'ri urinishdan keyin 30 soniya
+    pauza, har keyingi 5 tada ikki baravar; hech qachon ma'lumot o'chirilmaydi.
+  - Qurilmalar: **1 faol qurilma** — yangi aktivatsiya eskisining sessiyasini bekor qiladi
+    (eski qurilmaning yuborilmagan navbati baribir qabul qilinadi); operator konsoldan bekor
+    qila oladi.
+  - Tiklanish: operator qayta aktivatsiya kodi beradi; o'z-o'ziga xizmat reset yo'q.
+  - **Sessiya/grace ziddiyati hal (egasi, tie-break):** ADR-002 ning 30 kunlik aylanuvchi
+    tokeni qoladi (90-kun varianti bekor). Offline chidamlilik = tokenning 30 kunlik amal
+    muddati; dizayndagi «grace-oyna 30 kun» aynan shu — alohida mexanizm kerak emas.
+    Tugashidan oldin ilova ogohlantiradi (dizayn: oxirgi 5 kun), tugaganda faqat yangi yozuv
+    to'xtaydi, hech narsa o'chmaydi.
+- **OPEN-011 — Ko'p kompaniyaga a'zolik. YOPILDI: MVP da bitta faol a'zolik**; ma'lumot modeli
+  ko'p a'zolikka tayyor qoladi. Kompaniya tanlash ekrani (`A3`) MVP da render qilinmaydi;
+  nol faol a'zolik holati ishlanadi (`A9` ga yo'naltiriladi).
+- **OPEN-012 — Umumiy qurilma / identifikatsiya almashish. YOPILDI: bloklanadi** — A
+  haydovchining yuborilmagan navbati turganda B kira olmaydi; ekran A ning ishini avval
+  yuborishni so'raydi. Moliyaviy fakt boshqa odam sessiyasi ostida ketmaydi (qoida #9).
+- **OPEN-013 — Form-faktor. YOPILDI: MVP portrait-lock.** Qulf (`A6`) va qayta tasdiqlash
+  (`A7`) ekranlariga kronshteyn stsenariysi talabi: `design/driver/ds-01-komponentlar.md` §4.
+- **OPEN-014 — MVP chek/dalil. YOPILDI: matn izoh + operatsion tartib** («qog'oz chek davr
+  yakunigacha saqlanib topshiriladi»); foto `FileAsset` bosqichida.
+- **OPEN-015 — Xarajat turlari. YOPILDI: tizim lug'ati, majburiy.** Server e'lon qiladi,
+  klientga qotirilmaydi; ro'yxatning o'zi `BK-07`/`DC-03` da belgilanadi.
+- **OPEN-016 — Offline xarajatning FX «tranzaksiya vaqti». YOPILDI: haydovchi kiritgan lahza.**
+  Qurilma kiritish vaqtini yozuvda yuboradi; kurs o'sha sanaga muzlatiladi; server qurilma
+  soatiga aqlga sig'arlik chegara tekshiruvi qo'yadi. BK-07/DC-03 joriy holati shu semantikaga
+  tekshirilib, farq bo'lsa moslash keyingi backend taskiga kiradi.
+- **OPEN-017 — Reys harakatlari aktyori. YOPILDI: MVP da faqat operator** ochadi/boshlaydi/
+  yakunlaydi; haydovchi ilovasi faqat ko'radi. Haydovchi boshlash/yakunlash keyingi bosqich
+  nomzodi.
+- **OPEN-018 — Operator kirish oqimi. YOPILDI: email + parol**, «parolni unutdim» email orqali;
+  2FA keyingi bosqichda. (Main OPEN-005 dagi «operator autentifikatsiyasi kelganda» shu
+  mexanizmda keladi.)
+- **OPEN-019 — Kompaniya yaratish/onboarding. YOPILDI: konsol ichida, birinchi kirishda** —
+  kompaniyasiz foydalanuvchi kirgach «Kompaniya yaratish» oqimi (STIR → ihamkor.uz autofill →
+  tasdiqlash; xatoda bo'sh forma). Alohida signup sayti MVP dan tashqari.
+- **Vaqt mintaqasi aniqlashtirildi (egasi, tie-break):** main OPEN-004 qarori qoladi — MVP da
+  qat'iy `Asia/Tashkent`, sozlama yo'q; kompaniya-sozlanadigan mintaqa kelajak kengaytma
+  sifatida qayd etildi.
