@@ -1,4 +1,4 @@
-# ADR-004: CBU valyuta kursi provayderi
+# ADR-005: CBU valyuta kursi provayderi
 
 - Holat: **Qabul qilingan** (egasi, 2026-08-26)
 - Kontekst: `decisions.md` OPEN-007/OPEN-016; kanon namuna `integrations/cbu.md` +

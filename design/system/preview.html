@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LogiControl — dizayn tizimi tokenlari</title>
+<style>
+  /* ===== Token manba: tokens.md ===== */
+  :root{
+    /* ko'k */
+    --kok-50:#EFF4FB; --kok-100:#DCE7F6; --kok-200:#B9CFED; --kok-300:#8FB4E8;
+    --kok-400:#5E8FD1; --kok-500:#3A6DB6; --kok-600:#1B4F9C; --kok-700:#15407F;
+    --kok-800:#113363; --kok-900:#0C2546; --kok-950:#07172D;
+    /* amber */
+    --amber-50:#FDF4E8; --amber-100:#FAE4C7; --amber-200:#F5CC96; --amber-300:#EFAF60;
+    --amber-400:#E8862D; --amber-500:#C66C15; --amber-600:#9F560F; --amber-700:#7A420B;
+    --amber-800:#562E08; --amber-900:#331B04;
+    /* neytral */
+    --n-0:#FFFFFF; --n-50:#F7F8FA; --n-100:#EFF1F5; --n-200:#E3E6EB; --n-300:#CDD2DA;
+    --n-400:#A8AFBB; --n-500:#808896; --n-600:#5F6672; --n-700:#474D58; --n-800:#31363F;
+    --n-900:#1F232A; --n-950:#121417;
+    /* semantik shkala */
+    --yashil-50:#ECF5ED; --yashil-100:#D3E8D5; --yashil-200:#A9D2AC; --yashil-300:#7DBB82;
+    --yashil-400:#4F9D55; --yashil-600:#2E7D32; --yashil-700:#256728; --yashil-800:#1C4E1F; --yashil-900:#12331A;
+    --qizil-50:#FCEEED; --qizil-100:#F7D5D3; --qizil-200:#F2B8B5; --qizil-300:#E37E78;
+    --qizil-400:#CC4A42; --qizil-600:#B3261E; --qizil-700:#931F19; --qizil-800:#6E1713; --qizil-900:#421210;
+    --sariq-50:#FBF4E1; --sariq-100:#F4E4B8; --sariq-200:#E9CC7C; --sariq-300:#DDB23E;
+    --sariq-400:#C99614; --sariq-500:#B07B00; --sariq-600:#8F6400; --sariq-700:#6E4D00; --sariq-900:#332401;
+    --font-ui: Inter, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  /* Semantik aliaslar — light */
+  .t-light{
+    --surface-page:var(--n-50); --surface-raised:var(--n-0); --surface-sunken:var(--n-100);
+    --surface-brand:var(--kok-950);
+    --text-primary:var(--n-900); --text-secondary:var(--n-700); --text-muted:var(--n-500);
+    --text-link:var(--kok-600);
+    --border-default:var(--n-200); --border-strong:var(--n-400); --border-focus:var(--kok-500);
+    --act-bg:var(--kok-600); --act-text:var(--n-0); --act-hover:var(--kok-700);
+    --danger-bg:var(--qizil-600); --danger-text:var(--n-0);
+    --dis-bg:var(--n-200); --dis-text:var(--n-500);
+    --st-success-bg:var(--yashil-50); --st-success-tx:var(--yashil-800); --st-success-ic:var(--yashil-600); --st-success-bd:var(--yashil-200);
+    --st-warning-bg:var(--sariq-50); --st-warning-tx:var(--sariq-700); --st-warning-ic:var(--sariq-500); --st-warning-bd:var(--sariq-200);
+    --st-danger-bg:var(--qizil-50); --st-danger-tx:var(--qizil-800); --st-danger-ic:var(--qizil-600); --st-danger-bd:var(--qizil-100);
+    --st-info-bg:var(--kok-50); --st-info-tx:var(--kok-800); --st-info-ic:var(--kok-600); --st-info-bd:var(--kok-200);
+    --st-neutral-bg:var(--n-100); --st-neutral-tx:var(--n-700); --st-neutral-ic:var(--n-600); --st-neutral-bd:var(--n-300);
+    --e1:0 1px 2px rgb(15 23 42 / .06),0 1px 3px rgb(15 23 42 / .08);
+    --e2:0 4px 12px rgb(15 23 42 / .12);
+    --e3:0 12px 32px rgb(15 23 42 / .18);
+  }
+  /* Semantik aliaslar — dark */
+  .t-dark{
+    --surface-page:var(--n-950); --surface-raised:var(--n-900); --surface-sunken:#0C0E11;
+    --surface-brand:var(--kok-950);
+    --text-primary:var(--n-100); --text-secondary:var(--n-300); --text-muted:var(--n-500);
+    --text-link:var(--kok-300);
+    --border-default:var(--n-800); --border-strong:var(--n-600); --border-focus:var(--kok-300);
+    --act-bg:var(--kok-300); --act-text:var(--kok-950); --act-hover:var(--kok-200);
+    --danger-bg:var(--qizil-200); --danger-text:var(--qizil-900);
+    --dis-bg:var(--n-800); --dis-text:var(--n-500);
+    --st-success-bg:var(--yashil-900); --st-success-tx:var(--yashil-200); --st-success-ic:var(--yashil-300); --st-success-bd:#1C4E1F;
+    --st-warning-bg:#2E2510; --st-warning-tx:var(--sariq-200); --st-warning-ic:var(--sariq-300); --st-warning-bd:#4D3600;
+    --st-danger-bg:var(--qizil-900); --st-danger-tx:var(--qizil-200); --st-danger-ic:var(--qizil-300); --st-danger-bd:var(--qizil-800);
+    --st-info-bg:var(--kok-900); --st-info-tx:var(--kok-200); --st-info-ic:var(--kok-300); --st-info-bd:var(--kok-800);
+    --st-neutral-bg:var(--n-800); --st-neutral-tx:var(--n-300); --st-neutral-ic:var(--n-400); --st-neutral-bd:var(--n-700);
+    --e1:none; --e2:none; --e3:0 0 0 1px var(--n-800);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font-ui);background:#E9EBEF;color:#1F232A;-webkit-font-smoothing:antialiased}
+  .page{max-width:1280px;margin:0 auto;padding:48px 32px 96px}
+
+  /* Sarlavha bloki */
+  .hero{background:var(--kok-950);border-radius:20px;padding:44px 48px;color:#fff;position:relative;overflow:hidden}
+  .hero .route{position:absolute;right:-20px;top:0;height:100%;opacity:.5}
+  .brandline{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .mark{width:44px;height:44px;border-radius:12px;background:#1B4F9C;position:relative;flex:none}
+  .mark::before{content:"";position:absolute;left:10px;top:29px;width:7px;height:7px;border-radius:50%;background:#E8862D}
+  .mark::after{content:"";position:absolute;left:13px;bottom:12px;width:22px;height:22px;border-left:3px solid #fff;border-top:3px solid #fff;transform:rotate(45deg) skew(4deg,4deg);border-radius:2px}
+  .wordmark{font-size:24px;font-weight:700;letter-spacing:-.3px}
+  .wordmark span{font-weight:400;color:#B9CFED}
+  .hero h1{font-size:30px;font-weight:700;letter-spacing:-.5px;max-width:640px;line-height:1.25}
+  .hero p{margin-top:14px;max-width:620px;color:#B9CFED;font-size:15px;line-height:1.6}
+  .hero .chips{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap}
+  .hero .chips span{border:1px solid rgba(185,207,237,.35);color:#DCE7F6;font-size:12.5px;padding:5px 12px;border-radius:999px}
+
+  h2{font-size:20px;font-weight:700;margin:56px 0 6px;letter-spacing:-.2px}
+  .sub{color:#5F6672;font-size:14px;margin-bottom:20px;max-width:760px;line-height:1.55}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:#5F6672;margin:26px 0 10px}
+
+  /* Ramplar */
+  .ramp{display:grid;grid-template-columns:repeat(11,1fr);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgb(15 23 42/.1)}
+  .ramp div{height:64px;display:flex;flex-direction:column;justify-content:flex-end;padding:6px;font-size:10.5px;font-weight:600}
+  .ramp small{font-weight:400;opacity:.85;font-size:9.5px}
+  .ramp .lt{color:#1F232A}.ramp .dk{color:#fff}
+  .ramplabel{font-size:13px;font-weight:600;margin:18px 0 8px;color:#31363F}
+
+  /* Ikki tema panel */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:900px){.duo{grid-template-columns:1fr}}
+  .panel{border-radius:16px;padding:24px;background:var(--surface-page);color:var(--text-primary);border:1px solid rgb(15 23 42/.08)}
+  .panel .tag{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px}
+  .card{background:var(--surface-raised);border:1px solid var(--border-default);border-radius:12px;padding:18px;box-shadow:var(--e1)}
+  .card + .card{margin-top:12px}
+
+  /* Tugmalar */
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:8px;height:36px;padding:0 16px;cursor:pointer}
+  .btn.big{height:56px;border-radius:12px;font-size:17px;padding:0 24px;width:100%}
+  .btn.primary{background:var(--act-bg);color:var(--act-text)}
+  .btn.primary:hover{background:var(--act-hover)}
+  .btn.secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border-strong)}
+  .btn.danger{background:var(--danger-bg);color:var(--danger-text)}
+  .btn.disabled{background:var(--dis-bg);color:var(--dis-text);cursor:not-allowed}
+  .btn.loading{position:relative;color:transparent}
+  .btn.loading::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2.5px solid rgb(255 255 255/.35);border-top-color:#fff;animation:spin .8s linear infinite}
+  .t-dark .btn.loading::after{border-color:rgb(7 23 45/.3);border-top-color:var(--kok-950)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .btn:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px}
+  .hint{font-size:12px;color:var(--text-muted);margin-top:6px}
+
+  /* Chiplar */
+  .chiprow{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid}
+  .chip i{font-style:normal;font-size:12px;line-height:1}
+  .chip.success{background:var(--st-success-bg);color:var(--st-success-tx);border-color:var(--st-success-bd)}
+  .chip.success i{color:var(--st-success-ic)}
+  .chip.warning{background:var(--st-warning-bg);color:var(--st-warning-tx);border-color:var(--st-warning-bd)}
+  .chip.warning i{color:var(--st-warning-ic)}
+  .chip.danger{background:var(--st-danger-bg);color:var(--st-danger-tx);border-color:var(--st-danger-bd)}
+  .chip.danger i{color:var(--st-danger-ic)}
+  .chip.info{background:var(--st-info-bg);color:var(--st-info-tx);border-color:var(--st-info-bd)}
+  .chip.info i{color:var(--st-info-ic)}
+  .chip.neutral{background:var(--st-neutral-bg);color:var(--st-neutral-tx);border-color:var(--st-neutral-bd)}
+  .chip.neutral i{color:var(--st-neutral-ic)}
+
+  /* Input */
+  .field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text-secondary)}
+  .field input{width:100%;height:40px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface-raised);color:var(--text-primary);font:inherit;font-size:14px;padding:0 12px}
+  .field input:focus-visible{outline:2px solid var(--border-focus);outline-offset:1px;border-color:var(--border-focus)}
+  .field.err input{border-color:var(--st-danger-ic)}
+  .field .msg{display:flex;gap:6px;font-size:12.5px;margin-top:6px;color:var(--st-danger-tx)}
+  .field .msg::before{content:"⚠";color:var(--st-danger-ic)}
+
+  /* Pul */
+  .money{font-variant-numeric:tabular-nums;font-weight:600}
+  .money .cur{font-weight:500;color:var(--text-muted);font-size:.85em;margin-left:4px}
+  .moneybase{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--text-muted)}
+
+  /* Jadval namunasi */
+  table.demo{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface-raised);border-radius:12px;overflow:hidden;box-shadow:var(--e1)}
+  table.demo th{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border-default);font-weight:600}
+  table.demo td{padding:0 14px;height:44px;border-bottom:1px solid var(--border-default);color:var(--text-primary)}
+  table.demo tr.focus td{background:var(--surface-sunken)}
+  table.demo tr.focus td:first-child{box-shadow:inset 3px 0 0 var(--amber-400)}
+  table.demo tr:last-child td{border-bottom:none}
+
+  /* Tipografika */
+  .typerow{display:grid;grid-template-columns:150px 1fr 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid #DDE0E6}
+  .typerow .lbl{font-size:12px;color:#5F6672;font-weight:600}
+  .colhead{display:grid;grid-template-columns:150px 1fr 1fr;gap:16px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#808896;font-weight:600;padding-bottom:8px}
+
+  /* Spacing / radius */
+  .sprow{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+  .spbox{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#5F6672}
+  .spbox div{background:var(--kok-200);border:1px solid var(--kok-400);border-radius:3px}
+  .radrow{display:flex;gap:16px;flex-wrap:wrap}
+  .radbox{width:88px;height:64px;background:#fff;border:1.5px solid var(--kok-400);display:flex;align-items:center;justify-content:center;font-size:11px;color:#474D58}
+
+  /* PinPad tugma */
+  .pinkey{width:64px;height:64px;border-radius:12px;background:var(--surface-raised);border:1px solid var(--border-default);box-shadow:var(--e1);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:var(--text-primary)}
+
+  /* Status bar namuna */
+  .connbar{display:flex;align-items:center;gap:8px;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:500}
+  .connbar.neutral{background:var(--st-neutral-bg);color:var(--st-neutral-tx)}
+  .connbar.warning{background:var(--st-warning-bg);color:var(--st-warning-tx)}
+  .connbar.danger{background:var(--st-danger-bg);color:var(--st-danger-tx)}
+
+  kbd{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;background:var(--surface-sunken);border:1px solid var(--border-strong);border-radius:4px;padding:1.5px 6px;color:var(--text-secondary)}
+
+  .note{background:#FDF4E8;border:1px solid #F5CC96;border-radius:10px;padding:12px 16px;font-size:13px;color:#562E08;margin-top:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <svg class="route" width="420" height="260" viewBox="0 0 420 260" fill="none" aria-hidden="true">
+      <path d="M-20 240 C 120 200, 140 80, 260 70 S 430 20, 460 -10" stroke="#1B4F9C" stroke-width="42" stroke-linecap="round"/>
+      <path d="M-20 240 C 120 200, 140 80, 260 70 S 430 20, 460 -10" stroke="#E8862D" stroke-width="3.5" stroke-dasharray="16 14" stroke-linecap="round"/>
+      <circle cx="260" cy="70" r="7" fill="#E8862D"/>
+      <circle cx="260" cy="70" r="13" stroke="#E8862D" stroke-opacity=".4" stroke-width="2"/>
+    </svg>
+    <div class="brandline">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="wordmark">Logi<span>Control</span></div>
+    </div>
+    <h1>Dizayn tizimi tokenlari — bitta brend, ikki zichlik</h1>
+    <p>Asfalt-ko'k (ishonch) + signal-amber (harakat) + asfalt neytrallari (aniqlik).
+       Yo'l infratuzilmasidan olingan palitra: quyoshda o'qiladi, ikkilanmaydi, bezamaydi.
+       Manba: <b style="color:#fff">design/system/tokens.md</b>.</p>
+    <div class="chips">
+      <span>Haydovchi: 17sp baza · 56dp teginish · AAA maqsad</span>
+      <span>Operator: 14px baza · 44px qator · AA</span>
+      <span>Light + Dark</span>
+    </div>
+  </div>
+
+  <h2>1 · Rang primitivlari</h2>
+  <div class="sub">Komponentlar primitivlarni to'g'ridan-to'g'ri ishlatmaydi — faqat §2 dagi semantik aliaslar orqali. Langarlar mavjud AN-01 kodi bilan mos: <b>ko'k.600</b>, <b>amber.400</b>, <b>neytral.50/950</b>.</div>
+
+  <div class="ramplabel">ko'k — asfalt-ko'k (brend)</div>
+  <div class="ramp">
+    <div class="lt" style="background:#EFF4FB">50<small>#EFF4FB</small></div>
+    <div class="lt" style="background:#DCE7F6">100</div>
+    <div class="lt" style="background:#B9CFED">200</div>
+    <div class="lt" style="background:#8FB4E8">300<small>#8FB4E8</small></div>
+    <div class="dk" style="background:#5E8FD1">400</div>
+    <div class="dk" style="background:#3A6DB6">500</div>
+    <div class="dk" style="background:#1B4F9C">600<small>#1B4F9C</small></div>
+    <div class="dk" style="background:#15407F">700</div>
+    <div class="dk" style="background:#113363">800</div>
+    <div class="dk" style="background:#0C2546">900</div>
+    <div class="dk" style="background:#07172D">950<small>#07172D</small></div>
+  </div>
+
+  <div class="ramplabel">amber — signal (urg'u; 400 va ochlari matn emas)</div>
+  <div class="ramp" style="grid-template-columns:repeat(10,1fr)">
+    <div class="lt" style="background:#FDF4E8">50</div>
+    <div class="lt" style="background:#FAE4C7">100</div>
+    <div class="lt" style="background:#F5CC96">200</div>
+    <div class="lt" style="background:#EFAF60">300</div>
+    <div class="lt" style="background:#E8862D">400<small>#E8862D</small></div>
+    <div class="dk" style="background:#C66C15">500</div>
+    <div class="dk" style="background:#9F560F">600<small>#9F560F</small></div>
+    <div class="dk" style="background:#7A420B">700</div>
+    <div class="dk" style="background:#562E08">800</div>
+    <div class="dk" style="background:#331B04">900</div>
+  </div>
+
+  <div class="ramplabel">neytral — asfalt kulranglari</div>
+  <div class="ramp" style="grid-template-columns:repeat(12,1fr)">
+    <div class="lt" style="background:#FFFFFF">0</div>
+    <div class="lt" style="background:#F7F8FA">50<small>#F7F8FA</small></div>
+    <div class="lt" style="background:#EFF1F5">100</div>
+    <div class="lt" style="background:#E3E6EB">200</div>
+    <div class="lt" style="background:#CDD2DA">300</div>
+    <div class="lt" style="background:#A8AFBB">400</div>
+    <div class="dk" style="background:#808896">500</div>
+    <div class="dk" style="background:#5F6672">600</div>
+    <div class="dk" style="background:#474D58">700</div>
+    <div class="dk" style="background:#31363F">800</div>
+    <div class="dk" style="background:#1F232A">900</div>
+    <div class="dk" style="background:#121417">950<small>#121417</small></div>
+  </div>
+
+  <div class="ramplabel">semantik: yashil (muvaffaqiyat) · qizil (xavf) · sariq (ogohlantirish)</div>
+  <div class="ramp" style="grid-template-columns:repeat(9,1fr)">
+    <div class="lt" style="background:#ECF5ED">y.50</div>
+    <div class="lt" style="background:#A9D2AC">y.200</div>
+    <div class="dk" style="background:#2E7D32">y.600</div>
+    <div class="lt" style="background:#FCEEED">q.50</div>
+    <div class="lt" style="background:#F2B8B5">q.200</div>
+    <div class="dk" style="background:#B3261E">q.600</div>
+    <div class="lt" style="background:#FBF4E1">s.50</div>
+    <div class="lt" style="background:#E9CC7C">s.200</div>
+    <div class="dk" style="background:#B07B00">s.500</div>
+  </div>
+
+  <h2>2 · Semantik qatlam — light va dark</h2>
+  <div class="sub">Bitta komponent kodi, ikki rejim: aliaslar qayta belgilanadi, komponent rejimni bilmaydi. Quyida ikkala rejim yonma-yon — har blok bir xil markup.</div>
+
+  <div class="duo">
+    <!-- LIGHT -->
+    <div class="panel t-light">
+      <div class="tag">Light — surface.page ustida</div>
+      <div class="card">
+        <div style="font-size:16px;font-weight:600;margin-bottom:2px">surface.raised karta</div>
+        <div style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px">text.secondary izoh matni · <a href="#" style="color:var(--text-link)">text.link</a></div>
+        <div class="btnrow">
+          <button class="btn primary">Tasdiqlash</button>
+          <button class="btn secondary">Bekor qilish</button>
+          <button class="btn danger">Rad etish</button>
+          <button class="btn primary loading" aria-label="Yuborilmoqda">Tasdiqlash</button>
+          <button class="btn disabled" title="Bu summa OWNER darajasini talab qiladi">Tasdiqlash</button>
+        </div>
+        <div class="hint">Disabled — har doim sabab bilan: «Bu summa OWNER darajasini talab qiladi»</div>
+      </div>
+      <div class="card">
+        <div class="chiprow">
+          <span class="chip neutral"><i>✓</i>Saqlandi</span>
+          <span class="chip warning"><i>🕐</i>Kutilmoqda</span>
+          <span class="chip info"><i>↗</i>Yuborilmoqda</span>
+          <span class="chip success"><i>✓✓</i>Qabul qilindi</span>
+          <span class="chip danger"><i>!</i>Harakat kerak</span>
+        </div>
+        <div class="chiprow" style="margin-top:8px">
+          <span class="chip info"><i>◉</i>Ko'rib chiqilmoqda</span>
+          <span class="chip success"><i>✓</i>Tasdiqlandi</span>
+          <span class="chip danger"><i>×</i>Rad etildi</span>
+        </div>
+        <div class="hint">Status = belgi + so'z + rang. Transport va biznes lug'ati bitta katakda aralashmaydi.</div>
+      </div>
+      <div class="card">
+        <div class="field err">
+          <label>Summa</label>
+          <input value="0" aria-invalid="true">
+          <div class="msg">Summa noldan katta bo'lishi kerak. Kiritilgan qiymat tozalanmadi.</div>
+        </div>
+        <div style="margin-top:14px;display:flex;align-items:baseline;justify-content:space-between">
+          <div>
+            <div class="money" style="font-size:20px">1 250 000<span class="cur">UZS</span></div>
+            <div class="moneybase">≈ bazaviy: 1 250 000 UZS</div>
+          </div>
+          <div>
+            <div class="money" style="font-size:20px">240<span class="cur">USD</span></div>
+            <div class="moneybase">≈ 3 026 400 UZS · kurs 12 610, 25-avg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DARK -->
+    <div class="panel t-dark">
+      <div class="tag">Dark — surface.page ustida</div>
+      <div class="card">
+        <div style="font-size:16px;font-weight:600;margin-bottom:2px">surface.raised karta</div>
+        <div style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px">text.secondary izoh matni · <a href="#" style="color:var(--text-link)">text.link</a></div>
+        <div class="btnrow">
+          <button class="btn primary">Tasdiqlash</button>
+          <button class="btn secondary">Bekor qilish</button>
+          <button class="btn danger">Rad etish</button>
+          <button class="btn primary loading" aria-label="Yuborilmoqda">Tasdiqlash</button>
+          <button class="btn disabled" title="Bu summa OWNER darajasini talab qiladi">Tasdiqlash</button>
+        </div>
+        <div class="hint">Dark: primary = ko'k.300 fon + ko'k.950 matn (8.4:1)</div>
+      </div>
+      <div class="card">
+        <div class="chiprow">
+          <span class="chip neutral"><i>✓</i>Saqlandi</span>
+          <span class="chip warning"><i>🕐</i>Kutilmoqda</span>
+          <span class="chip info"><i>↗</i>Yuborilmoqda</span>
+          <span class="chip success"><i>✓✓</i>Qabul qilindi</span>
+          <span class="chip danger"><i>!</i>Harakat kerak</span>
+        </div>
+        <div class="chiprow" style="margin-top:8px">
+          <span class="chip info"><i>◉</i>Ko'rib chiqilmoqda</span>
+          <span class="chip success"><i>✓</i>Tasdiqlandi</span>
+          <span class="chip danger"><i>×</i>Rad etildi</span>
+        </div>
+        <div class="hint">Dark chip: shkala .900 fon + .200 matn</div>
+      </div>
+      <div class="card">
+        <div class="field err">
+          <label>Summa</label>
+          <input value="0" aria-invalid="true">
+          <div class="msg">Summa noldan katta bo'lishi kerak. Kiritilgan qiymat tozalanmadi.</div>
+        </div>
+        <div style="margin-top:14px;display:flex;align-items:baseline;justify-content:space-between">
+          <div>
+            <div class="money" style="font-size:20px">1 250 000<span class="cur">UZS</span></div>
+            <div class="moneybase">≈ bazaviy: 1 250 000 UZS</div>
+          </div>
+          <div>
+            <div class="money" style="font-size:20px">240<span class="cur">USD</span></div>
+            <div class="moneybase">≈ 3 026 400 UZS · kurs 12 610, 25-avg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>3 · Holat komponentlari — ConnectionStatusBar</h2>
+  <div class="sub">Offline — normal holat: neytral axborot uslubi. Vizual og'irlik faqat GRACE_EXPIRED dan; terminal yozuv — danger.</div>
+  <div class="duo">
+    <div class="panel t-light">
+      <div class="connbar neutral">⌁ Aloqa yo'q · 3 ta yozuv yuborishni kutmoqda</div>
+      <div class="connbar warning" style="margin-top:8px">⚠ Ofis bilan aloqa 26 kundan beri yo'q — 4 kun ichida ulanish kerak</div>
+      <div class="connbar danger" style="margin-top:8px">! 1 ta yozuv harakat kutmoqda · 2 ta yuborilmagan</div>
+    </div>
+    <div class="panel t-dark">
+      <div class="connbar neutral">⌁ Aloqa yo'q · 3 ta yozuv yuborishni kutmoqda</div>
+      <div class="connbar warning" style="margin-top:8px">⚠ Ofis bilan aloqa 26 kundan beri yo'q — 4 kun ichida ulanish kerak</div>
+      <div class="connbar danger" style="margin-top:8px">! 1 ta yozuv harakat kutmoqda · 2 ta yuborilmagan</div>
+    </div>
+  </div>
+
+  <h2>4 · Tipografika — ikki zichlik</h2>
+  <div class="sub">Bitta rol shkalasi; haydovchi profili kattaroq (sp), operator zichroq (px). Raqamlar hamma joyda tabular.</div>
+  <div style="background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 3px rgb(15 23 42/.1)">
+    <div class="colhead"><span>Rol</span><span>Haydovchi</span><span>Operator</span></div>
+    <div class="typerow"><span class="lbl">type.display</span><span style="font-size:32px;font-weight:700;letter-spacing:-.5px;line-height:1.2">Toshkent → Andijon</span><span style="font-size:28px;font-weight:700;letter-spacing:-.5px">Xarajatlar</span></div>
+    <div class="typerow"><span class="lbl">type.headline</span><span style="font-size:24px;font-weight:700">Xarajat saqlandi</span><span style="font-size:20px;font-weight:700">Tasdiqlash navbati</span></div>
+    <div class="typerow"><span class="lbl">type.title</span><span style="font-size:20px;font-weight:600">Yoqilg'i</span><span style="font-size:16px;font-weight:600">Baxtiyor Ergashev</span></div>
+    <div class="typerow"><span class="lbl">type.body</span><span style="font-size:17px">Aloqa bo'lganda o'zi yuboriladi.</span><span style="font-size:14px">Rad etish sababi haydovchiga shu matnda yetadi.</span></div>
+    <div class="typerow"><span class="lbl">type.label</span><span style="font-size:15px;font-weight:500">Qayta yuborish</span><span style="font-size:13px;font-weight:500">Filtrni tozalash</span></div>
+    <div class="typerow"><span class="lbl">type.caption</span><span style="font-size:13px;color:#5F6672">Bugun 14:20 (3 soat oldin)</span><span style="font-size:12px;color:#5F6672">Kiritildi: 25-avg 09:12</span></div>
+    <div class="typerow" style="border-bottom:none"><span class="lbl">type.money-l</span><span class="money" style="font-size:28px">1 250 000<span class="cur">UZS</span></span><span class="money" style="font-size:20px">3 026 400<span class="cur">UZS</span></span></div>
+  </div>
+
+  <h2>5 · Spacing (4dp) · radius · teginish maydonlari</h2>
+  <div class="sub">Bo'shliq nomlari qiymatga teng. Haydovchi radius tili yumshoqroq (md/lg), operator zichroq (sm/md).</div>
+  <div style="background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 3px rgb(15 23 42/.1)">
+    <h3 style="margin-top:0">space.*</h3>
+    <div class="sprow">
+      <span class="spbox"><div style="width:4px;height:24px"></div>4</span>
+      <span class="spbox"><div style="width:8px;height:24px"></div>8</span>
+      <span class="spbox"><div style="width:12px;height:24px"></div>12</span>
+      <span class="spbox"><div style="width:16px;height:24px"></div>16</span>
+      <span class="spbox"><div style="width:24px;height:24px"></div>24</span>
+      <span class="spbox"><div style="width:32px;height:24px"></div>32</span>
+      <span class="spbox"><div style="width:48px;height:24px"></div>48</span>
+      <span class="spbox"><div style="width:64px;height:24px"></div>64</span>
+    </div>
+    <h3>radius.*</h3>
+    <div class="radrow">
+      <div class="radbox" style="border-radius:4px">xs · 4</div>
+      <div class="radbox" style="border-radius:8px">sm · 8</div>
+      <div class="radbox" style="border-radius:12px">md · 12</div>
+      <div class="radbox" style="border-radius:16px">lg · 16</div>
+      <div class="radbox" style="border-radius:24px">xl · 24</div>
+      <div class="radbox" style="border-radius:999px">full</div>
+    </div>
+    <h3>size.touch.* — haydovchi</h3>
+    <div class="t-light" style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap">
+      <span class="spbox"><span class="pinkey">7</span>pad · 64dp</span>
+      <span class="spbox"><button class="btn primary" style="height:56px;border-radius:12px;font-size:17px">Davom etish</button>primary · 56dp</span>
+      <span class="spbox"><button class="btn secondary" style="height:48px;border-radius:12px">Yordam</button>min · 48dp</span>
+    </div>
+  </div>
+
+  <h2>6 · Operator jadval naqshi — fokus qatori</h2>
+  <div class="sub">Qator 44px; fokus — chapdan amber marker + surface.sunken (rang emas, chiziq + fon birga). Klaviatura: <kbd class="t-light">↑</kbd> <kbd class="t-light">↓</kbd> <kbd class="t-light">Enter</kbd> <kbd class="t-light">A</kbd> <kbd class="t-light">R</kbd></div>
+  <div class="t-light">
+    <table class="demo">
+      <thead><tr><th>Haydovchi</th><th>Summa</th><th>Tur</th><th>Reys</th><th>Kiritildi</th><th>Holat</th></tr></thead>
+      <tbody>
+        <tr><td>Baxtiyor Ergashev</td><td><span class="money">480 000<span class="cur">UZS</span></span></td><td>Yoqilg'i</td><td>Toshkent → Andijon</td><td style="color:#5F6672">Bugun 09:12</td><td><span class="chip info" style="height:22px;font-size:12px"><i>◉</i>Ko'rib chiqilmoqda</span></td></tr>
+        <tr class="focus"><td>Olimjon Rasulov</td><td><span class="money">240<span class="cur">USD</span></span><div class="moneybase">≈ 3 026 400 UZS</div></td><td>Yo'l haqi</td><td>Toshkent → Samarqand</td><td style="color:#5F6672">Kecha 18:40</td><td><span class="chip info" style="height:22px;font-size:12px"><i>◉</i>Ko'rib chiqilmoqda</span></td></tr>
+        <tr><td>Sherzod Qodirov</td><td><span class="money">1 250 000<span class="cur">UZS</span></span></td><td>Ta'mirlash</td><td>—</td><td style="color:#5F6672">23-avg 11:05</td><td><span class="chip success" style="height:22px;font-size:12px"><i>✓</i>Tasdiqlandi</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><b>Taqiqlar eslatmasi:</b> valyutasiz summa yo'q · faqat rang bilan status yo'q · amber.400 och fonda matn emas · ma'nosiz gradient/animatsiya yo'q · klient o'ylab topgan countdown yo'q · haydovchida toast yo'q.</div>
+
+</div>
+</body>
+</html>

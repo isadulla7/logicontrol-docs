@@ -19,14 +19,18 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   validatsiya); mock adapter DC-03 ga pinlangan: 0-asosli pagination, kodlar katalogi
   (`FIN_/TRP_/FLT_/ORG_/VALIDATION_FAILED`), `fieldErrors` massiv parsing, kategoriya
   lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-022.
-- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`). YOPILDI (egasi,
-  2026-08-26: «hozir qo'shilsin»).** **Bajarildi (BK-15):** Trip/Expense javoblari
-  `actions[]: [{code, available, reason?}]` tashiydi. Expense: SUBMITTED'da approve/reject,
-  ixtiyoriy `?actorMemberId=` bilan aniq availability va barqaror rad sabablari
-  (`NOT_A_MEMBER`/`OWN_EXPENSE`/`OWNER_REQUIRED`/`ROLE_FORBIDDEN`); Trip: holatdan
-  (PLANNED→start/cancel, ACTIVE→complete/cancel), haydovchi read-modelida bo'sh (OPEN-017).
-  Operator-auth bayrog'i yoqilgach aktyor sessiyadan olinadi va parametr chiqib ketadi.
-  DS-03 §5.1 `disabled+sabab` shakli — `reason` kodi orqali. Kontrakt yangilandi (DC-03 §4).
+- **OPEN-022 — Server-e'lon-qilgan harakatlar shakli. YOPILDI (egasi, 2026-08-26).** Qaror:
+  **to'liq `actions[]` + disabled sabab, barcha resurslarda birdan.** Har resurs javobida:
+  `actions: [{name, available, disabledReason?: {code, message}}]` — klient hech narsa
+  chiqarmaydi, o'chirilgan harakat sababi bilan ko'rinadi (DS-03 §2 qoidalari o'zgarishsiz).
+  Qamrov: Expense, Trip, Driver, Vehicle, Assignment, Ledger yozuvi, Settlement, Member —
+  hammasi bir kontrakt kengaytmasida (v1.1). Implementatsiya: backend har javobda jonli
+  rol/holat bo'yicha hisoblaydi; web mock'dagi shakl kontraktga ko'chiriladi.
+  **Birinchi qadam bajarildi (BK-15, 2026-08-26):** Expense (SUBMITTED'da approve/reject,
+  `?actorMemberId=` bilan aniq availability, sabab kodlari `NOT_A_MEMBER`/`OWN_EXPENSE`/
+  `OWNER_REQUIRED`/`ROLE_FORBIDDEN`) va Trip (holatdan lifecycle; haydovchi read-modelida
+  bo'sh — OPEN-017) qaror shaklida `actions[]` tashiydi. Qolgan resurslarga kengaytirish —
+  kontrakt v1.1 sweep'i (`BK-17`, navbatda).
 
 ## Yopilgan (egasining yozma qarori bilan)
 
@@ -148,3 +152,9 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
   Barchasi CBU rasmiy API'sida mavjud — kelajak CBU provayderi testlari shu beshtasi bilan
   yoziladi (KZT nominal masalasiga alohida e'tibor). Haydovchi formasida (X1) standart tanlov —
   oxirgi ishlatilgan valyuta [TAKLIF].
+- **OPEN-023 — iOS klienti. YOPILDI (egasi, 2026-08-26; ADR-004).** Non-goal bekor qilindi.
+  Uch qaror: (1) texnologiya — **KMP yadro + SwiftUI** (sof-Kotlin `domain:*` ulashiladi, UI
+  sof SwiftUI); (2) vaqt — **hozir, alohida lane**: B1–B4 gate'lari va pilot Android bilan
+  yopiladi, iOS o'z `IS-*` tasklari bilan; (3) qamrov — **Android bilan to'liq paritet**
+  (aktivatsiya → PIN/Face ID → reyslar → offline xarajat → navbat holatlari). DS-01/DS-02
+  dizaynlari platforma eslatmalari bilan qo'llanadi, alohida dizayn kerak emas.

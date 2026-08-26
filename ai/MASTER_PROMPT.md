@@ -84,8 +84,9 @@ Backend: Java 21, Spring Boot 3.5.x, PostgreSQL, Maven, Modular Monolith, Clean 
 DDD where it creates real clarity, Spring Modulith, Flyway, MapStruct, JUnit 5, Testcontainers
 (PostgreSQL), ArchUnit, MinIO/S3-compatible object storage (from the files slice onward).
 
-Clients: **native Android** (Kotlin, Jetpack Compose, minSdk 26, offline-first) and
-React/Next.js web (operator console, phase B4).
+Clients: **native Android** (Kotlin, Jetpack Compose, minSdk 26, offline-first),
+React/Next.js web (operator console, phase B4), and **iOS** (SwiftUI over the shared
+Kotlin Multiplatform domain/sync core — ADR-004, separate lane).
 
 Do **not** introduce Kafka, Kubernetes, Redis, or microservices without a measured requirement
 and an accepted ADR.
@@ -371,7 +372,8 @@ rationale concisely. Never invent business policy to avoid a genuinely necessary
 - Offline writes use client-generated idempotency identity.
 - Analytics is CQRS-lite read models in PostgreSQL.
 - Redis and Kubernetes are not V1 requirements.
-- Driver client is native Android; iOS is out of scope.
+- Driver client is native Android; iOS ships as a separate lane on a Kotlin Multiplatform
+  core with SwiftUI UI (ADR-004) and never gates the Android MVP.
 
 ---
 

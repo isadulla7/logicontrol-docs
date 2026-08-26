@@ -98,7 +98,7 @@ Barchasi Bearer talab qiladi, `activate` dan tashqari.
 → `{items:[{code}]}`; joriy kodlar: `FUEL, TOLL, PARKING, REPAIR, FOOD, LODGING, FINE, OTHER`.
 Klient kodga qarab o'z uz/ru yorlig'ini ko'rsatadi; noma'lum kod — matn, xato emas.
 `fxRate` — bazaviy valyutada yuborilsa **taqiqlangan**; chet valyutada **ixtiyoriy**
-(ADR-004): kiritilsa MANUAL sifatida g'olib, kiritilmasa server CBU'dan kiritilgan sananing
+(ADR-005): kiritilsa MANUAL sifatida g'olib, kiritilmasa server CBU'dan kiritilgan sananing
 kursini oladi (`fx.source: "CBU"`); hech bir manba bilmasa `FIN_FX_RATE_REQUIRED` (400) —
 qo'lda kiritiladi.
 `enteredAt` (ISO-8601 UTC, ixtiyoriy) — xarajat kiritilgan lahza (OPEN-016): FX sanasi shu
@@ -131,9 +131,11 @@ lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara
 > (`approverMemberId`, `issuedBy`, `closedBy`, `requestedBy`) ko'rsatiladi — rol va faollik
 > serverda jonli tekshiriladi. Bayroq yoqilgach aktyor sessiyadan keladi.
 >
-> **OPEN-022 — server harakatlarni e'lon qiladi:** Trip/Expense javoblari `actions[]`
-> tashiydi: `[{code, available, reason?}]`. Expense (operator ro'yxati/detali): SUBMITTED'da
-> `approve`/`reject`; ixtiyoriy `?actorMemberId=` bilan aniqlik — rad sabab kodlari:
+> **OPEN-022 — server harakatlarni e'lon qiladi:** javoblar `actions[]` tashiydi:
+> `[{name, available, disabledReason?: {code, message}}]`. Hozircha Expense va Trip'da
+> (BK-15); qolgan resurslar (Driver/Vehicle/Assignment/Ledger/Settlement/Member) — v1.1
+> sweep (BK-17). Expense (operator ro'yxati/detali): SUBMITTED'da `approve`/`reject`;
+> ixtiyoriy `?actorMemberId=` bilan aniqlik — `disabledReason.code` qiymatlari:
 > `NOT_A_MEMBER`, `OWN_EXPENSE`, `OWNER_REQUIRED`, `ROLE_FORBIDDEN`. Trip: PLANNED →
 > `start`/`cancel`, ACTIVE → `complete`/`cancel`, terminal → bo'sh; haydovchi read-modelida
 > har doim bo'sh (OPEN-017 — haydovchi faqat ko'radi). Klient e'lon qilinganini chizadi,

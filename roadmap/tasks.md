@@ -44,7 +44,7 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `BK-13` | backend / `identity` | **ADR-002 qat'iylashtirish.** Bitta faol qurilma; per-telefon blok va kod-so'rov limitlari (dizayn OPEN-010 qiymatlari); 429 + `retryAfterSeconds`; operator sessiya kill-switch. | `BK-03` |
 | `BK-14` | backend / `identity` + `organization` (public API) | **Operator autentifikatsiyasi.** Email+parol (OPEN-018), grant modeli, OPEN-019 kompaniya yaratish, parol tiklash port ortida; majburlash `enforced` bayrog'i bilan. | `BK-03`, OPEN-018 |
 | `BK-15` | backend / `finance` + `trip` (web adapterlar) | **Server-e'lon-qilgan `actions[]`** (OPEN-022): Expense approve/reject + sabab kodlari, Trip lifecycle; haydovchi read-modelida bo'sh. | `BK-07`, `BK-05` |
-| `BK-16` | backend / `finance` | **CBU kurs provayderi** (ADR-004): kiritilgan sananing kursi, MANUAL zaxira, verbatim-namunali parser regressiyasi. | `BK-11`, OPEN-016 |
+| `BK-16` | backend / `finance` | **CBU kurs provayderi** (ADR-005): kiritilgan sananing kursi, MANUAL zaxira, verbatim-namunali parser regressiyasi. | `BK-11`, OPEN-016 |
 | `DS-02` | docs / `design/driver/` | **Haydovchi ilovasi UX — reys va xarajat.** Reys ro'yxati/detali, offline xarajat kiritish, navbat holatlari (yuborilmoqda/qabul qilindi/kutilmoqda/rad), terminal-xato ekrani `DC-02` siyosati bilan. `AN-05`/`AN-06` ga kirish. | `DC-02` |
 | `AN-03` | android / `core:network` | **Tarmoq qatlami.** Retrofit/OkHttp, `problem+json` parsing (noma'lum maydonga chidamli), korrelyatsiya sarlavhasi. Backend kodini kutmaydi — `DC-03` kontraktiga quriladi. | `DC-03` |
 
@@ -81,6 +81,21 @@ Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni 
 | `WB-07` | web | **Hisob-kitob.** Davr bo'yicha ochish, balans, yopish. | `WB-06` |
 | `WB-08` | web | **Provisional vizual dizayn tizimi.** Sidebar shell, dashboard, karta/tugma/forma uslublari. DS-03 chiqqach rasmiylashtiriladi yoki almashtiriladi. | — |
 | `WB-09` | web | **OPEN-009 moslash.** uz+ru i18n, qat'iy Asia/Tashkent, majburiy rad sababi, mock adapterni DC-03 ga pinlash, DS-03 W2 detal paneli, bir qadamli settlement. | `DC-03`, `DS-03` |
+| `WB-10` | web | **DS-04 moslash.** Operator xarajat kiritish (W5/BK-10 UI), ledger storno (W8), aktivatsiya kodi dialogi (W7), kategoriya lug'ati endpointi, OPEN-021 valyuta to'plami. | `DS-04`, `WB-09` |
+| `WB-11` | web | **OPEN-022 shakli.** `actions[{name, available, disabledReason}]` — disabled+sabab rendering, mock v1.1 shaklda. | `WB-10` |
+
+## iOS lane — ADR-004 (egasi, 2026-08-26; MVP gate'lariga kirmaydi)
+
+| ID | Repo / modul | Ish | Bog'liqlik |
+|---|---|---|---|
+| `IS-01` | android / `domain:*` | **KMP migratsiya.** Sof-Kotlin modullar KMP target oladi; Android CI yashilligi saqlanadi (gate); XCFramework chiqishi. | — |
+| `IS-02` | android / `iosApp` | **iOS skeleti.** SwiftUI app, KMP yadroga ulanish, CI (build + test). | `IS-01` |
+| `IS-03` | android / `iosApp` | **Kirish oqimi.** Aktivatsiya → PIN → Face ID/Touch ID taklifi; DS-01 spetsifikatsiyasi, ADR-002 qiymatlari; Keychain'da sessiya. | `IS-02`, `DS-01` |
+| `IS-04` | android / `iosApp` | **Reyslar ekrani.** DS-02 `T*`; DC-03 kontraktiga, noma'lum status forward-compatible. | `IS-03` |
+| `IS-05` | android / `iosApp` | **Offline xarajat + navbat.** DS-02 `X*`; ulashilgan sync yadro, BGTaskScheduler drain, ADR-003 siyosati. | `IS-04` |
+
+**iOS gate:** samolyot rejimida iPhone'da kiritilgan xarajat tarmoq qaytgach yetadi, ikki marta
+yozilmaydi, holatlar halol — Android gate'i bilan aynan bir xil ta'rif.
 
 ## Faza gate'lari (roadmap `v2.md` bilan moslik)
 
@@ -132,13 +147,16 @@ Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni 
 | `WB-07` hisob-kitob | ✅ DONE — ochish (balans hisoblanadi), yopish (SETTLEMENT yozuvi), bitta ochiq hisob-kitob qoidasi mock'da |
 | `WB-08` vizual dizayn | ✅ DONE (provisional) — sidebar shell, dashboard KPI, yagona karta/tugma/forma uslublari; DS-03 chiqdi — moslash `OPEN-009` doirasida |
 | `WB-09` OPEN-009 moslash | ✅ DONE — uz+ru i18n (lug'atlar bir shaklda, almashtirgich, tanlov saqlanadi); qat'iy Asia/Tashkent; rad sababi majburiy; mock DC-03 ga pinlangan (0-asosli pagination, kodlar katalogi, `fieldErrors` massiv, kategoriya lug'ati, ledger `memberId`, bir qadamli settlement); DS-03 W2 detal paneli (fx snapshot, bazaviy ekvivalent, kiritilgan/yuborilgan vaqt alohida, 409 da navbat yangilanadi). Qolgan farq: DC-03 da `actions[]` yo'q — `OPEN-022`; klaviatura navbat rejimi va filtrlar keyingi web taskiga |
+| `WB-10` DS-04 moslash | ✅ DONE — W5 operator xarajat formasi (server kategoriya lug'ati, OPEN-021 valyutalari, fxRate qoidalari, `enteredAt`, `clientRequestId` idempotent, «darhol tasdiqlanadi» ogohlantirishi); W8 storno (sabab majburiy, juftlik bog'lanadi, «o'chirish» so'zi yo'q); W7 aktivatsiya kodi dialogi (katta raqamlar, muddat, eski kod bekor ogohlantirishi). W-L/W-O (operator kirish/onboarding) kontrakt v1.1 auth endpointlarini kutadi |
+| `WB-11` OPEN-022 shakli | ✅ DONE — `actions[{name, available, disabledReason{code,message}}]`; uch rejim: yo'q/ochiq/disabled+sabab (kod bo'yicha uz-ru tarjima); mock'da threshold misoli `FIN_APPROVAL_NOT_ALLOWED`; 75 test yashil |
 | `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md`: sessiya modeli, 4 jurney, 13 ekran + holatlar matritsasi, komponentlar; ADR-002 qiymatlariga moslangan |
 | `DS-02` haydovchi reys va xarajat UX | ✅ DONE — `design/driver/ds-02-*.md`: ikki qatlam status modeli (transport/biznes), offline xarajat kiritish, terminal-xato ekrani ADR-003 siyosati bilan |
 | `DS-03` operator konsoli dizayni | ✅ DONE — `design/web/ds-03-*.md`: IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, server-e'lon-qilgan-harakatlar qoidalari; WB-01..03 taqdimot qatlamini boyitishga kirish |
 | Egasining dizayn-sessiya qarorlari | ✅ OPEN-010..019 yopildi (`decisions.md`); sessiya/vaqt ziddiyatlari tie-break bilan hal: 30 kun token, qat'iy Asia/Tashkent |
+| DS vizual qatlam — dizayn tizimi tokenlari (`design/system/tokens.md` + `preview.html`) | ✅ DONE — asfalt-ko'k / signal-amber / asfalt-neytral palitra to'liq shkalalar bilan, langarlar AN-01 kodiga pinlangan (`#1B4F9C`, `#E8862D`, `#F7F8FA`, `#121417`); light+dark semantik aliaslar, status lug'ati mappingi, ikki zichlik profili (haydovchi 17sp/56dp, operator 14px/44px), kontrast jadvali (asosiy yo'llar AAA); jonli ko'rinish `preview.html` |
 | `DS-04` konsol kengaytmasi dizayni | ✅ DONE — `design/web/ds-04-konsol-kengaytma.md`: operator kirish (OPEN-018) va onboarding (OPEN-019), operator xarajat kiritish UI (BK-10/OPEN-020), reys/flot/hisob/hisob-kitob ekranlari (WB-04..07 ga kirish), WB-08 bilan kelishuv qoidasi; topilma: kontrakt v1 da operator auth endpointlari yo'q — v1.1 kengaytmasi kerak |
 | `BK-13` ADR-002 qat'iylashtirish | ✅ DONE — `mvn clean verify` yashil; bitta faol qurilma (yangi aktivatsiya eskilarini bekor qiladi, eski navbat lokalda saqlanib idempotent yetadi); 5 xato → 15 daq per-telefon blok (audit izidan, noma'lum telefonga ham bir xil); kod so'rovi 3/soat 10/kun; 429 `AUTH_RATE_LIMITED` + `retryAfterSeconds`; operator `sessions/revoke` kill-switch; V0010 partial indexlar |
 | `BK-14` operator autentifikatsiyasi | ✅ DONE — `mvn clean verify` yashil; email+parol (PBKDF2, uniform 401, per-email blok), 24h sessiya, grantlar (rol jonli), `POST /operator/companies` (kompaniya+OWNER+grant atomar), parol tiklash port ortida (provayder kutmoqda), majburlash `logicontrol.operator-auth.enforced` bayrog'i (default off) — yoqilgan rejim testda isbotlangan |
-| `BK-15` server-e'lon-qilgan actions[] | ✅ DONE — `mvn clean verify` yashil; Expense: approve/reject + `actorMemberId` bilan aniq availability va sabab kodlari; Trip: holatdan lifecycle, haydovchida bo'sh (OPEN-017); OPEN-022 yopildi |
-| `BK-16` CBU kurs provayderi | ✅ DONE — `mvn clean verify` yashil; ADR-004 qabul qilindi; kurs kiritilgan sanaga (OPEN-016 mos), Rate/Nominal bo'linishi (nominal 10/100), MANUAL har doim g'olib, provayder yiqilsa eski oqim; CI'da tarmoqqa chiqmaydi; `fxRate` endi chet valyutada ixtiyoriy |
-| Qolganlari (web: operator login UI + `enforced` yoqish, `actions[]`/kategoriya lug'atiga o'tish; AN: `AUTH_RATE_LIMITED` matni, kurs maydonini «ixtiyoriy (CBU)» qilish; email provayder tanlash (parol tiklash uchun); SMS yetkazish; faza-gate jonli integratsiyalar B1–B4) | Boshlanmagan |
+| `BK-15` server-e'lon-qilgan actions[] | ✅ DONE — `mvn clean verify` yashil; qaror shaklida `{name, available, disabledReason?:{code,message}}`; Expense: approve/reject + `actorMemberId` bilan aniq availability va sabab kodlari; Trip: holatdan lifecycle, haydovchida bo'sh (OPEN-017); qolgan resurslar — `BK-17` (v1.1 sweep) |
+| `BK-16` CBU kurs provayderi | ✅ DONE — `mvn clean verify` yashil; ADR-005 qabul qilindi; kurs kiritilgan sanaga (OPEN-016 mos), Rate/Nominal bo'linishi (nominal 10/100), MANUAL har doim g'olib, provayder yiqilsa eski oqim; CI'da tarmoqqa chiqmaydi; `fxRate` endi chet valyutada ixtiyoriy |
+| Qolganlari (`BK-17` actions[] v1.1 sweep — Driver/Vehicle/Assignment/Ledger/Settlement/Member; web: operator login UI + `enforced` yoqish, `actions[]`/kategoriya lug'atiga o'tish; AN: `AUTH_RATE_LIMITED` matni, kurs maydonini «ixtiyoriy (CBU)» qilish; email provayder tanlash (parol tiklash uchun); SMS yetkazish; faza-gate jonli integratsiyalar B1–B4) | Boshlanmagan |

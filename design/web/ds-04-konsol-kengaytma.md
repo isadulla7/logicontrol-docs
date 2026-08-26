@@ -21,8 +21,9 @@ Holat qamrovi: har ekran DS-03 dagi jadval-navbat naqshining holat to'plamini
 | `W9` | Hisob-kitob (settlement) | WB-07 | `.../settlements` |
 
 [SAVOL → kontrakt v1.1] `api/contract-v1.md` da operator autentifikatsiya endpointlari yo'q;
-OPEN-018 qarori (email + parol, «parolni unutdim» email orqali) uchun kontrakt kengaytmasi
-kerak. `W-L` shu kengaytma chiqquncha shakl sifatida spetsifikatsiya qilinadi.
+OPEN-018 qarori (email + parol) uchun kontrakt kengaytmasi kerak. [FAKT: OPEN-022 yopilgan]
+Shu v1.1 kengaytmasiga `actions[]` ham kiradi — barcha resurslarda, `{name, available,
+disabledReason?}` shaklida; bu hujjatdagi barcha harakat qoidalari o'sha maydonga bog'lanadi.
 
 ## 2. `W-L` — Operator kirish
 
