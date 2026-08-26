@@ -13,6 +13,10 @@ O'zbekiston va Markaziy Osiyo logistika kompaniyalari uchun Transport OS. Ikki y
 - **Operator konsoli (web)** — kompyuterda, kun bo'yi ochiq turadigan ish quroli. Zichroq
   ma'lumot, jadval-navbatlar, klaviatura bilan tez ishlash.
 
+**Avval mavjud ishni tekshir:** `design/` papkasida oldingi sessiyalar qoldirgan fayllar bo'lishi
+mumkin (`git log --oneline -- design/`). Bor bo'lsa — o'qi va davom ettir, qaytadan boshlama;
+vizual daraja talabiga javob bermasa, yaxshila va nima uchun o'zgartirganingni commit xabarida ayt.
+
 Ishni boshlashdan oldin o'qi: `product/vision.md`, `product/business-rules.md`,
 `domain/model.md`, `roadmap/tasks.md` (sening tasklaring: `DS-01` kirish oqimi, `DS-02` reys va
 xarajat, `DS-03` operator konsoli — shu tartibda).
