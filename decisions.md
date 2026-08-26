@@ -121,3 +121,10 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
 - **Vaqt mintaqasi aniqlashtirildi (egasi, tie-break):** main OPEN-004 qarori qoladi — MVP da
   qat'iy `Asia/Tashkent`, sozlama yo'q; kompaniya-sozlanadigan mintaqa kelajak kengaytma
   sifatida qayd etildi.
+- **OPEN-021 — MVP valyutalar ro'yxati. YOPILDI (egasi, 2026-08-26).** Kutiladigan
+  valyutalar: **UZS (bazaviy) + USD, RUB, KZT, CNY, TRY** — asosiy yo'nalishlar (Rossiya,
+  Qozog'iston, Xitoy, Turkiya) bo'yicha. Ro'yxatni server e'lon qiladi (klientga qotirilmaydi,
+  biznes qoida #10); keyin valyuta qo'shish server lug'atini kengaytirish, klient o'zgarmaydi.
+  Barchasi CBU rasmiy API'sida mavjud — kelajak CBU provayderi testlari shu beshtasi bilan
+  yoziladi (KZT nominal masalasiga alohida e'tibor). Haydovchi formasida (X1) standart tanlov —
+  oxirgi ishlatilgan valyuta [TAKLIF].

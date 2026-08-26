@@ -111,7 +111,7 @@ uchun majburiy maydon offline'da ham har doim to'ldirila oladi.
 |---|---|
 | `HAP` | Saqlash **darhol** lokal tasdiq bilan yakunlanadi: «Saqlandi. Aloqa bo'lganda o'zi yuboriladi.» + joriy navbat soni. Tarmoq kutilmaydi, spinner yo'q. |
 | `LOAD` | Faqat lokal yozish lahzasi (sezilmas). Tur lug'ati keshdan (aktivatsiyada va har sinxronda yangilanadi) — forma lug'at kutib turmaydi. |
-| `ERR-V` | Summa bo'sh/nol, valyuta tanlanmagan, majburiy maydon yetishmayapti — `InlineMessage`, maydon tozalanmaydi. Valyuta standarti [TAXMIN, `DC-03`]: server ro'yxati; oxirgi ishlatilgan oldindan tanlanadi [TAKLIF]. |
+| `ERR-V` | Summa bo'sh/nol, valyuta tanlanmagan, majburiy maydon yetishmayapti — `InlineMessage`, maydon tozalanmaydi. Valyuta ro'yxati [FAKT: OPEN-021]: UZS, USD, RUB, KZT, CNY, TRY — server e'lon qiladi; oxirgi ishlatilgan oldindan tanlanadi [TAKLIF]. |
 | `OFF` | **Farqsiz ishlaydi** — bu formaning bor bo'lish sababi. Bitta belgi: status barда «aloqa yo'q, yozuv navbatga qo'shiladi». |
 | `DIS` | Saqlash tugmasi faqat `LOAD` paytida takror-bosishга yopiq. |
 | `PEND` | Formadan chiqqanда yangi yozuv X2 da darhol «Saqlandi/Kutilmoqda» bilan ko'rinadi. |

@@ -59,5 +59,6 @@ beradi. Demak provayder real vaqtdagi kursni emas, so'ralgan sananing kursini ol
 ## Namuna holati
 
 Real javob pinlangan: `cbu-sample.json` (egasi, 2026-08-26). Provayder regressiya testi shu
-fayl bilan yoziladi. Ochiq savol (implementatsiyada tekshiriladi): kurs e'lon qilinmagan kun
+fayl bilan yoziladi va [FAKT: OPEN-021] MVP valyutalari (USD, RUB, KZT, CNY, TRY) ni qamrab
+oladi — ayniqsa nominal≠1 holati. Ochiq savol (implementatsiyada tekshiriladi): kurs e'lon qilinmagan kun
 (yakshanba/bayram) so'ralganda API nima qaytaradi — bo'sh massivmi yoki oxirgi kursmi.
