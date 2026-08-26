@@ -28,3 +28,9 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   30 kun, refresh'da token aylantiriladi. Ochiq: PIN/biometrik qurilma tomonida — serverga
   ta'siri ADR-002 da; per-telefon/IP rate-limit middleware; operator verifikatsiya protsedurasi;
   grace-oyna. ADR-002 qabul qilinganda qiymatlar bir joyda yangilanadi.
+- **OPEN-007 — ihamkor.uz javob namunasi.** Sandbox tarmog'i `ihamkor.uz` ni bloklaydi (proxy
+  403), shuning uchun `BK-09` parseri real javobga emas, ehtimoliy shakllarga (massiv ildiz,
+  o'ralgan ro'yxat, turli nom kalitlari) chidamli qilib yozildi va test qilindi. Egadan iltimos:
+  `https://ihamkor.uz/api/search/quick?q=<real STIR>` ning xom JSON javobidan bitta namuna
+  bering — parser aniq shaklga pinlab, real-namunali regressiya testi qo'shiladi. Adapter
+  hozircha ishlaydi: topilmasa/ulanmasa forma bo'sh ochiladi (boyitish printsipi buzilmaydi).
