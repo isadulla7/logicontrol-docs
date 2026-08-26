@@ -53,4 +53,6 @@ ishga tushirsa bo'ladigan holatda tugaydi.
 - AI qaror qabul qiluvchi (AI faqat tavsiya)
 - Marketplace, sug'urta, moliyalashtirish
 - To'liq GPS/telematika, 1C, yoqilg'i kartasi, OCR integratsiyalari
-- iOS klienti
+
+(«iOS klienti» avval shu ro'yxatda edi — ADR-004 bilan bekor qilindi: iOS alohida lane
+sifatida quriladi, MVP gate'lariga ta'sir qilmaydi.)

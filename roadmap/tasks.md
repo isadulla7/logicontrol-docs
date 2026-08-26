@@ -81,6 +81,19 @@ Egasining ko'rsatmasi bilan operator konsoli MVP qamrovidagi barcha bo'limlarni 
 | `WB-10` | web | **DS-04 moslash.** Operator xarajat kiritish (W5/BK-10 UI), ledger storno (W8), aktivatsiya kodi dialogi (W7), kategoriya lug'ati endpointi, OPEN-021 valyuta to'plami. | `DS-04`, `WB-09` |
 | `WB-11` | web | **OPEN-022 shakli.** `actions[{name, available, disabledReason}]` — disabled+sabab rendering, mock v1.1 shaklda. | `WB-10` |
 
+## iOS lane — ADR-004 (egasi, 2026-08-26; MVP gate'lariga kirmaydi)
+
+| ID | Repo / modul | Ish | Bog'liqlik |
+|---|---|---|---|
+| `IS-01` | android / `domain:*` | **KMP migratsiya.** Sof-Kotlin modullar KMP target oladi; Android CI yashilligi saqlanadi (gate); XCFramework chiqishi. | — |
+| `IS-02` | android / `iosApp` | **iOS skeleti.** SwiftUI app, KMP yadroga ulanish, CI (build + test). | `IS-01` |
+| `IS-03` | android / `iosApp` | **Kirish oqimi.** Aktivatsiya → PIN → Face ID/Touch ID taklifi; DS-01 spetsifikatsiyasi, ADR-002 qiymatlari; Keychain'da sessiya. | `IS-02`, `DS-01` |
+| `IS-04` | android / `iosApp` | **Reyslar ekrani.** DS-02 `T*`; DC-03 kontraktiga, noma'lum status forward-compatible. | `IS-03` |
+| `IS-05` | android / `iosApp` | **Offline xarajat + navbat.** DS-02 `X*`; ulashilgan sync yadro, BGTaskScheduler drain, ADR-003 siyosati. | `IS-04` |
+
+**iOS gate:** samolyot rejimida iPhone'da kiritilgan xarajat tarmoq qaytgach yetadi, ikki marta
+yozilmaydi, holatlar halol — Android gate'i bilan aynan bir xil ta'rif.
+
 ## Faza gate'lari (roadmap `v2.md` bilan moslik)
 
 - **B1 gate** = `BK-01`+`BK-02`+`BK-03` merged, cross-tenant negativ testlar yashil, haydovchi

@@ -141,3 +141,9 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
   Barchasi CBU rasmiy API'sida mavjud — kelajak CBU provayderi testlari shu beshtasi bilan
   yoziladi (KZT nominal masalasiga alohida e'tibor). Haydovchi formasida (X1) standart tanlov —
   oxirgi ishlatilgan valyuta [TAKLIF].
+- **OPEN-023 — iOS klienti. YOPILDI (egasi, 2026-08-26; ADR-004).** Non-goal bekor qilindi.
+  Uch qaror: (1) texnologiya — **KMP yadro + SwiftUI** (sof-Kotlin `domain:*` ulashiladi, UI
+  sof SwiftUI); (2) vaqt — **hozir, alohida lane**: B1–B4 gate'lari va pilot Android bilan
+  yopiladi, iOS o'z `IS-*` tasklari bilan; (3) qamrov — **Android bilan to'liq paritet**
+  (aktivatsiya → PIN/Face ID → reyslar → offline xarajat → navbat holatlari). DS-01/DS-02
+  dizaynlari platforma eslatmalari bilan qo'llanadi, alohida dizayn kerak emas.

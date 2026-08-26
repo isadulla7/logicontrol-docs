@@ -34,6 +34,14 @@ Web operator konsoli (Next.js) [MVP oxirroq bosqichi]
 - SDK: `minSdk 26`, `targetSdk 36`. Lokal build uchun `local.properties` da `sdk.dir`
   ko'rsatiladi; CI GitHub Actions'da quriladi.
 
+## iOS (ADR-004, alohida lane)
+
+- **KMP yadro + SwiftUI**: `domain:*` sof-Kotlin modullari KMP target oladi — navbat/idempotency
+  mantiqʼi ikkala platformada bitta kod. Platforma xizmatlari Swift tomonda: Keychain,
+  Face ID/Touch ID, BGTaskScheduler, URLSession.
+- Bitta mobil repo: iOS ilovasi `logicontrol-android` repoda `iosApp` sifatida.
+- MVP gate'lariga kirmaydi; o'z `IS-*` tasklari va gate'i bilan.
+
 ## Web
 
 Next.js operator konsoli. Tayanch qoida: server har yozuv uchun mavjud harakatlarni e'lon
