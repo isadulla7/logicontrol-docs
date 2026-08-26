@@ -103,4 +103,4 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `DS-02` haydovchi reys va xarajat UX | ✅ DONE — `design/driver/ds-02-*.md`: ikki qatlam status modeli (transport/biznes), offline xarajat kiritish, terminal-xato ekrani ADR-003 siyosati bilan |
 | `DS-03` operator konsoli dizayni | ✅ DONE — `design/web/ds-03-*.md`: IA/shell, jadval-navbat naqshi, xarajat tasdiqlash ekrani, server-e'lon-qilgan-harakatlar qoidalari; WB-01..03 taqdimot qatlamini boyitishga kirish |
 | Egasining dizayn-sessiya qarorlari | ✅ OPEN-010..019 yopildi (`decisions.md`); sessiya/vaqt ziddiyatlari tie-break bilan hal: 30 kun token, qat'iy Asia/Tashkent |
-| Qolganlari (`AN-06` offline xarajat kiritish; `OPEN-009` web moslash) | Boshlanmagan |
+| Qolganlari (`AN-06` offline xarajat kiritish; `OPEN-009` web moslash; `BK-09` davomi — parserni `integrations/ihamkor-sample.json` ga pinlash + regressiya testi) | Boshlanmagan |

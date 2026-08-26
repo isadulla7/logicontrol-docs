@@ -1,0 +1,46 @@
+{
+    "data": {
+        "company": [
+            {
+                "liquidationdate": "2025-08-11T00:00:00.000Z",
+                "isgovernmentagency": null,
+                "state": "active",
+                "company_name_company": "\"XORAZM ROST 308\" MCHJ",
+                "isinblacklist": null,
+                "address": "Хорезмская область, Ханкинский район, АНДАЛИП  кучаси",
+                "rating": 94,
+                "@timestamp": "2026-08-16T02:51:12.211581733Z",
+                "tin": "306914036",
+                "stateid": "inactive",
+                "@version": "1",
+                "key0": 2930265,
+                "name": "\"XORAZM ROST 308\" MCHJ",
+                "statetitle": "Недействующий",
+                "statecode": "20",
+                "registrationdate": "2019-12-03T00:00:00.000Z"
+            },
+            {
+                "liquidationdate": "2025-08-20T00:00:00.000Z",
+                "isgovernmentagency": null,
+                "state": "liquidated",
+                "company_name_company": "\"XONQA RO'ST 308\" OK",
+                "isinblacklist": null,
+                "address": "Хорезмская область, Ханкинский район, ХАНКА, O`LMAS MEROS KO`CHASI 1-TUPIK 1-UY",
+                "rating": 31,
+                "@timestamp": "2026-08-16T02:51:36.374393445Z",
+                "tin": "307069976",
+                "stateid": "liquidated",
+                "@version": "1",
+                "key0": 2753308,
+                "name": "\"XONQA RO'ST 308\" OK",
+                "statetitle": "Ликвидирован",
+                "statecode": "33",
+                "registrationdate": "2020-01-27T00:00:00.000Z"
+            }
+        ],
+        "product": []
+    },
+    "success": true,
+    "totalProducts": 0,
+    "totalCompanies": 564
+}

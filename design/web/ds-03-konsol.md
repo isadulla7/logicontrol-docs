@@ -52,6 +52,10 @@ Teglar va kontekst: [`README.md`](README.md). Ekranlar: [`ds-03-ekranlar.md`](ds
   **konsol ichida, birinchi kirishda**: kompaniyasiz foydalanuvchi kirgach «Kompaniya yaratish»
   oqimi ochiladi (STIR → ihamkor.uz autofill → tasdiqlash, xatoda bo'sh forma —
   `architecture/system.md` qoidalari). `W0` ning `EMPTY` holati shu oqimga olib boradi.
+  [FAKT: `integrations/ihamkor.md`, real namuna asosida] Autofill: nom ← `name`, manzil ←
+  `address`; javobdan faqat `tin` aynan mos yozuv olinadi (qidiruv fuzzy); reestr «faol emas»
+  ko'rsatsa forma bloklanmaydi — axborot bandi chiqadi, qaror foydalanuvchida (reestr —
+  boyitish, haqiqat manbai emas).
 
 ## 2. Ruxsatga sezgir holatlar — umumiy qoida
 
