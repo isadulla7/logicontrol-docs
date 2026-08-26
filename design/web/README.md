@@ -10,6 +10,7 @@ majburiy holatlar katalogi (`LOAD / EMPTY / OFF / ERR / DIS / RLT`).
 |---|---|---|
 | DS-03 | [`ds-03-konsol.md`](ds-03-konsol.md) | IA/shell, tayanch printsiplar, jadval-navbat naqshi |
 | DS-03 | [`ds-03-ekranlar.md`](ds-03-ekranlar.md) | Xarajat tasdiqlash ekranlari, holatlar matritsasi, komponentlar |
+| DS-04 | [`ds-04-konsol-kengaytma.md`](ds-04-konsol-kengaytma.md) | Kengaytma: operator kirish/onboarding, operator xarajati (BK-10), reys/flot/hisob/hisob-kitob (WB-04..07), WB-08 kelishuvi |
 
 ## Operator konteksti
 
