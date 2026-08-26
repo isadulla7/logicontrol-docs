@@ -73,6 +73,9 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 
 ## Holat
 
+> **Ish tartibi (egasi, 2026-08-26):** har gate'i yashil task darhol `main`ga merge qilinadi —
+> `main` doim ishga tushirsa bo'ladigan holatda. Ish branchi: `claude/logicontrol-backend-engineering-gu2nsf`.
+
 | Task | Holat |
 |---|---|
 | B0 poydevor (docs, backend skeleti, android skeleti) | ✅ DONE — backend `mvn clean verify` lokal yashil; Android CI gate |
@@ -80,6 +83,10 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | `DC-02` ADR-003 — terminal-xato siyosati | ✅ DONE — `adr/ADR-003-offline-sync-terminal-errors.md`; 4xx terminal + to'liq javob-tasnif jadvali; AN-02/AN-06 shu jadvalga quriladi |
 | `DC-03` API kontrakti v1 | ✅ DONE — `api/contract-v1.md`; xato kodlari katalogi, pagination qoidasi, barcha haydovchi/operator endpointlari (ishlab turgan backend bilan sinxron) |
 | `AN-01` dizayn tizimi | ✅ DONE — CI yashil (run #11); LogiControlTheme (light/dark), 4dp shkala + 56dp teginish maydoni, holatlar katalogi (loading/empty/offline/error/disabled), uz+ru matnlar, WCAG AA kontrast testlari |
+| `AN-02` offline navbat mexanizmi | ✅ DONE — CI yashil (run #13); sof-Kotlin `domain:sync` holat mashinasi (ADR-003 jadvali kod sifatida, har qator testda), Room `sync_queue_item` (`client_request_id` unique), WorkManager drain; siyosat faqat domain modulda |
+| `AN-03` tarmoq qatlami | ✅ DONE — CI yashil (run #13); OkHttp ApiClient, `problem+json` chidamli parsing (buzuq JSON ham yiqitmaydi), correlation + bearer interceptorlar, HTTP→ServerReply mapper ADR-003 bo'yicha; MockWebServer testlari |
+| `AN-04` aktivatsiya va kirish oqimi | ✅ DONE — CI yashil (run #16); telefon→kod→PIN→biometrik taklif (ADR-002), sessiya EncryptedSharedPreferences'da, PIN faqat tuzlangan xesh, xatolar server kodi bo'yicha uz+ru |
+| `AN-05` haydovchi reyslari ekrani | ✅ DONE — CI yashil (run #16); DC-03 kontraktiga qurilgan, noma'lum status UNKNOWN sifatida (forward-compatible), besh ekran-holat katalog komponentlari bilan; jonli integratsiya faza gate'ida |
 | `BK-01` typed ID'lar + organization moduli | ✅ DONE — `mvn clean verify` yashil (Testcontainers PostgreSQL bilan, 0 skipped); ArchUnit tenant-scope qoidasi (bare `findById` taqiqi) faol; rol modeli bo'yicha `OPEN-005` ochildi |
 | `BK-02` xato kontrakti + correlation ID | ✅ DONE — `mvn clean verify` yashil; `problem+json` barqaror `code` bilan, correlation filter + har ProblemDetail'ga muhrlash; konvensiya: modul advice `@Order(0)` |
 | `BK-03` identity — haydovchi autentifikatsiyasi | ✅ DONE — `mvn clean verify` yashil; aktivatsiya kodi juftlik bilan, atomik iste'mol, bir vaqtda bitta amal kod; jonli membership har so'rovda; pre-auth javoblar bayt-bay bir xil (integratsiya testi bilan isbotlangan); append-only auth audit. Siyosat qiymatlari `OPEN-006`da, ADR-002 kutmoqda |
