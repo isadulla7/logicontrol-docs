@@ -45,6 +45,17 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   ro'yxat chegaralangani uchun klient-tomon filtrlash to'g'ri natija bermaydi.
   Bloklamaydi: navbat holat filtri bilan ishlaydi.
 
+- **OPEN-026 — `AUTH_RATE_LIMITED` uz matnida ablativ qo'shimcha ajralib qolgan.**
+  (`WB-15` topilmasi.) `design/copy/error-codes.md` §3 da matn «Juda ko'p urinish.
+  {time} dan keyin qaytadan urinib ko'ring.» O'rin belgisi almashtirilgach natija
+  «15 daqiqa dan keyin» bo'ladi — o'zbekchada ablativ qo'shimcha so'zga qo'shilib
+  yoziladi («15 daqiqadan»). Web katalogda hozir bo'shliqsiz variant («{time}dan
+  keyin») ishlatilmoqda, chunki ekranda grammatik xato ko'rinmasligi kerak.
+  Kerak: DS-05 matni ham shu shaklga keltirilsin, aks holda Android bilan web bir
+  xil kodni har xil aytadi (katalogning butun maqsadi shu). Ruscha matn («Повторите
+  через {time}») to'g'ri — o'zgarish faqat uz tomonida.
+  Bloklamaydi: xato matni ko'rinadi va tushunarli.
+
 ## Yopilgan (egasining yozma qarori bilan)
 
 - **OPEN-001 — Haydovchi autentifikatsiya modeli. YOPILDI (ADR-002, 2026-08-26).** Telefon +
