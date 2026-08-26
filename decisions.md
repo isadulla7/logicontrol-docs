@@ -4,20 +4,6 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
 
 ## Ochiq
 
-- **OPEN-001 — Haydovchi autentifikatsiyasining yakuniy modeli.** Yo'nalish tanlangan (telefon +
-  aktivatsiya kodi + qurilmada PIN/biometrik, parolsiz — avvalgi iteratsiya ADR-019 tahlili
-  asosida) va serverdagi siyosat qiymatlari egasi tomonidan tasdiqlandi (OPEN-006 qarori,
-  2026-08-26). ADR-002 hujjatining o'zi (DC-01 taski) hali yozilmagan; unda qolgan detallar:
-  grace-oyna kunlari, per-telefon/IP rate-limit qiymatlari, operator verifikatsiya protsedurasi,
-  PIN/biometrikning qurilma tomonidagi shakli.
-- **OPEN-002 — Sync terminal-xato siyosati.** Navbatdagi operatsiya hech qachon muvaffaqiyatli
-  bo'lolmasligi aniqlanganda: qaysi javoblar terminal, haydovchiga nima ko'rsatiladi, kim
-  javobgar. B3 dan oldin (DC-02 / ADR-003). Backend mexanizmi (`sync` moduli, BK-06) tayyor va
-  siyosatga neytral: muvaffaqiyatsiz bajarish kalitni bo'shatadi, retry qayta uriniladi.
-- **OPEN-003 — Mahsulot tillari.** Interfeys tili (o'zbek? rus? ikkalasi?). Web repo ochilishidan
-  va Android matnlari ko'payishidan oldin.
-- **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi.** Saqlash `TIMESTAMPTZ`; ko'rsatish qoidasi
-  ochiq. B2 dan oldin hal qilinsa arzon.
 - **OPEN-007 — ihamkor.uz javob namunasi (qisman ochiq).** Egasining qarori (2026-08-26):
   namuna keyinroq beriladi; kurs manbai hozircha MANUAL qoladi, CBU provayderi keyingi bosqichda
   (alohida ADR bilan). Namuna kelguncha `BK-09` parseri universal (noma'lum maydonlarga chidamli)
@@ -26,6 +12,18 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
 
 ## Yopilgan (egasining yozma qarori bilan)
 
+- **OPEN-001 — Haydovchi autentifikatsiya modeli. YOPILDI (ADR-002, 2026-08-26).** Telefon +
+  aktivatsiya kodi + qurilmada PIN/biometrik; qiymatlar va invariantlar ADR-002 da. Keyinga
+  qoldirilganlar (rate-limit middleware, SMS, operator verifikatsiya protsedurasi) ADR-002 ning
+  "Keyinga qoldirilgan" bo'limida.
+- **OPEN-002 — Sync terminal-xato siyosati. YOPILDI (ADR-003, 2026-08-26).** 4xx biznes-rad —
+  terminal: navbatdan chiqadi, haydovchiga sababi bilan ko'rsatiladi, yozuv lokalda saqlanadi,
+  tahrirlab qayta yuborish yangi clientRequestId bilan. To'liq jadval ADR-003 da.
+- **OPEN-003 — Mahsulot tillari. YOPILDI (egasi, 2026-08-26).** O'zbek (lotin) va rus — ikkala
+  til MVP'dan boshlab. Android va web matn resurslari boshidan ikki tilda yuritiladi; klient
+  server xato matniga emas, `code` ga qarab tarjima ko'rsatadi (DC-03 katalogi).
+- **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi. YOPILDI (egasi, 2026-08-26).** Saqlash UTC
+  (`TIMESTAMPTZ`); barcha klientlar ekranda Asia/Tashkent (UTC+5) da ko'rsatadi.
 - **OPEN-005 — Rol modelining chegaralari. YOPILDI (egasi, 2026-08-26).** Qaror: bir kompaniyada
   bir nechta OWNER bo'lishi mumkin; a'zolarni qo'shish/suspend qilishni operator
   autentifikatsiyasi kelganda OWNER ham MANAGER ham bajara oladi; oxirgi faol OWNER suspend
