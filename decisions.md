@@ -10,6 +10,13 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   holida ishlayveradi; namuna kelganda parser aniq shaklga pinlab, real-namunali regressiya
   testi qo'shiladi.
 
+- **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash.** Web yo'nalishi (WB-01..03)
+  OPEN-003/004 qarorlaridan oldin qurilgan: UI matnlari vaqtincha faqat o'zbekcha
+  (`logicontrol-web/src/lib/i18n/strings.ts`), vaqt brauzer lokalida
+  (`logicontrol-web/src/lib/format/datetime.ts`). Endi qarorlar bor: til — uz+ru, vaqt —
+  Asia/Tashkent. Web moduli markazlashtirilgani uchun moslash arzon; DC-03 kontrakti ham chiqdi —
+  mock adapter kontraktga pinlanishi kerak. Web yo'nalishining keyingi taskiga kiradi.
+
 ## Yopilgan (egasining yozma qarori bilan)
 
 - **OPEN-001 — Haydovchi autentifikatsiya modeli. YOPILDI (ADR-002, 2026-08-26).** Telefon +
@@ -41,3 +48,8 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   faqat OWNER; siyosat o'rnatilmagan kompaniyada konservativ default — hamma xarajat OWNER
   tasdig'ini talab qiladi. Standart threshold kiritilmaydi, ikki daraja yetarli. Valyuta kursi
   masalasi OPEN-007 bilan birga hal qilindi: MANUAL snapshot qoladi, CBU provayderi keyinroq.
+- **(sobiq web OPEN-005) Xarajat rad etish sababi. YOPILDI (BK-07 / DC-03, 2026-08-26).** Sabab
+  **majburiy**: backend `reject` sabab matnisiz qabul qilmaydi (biznes qoidasi 9 — muhim harakat
+  auditsiz o'tmaydi), DC-03 kontraktida `{approverMemberId, reason}` majburiy maydonlar,
+  haydovchi ilovasi rad etilgan xarajatni sababi bilan ko'rsatadi (ADR-003). WB-03 dagi
+  ixtiyoriy sabab maydoni majburiy qilinishi kerak (OPEN-009 ishiga kiradi).
