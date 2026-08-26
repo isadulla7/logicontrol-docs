@@ -35,6 +35,16 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   Ledger yozuvi (`reverse` + `ALREADY_REVERSED`), Settlement (bo'sh — muzlagan tarix).
   To'liq jadval: `api/contract-v1.md` §4.
 
+- **OPEN-025 — Xarajat navbatining filtrlari kontraktda yo'q.** (`WB-13` topilmasi.)
+  DS-03 `W1` maketi va `design/mockups/web/02-xarajat-navbati.html` beshta filtrni
+  ko'rsatadi: holat, haydovchi, tur, sana oralig'i, summa oralig'i. `api/contract-v1.md`
+  dagi `GET /companies/{c}/expenses` esa faqat `?status` ni oladi. Web shu sababli hozir
+  faqat holat filtrini quradi (kontraktga sodiq, o'ylab topilgan parametr yo'q).
+  Kerak: kontrakt kengaytmasi (`driverMemberId`, `category`, `from`/`to`, `minAmount`/
+  `maxAmount` va saralash parametri) hamda backend tomonida server-tomon filtrlash —
+  ro'yxat chegaralangani uchun klient-tomon filtrlash to'g'ri natija bermaydi.
+  Bloklamaydi: navbat holat filtri bilan ishlaydi.
+
 ## Yopilgan (egasining yozma qarori bilan)
 
 - **OPEN-001 — Haydovchi autentifikatsiya modeli. YOPILDI (ADR-002, 2026-08-26).** Telefon +
