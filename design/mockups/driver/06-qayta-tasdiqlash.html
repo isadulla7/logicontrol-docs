@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>DS-01 · A7 — Qayta tasdiqlash (sheet) · A9 — Yordam</title>
+<style>
+  :root{
+    --kok-50:#EFF4FB;--kok-100:#DCE7F6;--kok-200:#B9CFED;--kok-300:#8FB4E8;--kok-500:#3A6DB6;
+    --kok-600:#1B4F9C;--kok-800:#113363;--kok-950:#07172D;
+    --amber-400:#E8862D;
+    --n-0:#FFFFFF;--n-50:#F7F8FA;--n-100:#EFF1F5;--n-200:#E3E6EB;--n-300:#CDD2DA;--n-400:#A8AFBB;
+    --n-500:#808896;--n-600:#5F6672;--n-700:#474D58;--n-800:#31363F;--n-900:#1F232A;--n-950:#121417;
+    --sariq-50:#FBF4E1;--sariq-200:#E9CC7C;--sariq-700:#6E4D00;
+    --yashil-50:#ECF5ED;--yashil-200:#A9D2AC;--yashil-600:#2E7D32;--yashil-800:#1C4E1F;
+    --font-ui:Inter,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  .app{
+    --surface-page:var(--n-50);--surface-raised:var(--n-0);--surface-sunken:var(--n-100);
+    --text-primary:var(--n-900);--text-secondary:var(--n-700);--text-muted:var(--n-500);
+    --border-default:var(--n-200);--border-strong:var(--n-400);
+    --act-bg:var(--kok-600);--act-text:var(--n-0);
+    --e1:0 1px 2px rgb(15 23 42/.06),0 1px 3px rgb(15 23 42/.08);
+    --e3:0 -12px 32px rgb(15 23 42/.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#E9EBEF;font-family:var(--font-ui);-webkit-font-smoothing:antialiased;padding:48px 24px 80px}
+  .pagehead{max-width:1100px;margin:0 auto 36px}
+  .pagehead h1{font-size:22px;font-weight:700;color:#1F232A;letter-spacing:-.3px}
+  .pagehead p{font-size:14px;color:#5F6672;margin-top:6px;line-height:1.55;max-width:820px}
+  .canvas{display:flex;gap:44px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .unit>figcaption{font-size:13px;font-weight:600;color:#474D58;margin-bottom:12px;text-align:center}
+  .unit>figcaption small{display:block;font-weight:400;color:#808896;margin-top:2px}
+  .phone{width:390px;height:844px;border-radius:36px;background:var(--surface-page);
+    box-shadow:0 0 0 10px #14161A,0 0 0 11px #3a3f47,0 28px 60px rgb(15 23 42/.35);
+    overflow:hidden;display:flex;flex-direction:column;position:relative}
+  .osbar{height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 26px;font-size:13.5px;font-weight:600;color:var(--text-primary);flex:none}
+  .osbar .ic{letter-spacing:2px;font-size:11px;color:var(--text-secondary)}
+  .osbar .off{color:var(--n-500);font-weight:700}
+
+  /* Fon ilova (xira) */
+  .bgapp{flex:1;display:flex;flex-direction:column;padding:0 16px;filter:blur(0);opacity:1}
+  .bgapp .hd{font-size:24px;font-weight:700;color:var(--text-primary);margin:14px 4px 12px}
+  .tripcard{background:var(--surface-raised);border:1px solid var(--border-default);border-radius:14px;
+    padding:14px 16px;margin-bottom:10px;box-shadow:var(--e1)}
+  .tripcard .rt{font-size:17px;font-weight:700;color:var(--text-primary)}
+  .tripcard .mt{font-size:13.5px;color:var(--text-muted);margin-top:4px}
+  .scrim{position:absolute;inset:0;background:rgb(7 23 45/.45)}
+
+  /* Sheet */
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface-raised);
+    border-radius:24px 24px 0 0;box-shadow:var(--e3);padding:10px 22px 26px}
+  .grab{width:44px;height:4px;border-radius:2px;background:var(--n-300);margin:0 auto 14px}
+  .sheet .close{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;
+    background:var(--n-100);display:flex;align-items:center;justify-content:center;color:var(--n-600);font-size:16px}
+  .qline{display:flex;gap:10px;background:var(--sariq-50);border:1px solid var(--sariq-200);
+    border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.5;color:var(--sariq-700);font-weight:500}
+  .sheet h3{font-size:21px;font-weight:700;color:var(--text-primary);margin-top:16px}
+  .sheet .sub{font-size:14.5px;color:var(--text-secondary);margin-top:6px;line-height:1.5}
+  .sheet .sub b{color:var(--text-primary)}
+  .boxes{display:flex;gap:8px;margin-top:18px}
+  .box{flex:1;height:56px;border:1.5px solid var(--border-strong);border-radius:12px;background:var(--surface-raised);
+    display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--text-primary)}
+  .box.focus{border:2px solid var(--kok-500)}
+  .caret{width:2px;height:26px;background:var(--kok-500)}
+  .btn{width:100%;height:56px;border:none;border-radius:14px;background:var(--act-bg);color:var(--act-text);
+    font:inherit;font-size:17px;font-weight:600;margin-top:16px}
+  .sheetnote{font-size:13.5px;color:var(--text-muted);text-align:center;margin-top:12px;line-height:1.5}
+
+  /* A9 */
+  .content{flex:1;display:flex;flex-direction:column;padding:0 24px}
+  .apphead{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;flex:none}
+  .back{font-size:15px;font-weight:500;color:var(--kok-600);padding:12px;margin:-12px}
+  .spacer-top{height:7%}
+  h2.scr{font-size:26px;font-weight:700;color:var(--text-primary);letter-spacing:-.3px}
+  .lead{font-size:16px;color:var(--text-secondary);margin-top:8px;line-height:1.55}
+  .callcard{margin-top:26px;background:var(--surface-raised);border:1px solid var(--border-default);
+    border-radius:16px;padding:20px;box-shadow:var(--e1);text-align:center}
+  .callcard .l{font-size:13.5px;color:var(--text-muted)}
+  .callcard .co{font-size:18px;font-weight:700;color:var(--text-primary);margin-top:4px}
+  .callbtn{margin-top:14px;width:100%;height:60px;border:none;border-radius:14px;background:var(--act-bg);
+    color:var(--act-text);font:inherit;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px}
+  .mynum{margin-top:22px;background:var(--surface-sunken);border-radius:14px;padding:16px 18px}
+  .mynum .l{font-size:13.5px;color:var(--text-muted)}
+  .mynum .v{font-size:22px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;margin-top:2px}
+  .pendnote{display:flex;gap:10px;margin-top:22px;background:var(--yashil-50);border:1px solid var(--yashil-200);
+    border-radius:12px;padding:13px 15px;font-size:14.5px;line-height:1.5;color:var(--yashil-800)}
+  .offnote{margin-top:auto;padding-bottom:28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+<div class="pagehead">
+  <h1>DS-01 · A7 — Qayta tasdiqlash (sheet) · A9 — Kira olmayapman</h1>
+  <p>Spetsifikatsiya: <b>ds-01-ekranlar.md §A7, §A9</b>. A7 — to'liq ekran emas, ilova ustidagi sheet:
+  haydovchi dunyosi joyida turganini ko'radi. Birinchi qator kredensial emas — <b>navbat</b> haqida
+  («ishim yo'qoldimi?» savoliga javob). Telefon raqami ko'rsatiladi, tahrirlanmaydi. Sheet offline
+  yopiladi — o'qish ishlayveradi, yangi yozuv DIS. A9 — har boshi berk ko'chaning manzili: bitta aniq
+  yo'l (ofisga qo'ng'iroq), offline to'liq foydali.</p>
+</div>
+<div class="canvas">
+
+  <figure class="unit">
+    <figcaption>A7 · HAP + PEND<small>sessiya rad etilgan; navbat birinchi qator; proof yuzasi A2 qoidalarida</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>11:34</span><span class="ic">▲ ▮▮▮▯ ▊</span></div>
+      <div class="bgapp" aria-hidden="true">
+        <div class="hd">Reyslarim</div>
+        <div class="tripcard"><div class="rt">Toshkent → Andijon</div><div class="mt">Artel Support Service MChJ · 27-avg</div></div>
+        <div class="tripcard"><div class="rt">Toshkent → Samarqand</div><div class="mt">Korzinka logistika · 29-avg</div></div>
+      </div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="grab"></div>
+        <span class="close" title="Yopish — ko'rish ishlayveradi">✕</span>
+        <div class="qline">📦 3 ta yozuv yuborishni kutmoqda. Davom etishi uchun o'zingizni tasdiqlang — hech narsa yo'qolmagan.</div>
+        <h3>O'zingizni tasdiqlang</h3>
+        <p class="sub">Sessiya muddati tugadi. Ofis <b>+998 90 123 45 67</b> raqamiga yangi kod yuboradi — SMS kelmasa operator og'zaki aytadi.</p>
+        <div class="boxes">
+          <span class="box">4</span><span class="box">1</span><span class="box focus"><span class="caret"></span></span>
+          <span class="box"></span><span class="box"></span><span class="box"></span>
+        </div>
+        <button class="btn">Tasdiqlash</button>
+        <div class="sheetnote">Yopib qo'ysangiz: reyslar va yozuvlar ko'rinadi, yangi yozuv kiritish tasdiqlashgacha yopiq.</div>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="unit">
+    <figcaption>A9 · HAP + OFF + PEND<small>offline to'liq foydali: qo'ng'iroq raqami — kerak bo'lgan yagona narsa</small></figcaption>
+    <div class="phone app">
+      <div class="osbar"><span>11:36</span><span class="ic off">✕ aloqa yo'q</span></div>
+      <div class="apphead"><a class="back" href="#">← Orqaga</a><span></span></div>
+      <div class="content">
+        <div class="spacer-top"></div>
+        <h2 class="scr">Kira olmayapsizmi?</h2>
+        <p class="lead">Kirishni faqat kompaniyangiz tiklaydi: operator sizga yangi aktivatsiya kodi beradi — SMS orqali yoki telefonda og'zaki.</p>
+        <div class="callcard">
+          <div class="l">Kompaniya dispetcheri</div>
+          <div class="co">Samarqand Trans MChJ</div>
+          <button class="callbtn">📞 +998 66 233 10 45</button>
+        </div>
+        <div class="mynum">
+          <div class="l">O'qib bering — sizning raqamingiz:</div>
+          <div class="v">+998 90 123 45 67</div>
+        </div>
+        <div class="pendnote">✓ 3 ta yozuvingiz qurilmada saqlanmoqda. Ular yo'qolmaydi va kirganingizdan keyin o'zi yuboriladi.</div>
+        <div class="offnote">Bu ekran aloqasiz ham to'liq ishlaydi.</div>
+      </div>
+    </div>
+  </figure>
+
+</div>
+</body>
+</html>
