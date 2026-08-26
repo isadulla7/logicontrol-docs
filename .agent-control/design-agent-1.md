@@ -4,11 +4,11 @@ AGENT_ID: design-agent-1
 ROLE: Product/UX Design — DS-* spetsifikatsiyalari, qarorlar registri, kanon dizayn hujjatlari
 REPOSITORY: logicontrol-docs
 BRANCH: main
-SESSION_STATUS: READY_TO_COMMIT
+SESSION_STATUS: DONE
 TASK_ID: DS-05
 TASK_NAME: Xato kodlari uchun foydalanuvchi matnlari katalogi (uz+ru)
 PHASE: Design lane (MVP gate'lariga kirmaydi)
-PROGRESS: 90%
+PROGRESS: 100%
 
 CURRENT_OBJECTIVE:
 Har `problem+json` xato kodiga haydovchi/operator ko'radigan uz+ru matn belgilash — klient
@@ -16,18 +16,16 @@ server matniga emas, `code` ga qarab tarjima ko'rsatadi (OPEN-003). Android'dagi
 `AUTH_RATE_LIMITED` matni va web i18n shu katalogni kutmoqda.
 
 CURRENT_STEP:
-Katalog yozildi va umumiy fayllar yangilandi; commit qilishga tayyor.
+Task complete. Keyingi topshiriq kutilmoqda.
 
 WORKING_NOW:
-* commit xabarini yozish
-* main'ga merge va push
+* NONE
 
 CURRENT_FILES:
-* design/copy/error-codes.md (yangi)
-* design/driver/README.md, design/web/README.md (havolalar)
-* decisions.md (OPEN-024), roadmap/tasks.md (DS-05 qatori)
+* NONE
 
 COMPLETED_THIS_SESSION:
+* DS-05 xato kodlari matn katalogi (48 kod, uz+ru) — merged
 * DS-01 haydovchi kirish oqimi (oqim, ekranlar+holatlar matritsasi, komponentlar) — merged
 * DS-02 reys va xarajat (ikki qatlam status modeli, offline kiritish, terminal-xato) — merged
 * DS-03 operator konsoli (IA, jadval-navbat naqshi, tasdiqlash ekrani) — merged
@@ -37,7 +35,7 @@ COMPLETED_THIS_SESSION:
 * ADR-004 iOS lane (KMP+SwiftUI) + kanon yangilanishlari + iOS dizayn eslatmalari — merged
 
 REMAINING:
-* commit + push + main'ga merge
+NONE
 
 BLOCKERS:
 NONE
@@ -65,18 +63,19 @@ N/A
 BUILD_STATUS:
 NOT RUN
 UNCOMMITTED_CHANGES:
-YES
+NO
 LAST_COMMIT:
 138eb64 docs(BK-17): actions[] qamrovi yakunlandi — kontrakt §4 to'liq jadval
 PUSHED:
 NO (joriy ish hali commit qilinmagan)
 MERGED:
-YES (oldingi DS ishlari main'da)
+YES (to'g'ridan-to'g'ri main'da; ish branchi ham sinxronlangan)
 NEXT_ACTION:
-Commit, push, main'ga merge; so'ng statusni DONE ga o'tkazish.
+Wait for next assignment. Tabiiy nomzodlar: B1–B4 jonli integratsiyadan keyingi dizayn-QA;
+OPEN-024 qarori kelsa katalog matnini moslash; kontrakt v1.1 yangi kodlariga matn qo'shish.
 SAFE_TO_INTERRUPT:
 YES
 SAFE_TO_SWITCH_AGENT:
-NO (commit qilinmagan ish bor)
+YES
 LAST_UPDATE:
-2026-08-26T08:20:00Z
+2026-08-26T08:25:00Z
