@@ -20,6 +20,11 @@ mustaqil HTML fayllar: [`../mockups/README.md`](../mockups/README.md) §Operator
 provisional uslublari shu tokenlarga almashtiriladi (keyingi web taski); maket
 spetsifikatsiyaga ergashadi, uni almashtirmaydi.
 
+## Xato matnlari
+
+Konsol xato matnlari haydovchi ilovasi bilan bitta manbadan:
+[`../copy/error-codes.md`](../copy/error-codes.md) — `code` bo'yicha uz+ru.
+
 ## Operator konteksti
 
 [FAKT: sessiya prompti] Operator kompyuterda ishlaydi. [TAKLIF] Dizayn bazasi: klaviatura

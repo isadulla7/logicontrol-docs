@@ -13,6 +13,12 @@ tayanadi va o'zi hech qanday biznes yoki xavfsizlik qoidasini o'ylab topmaydi.
 | DS-02 | [`ds-02-reys-va-xarajat.md`](ds-02-reys-va-xarajat.md) | Ikki qatlam status modeli, reys ko'rish, offline xarajat kiritish, terminal-xato strukturasi |
 | DS-02 | [`ds-02-ekranlar.md`](ds-02-ekranlar.md) | `T*`/`X*` ekranlar, holatlar matritsasi, qo'shimcha komponentlar |
 
+## Xato matnlari
+
+Barcha `problem+json` kodlarining uz+ru matnlari bitta joyda:
+[`../copy/error-codes.md`](../copy/error-codes.md). Klient `code` ga qarab shu katalogdan matn
+oladi; matnsiz kod klientga chiqmaydi.
+
 ## Vizual qatlam
 
 Token manbasi: [`../system/tokens.md`](../system/tokens.md) (+ jonli ko'rinish

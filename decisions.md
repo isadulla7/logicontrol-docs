@@ -161,3 +161,10 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
   yopiladi, iOS o'z `IS-*` tasklari bilan; (3) qamrov — **Android bilan to'liq paritet**
   (aktivatsiya → PIN/Face ID → reyslar → offline xarajat → navbat holatlari). DS-01/DS-02
   dizaynlari platforma eslatmalari bilan qo'llanadi, alohida dizayn kerak emas.
+- **OPEN-024 — Operator signup'ida `AUTH_EMAIL_TAKEN` enumeration oynasi.** (`DS-05` topilmasi.)
+  Loyihada enumeration taqiqi qat'iy (ADR-002), lekin u haydovchi oqimi uchun yozilgan.
+  `AUTH_EMAIL_TAKEN` (409) esa emailning ro'yxatda borligini to'g'ridan-to'g'ri oshkor qiladi —
+  operator tomonida bir xil oyna. Ikki yo'l: (a) hozirgicha qoldirish (odatiy web amaliyoti,
+  `BK-14` joriy xulqi — matn katalogda shunga mos yozilgan); (b) haydovchi qoidasini kengaytirib,
+  band email haqida jim turib tasdiqlash emailiga tayanish (qo'shimcha ish: email provayder).
+  Egasining qarori kerak; `BK-14` ni bloklamaydi.
