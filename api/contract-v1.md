@@ -50,7 +50,10 @@ Har xato `application/problem+json`:
 
 **Auth (identity):** `AUTH_ACTIVATION_FAILED` (401 — pre-auth, hamma sabab uchun bitta javob),
 `AUTH_INVALID_SESSION` (401 — sessiya/a'zolik yaroqsiz, qayta kirish kerak),
-`AUTH_TARGET_NOT_ELIGIBLE` (409), `AUTH_INVALID_VALUE` (400).
+`AUTH_TARGET_NOT_ELIGIBLE` (409), `AUTH_INVALID_VALUE` (400),
+`AUTH_RATE_LIMITED` (429 — javobda `retryAfterSeconds`; klient kutish vaqtini serverdan oladi,
+o'zi hisoblamaydi. Chegaralar: 5 noto'g'ri urinish → 15 daqiqa blok; kod so'rovi telefon
+boshiga 3/soat, 10/kun).
 
 **Organization:** `ORG_COMPANY_NOT_FOUND` (404), `ORG_MEMBER_NOT_FOUND` (404),
 `ORG_MEMBER_PHONE_TAKEN` (409), `ORG_MEMBER_ILLEGAL_TRANSITION` (409),
@@ -118,7 +121,11 @@ lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara
 
 **Identity (operator tomoni)**
 - `POST /companies/{c}/members/{m}/activation-codes` → 201 `{code, expiresAt}` (kod faqat shu
-  javobda ko'rinadi; faol DRIVER uchungina)
+  javobda ko'rinadi; faol DRIVER uchungina; telefon boshiga 3/soat, 10/kun — oshsa 429)
+- `POST /companies/{c}/members/{m}/sessions/revoke` → `{revokedSessions}` — a'zoning barcha
+  jonli sessiyalarini bekor qiladi (yo'qolgan/topshirilgan telefon); idempotent, auditlanadi
+- Bitta faol qurilma: yangi aktivatsiya avvalgi sessiyalarni bekor qiladi; eski qurilmaning
+  yuborilmagan navbati lokalda saqlanib, qayta aktivatsiyadan keyin idempotent yetib boradi
 
 **Fleet**
 - `POST /companies/{c}/drivers` `{memberId, fullName, licenseNumber?}` → 201 DriverResponse
