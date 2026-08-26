@@ -13,6 +13,13 @@ tayanadi va o'zi hech qanday biznes yoki xavfsizlik qoidasini o'ylab topmaydi.
 | DS-02 | [`ds-02-reys-va-xarajat.md`](ds-02-reys-va-xarajat.md) | Ikki qatlam status modeli, reys ko'rish, offline xarajat kiritish, terminal-xato strukturasi |
 | DS-02 | [`ds-02-ekranlar.md`](ds-02-ekranlar.md) | `T*`/`X*` ekranlar, holatlar matritsasi, qo'shimcha komponentlar |
 
+## Vizual qatlam
+
+Token manbasi: [`../system/tokens.md`](../system/tokens.md) (+ jonli ko'rinish
+[`../system/preview.html`](../system/preview.html)). Ekran maketlari — brauzerda ochiladigan
+mustaqil HTML fayllar: [`../mockups/README.md`](../mockups/README.md). Maket spetsifikatsiyaga
+ergashadi; ikkalasi farqlansa spetsifikatsiya ustun, farq tuzatiladi.
+
 ## Teg konvensiyasi
 
 Har mazmunли gap quyidagi teglardan biri bilan yuradi:
