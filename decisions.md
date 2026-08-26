@@ -20,3 +20,11 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   ruxsat etilgan)? (2) a'zolarni kim qo'shadi/suspend qiladi — faqat OWNER'mi yoki MANAGER ham?
   (operator autentifikatsiyasi kelgach RBAC'da majburlanadi). (3) DISPATCHER kabi qo'shimcha
   rol kerakmi? Javob rol modelini o'zgartirsa — migratsiya bilan, ADR'da qayd etiladi.
+- **OPEN-006 — Autentifikatsiya siyosat qiymatlari (ADR-002 gacha vaqtinchalik).** `BK-03` da
+  kanon model (telefon + aktivatsiya kodi, juftlik tekshiruvi, atomik iste'mol, jonli
+  membership, enumeration-oracle taqiqi) to'liq amalga oshirildi; ADR-002 hali yozilmagani
+  uchun quyidagi qiymatlar konservativ default qilib tanlandi (`identity/application/IdentityPolicy.java`):
+  kod — 6 raqam, TTL 15 daqiqa, maksimal 5 urinish, yangi kod eskisini bekor qiladi; sessiya —
+  30 kun, refresh'da token aylantiriladi. Ochiq: PIN/biometrik qurilma tomonida — serverga
+  ta'siri ADR-002 da; per-telefon/IP rate-limit middleware; operator verifikatsiya protsedurasi;
+  grace-oyna. ADR-002 qabul qilinganda qiymatlar bir joyda yangilanadi.
