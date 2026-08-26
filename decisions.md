@@ -18,3 +18,9 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   ochiq. B2 dan oldin hal qilinsa arzon. *Holat izohi (2026-08-26, WB-01):* web konsolda qaror
   chiqquncha brauzer lokal vaqti ishlatiladi; barcha formatlash bitta modul orqali
   (`logicontrol-web/src/lib/format/datetime.ts`). Bu izoh qarorni yopmaydi.
+- **OPEN-005 — Xarajatni rad etishda sabab majburiymi?** Biznes qoidasi #9 muhim harakatlar
+  auditida sababni talab qiladi, ledger reversal'da sabab aniq majburiy; lekin operator
+  xarajatni rad etganda sabab kiritish majburiy yoki ixtiyoriy ekani kanonda yozilmagan.
+  Haydovchi ilovasi rad etilgan xarajatni sabab bilan ko'rsatishi kutiladi (DS-02) — bu
+  majburiylik foydasiga argument. Web (WB-03) hozircha sabab maydonini ixtiyoriy qilib
+  ko'rsatadi; `BK-07` va DC-03 kontraktidan oldin hal qilinishi kerak.
