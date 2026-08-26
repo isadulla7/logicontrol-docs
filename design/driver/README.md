@@ -52,3 +52,23 @@ sabab bilan `—` deb yoziladi:
 - `roadmap/tasks.md` — task chegaralari; `decisions.md` — ochiq qarorlar.
 - Avvalgi iteratsiya DES-001 paketi (git tarixida, `2ab6e7f`) — meros tahlil manbai; V2 kanoniga
   zid joyi olinmagan.
+
+## iOS'ga qo'llash eslatmalari (ADR-004)
+
+[FAKT: ADR-004] DS-01/DS-02 spetsifikatsiyalari iOS uchun ham aynan amal qiladi — ekranlar,
+holatlar matritsalari, matn qoidalari, ikki qatlam status lug'ati o'zgarmaydi. Platformaga
+bog'liq farqlar faqat quyidagilar [TAKLIF]:
+
+- **Biometrik nomlanishi:** «biometrik» so'zi o'rniga qurilma qo'llab-quvvatlaganiga qarab
+  «Face ID» / «Touch ID» yoziladi (Apple konvensiyasi); xulq A5/A6 dagidek — skippable,
+  PIN zaxirasi darhol ko'rinadi.
+- **Saqlash:** sessiya Keychain'da (Android Keystore ekvivalenti); xulq qoidalari bir xil.
+- **Navbat draini:** WorkManager o'rniga BGTaskScheduler — iOS fon bajarishga qattiqroq
+  chek qo'yadi, shuning uchun `ConnectionStatusBar`/`QueueSummaryLine` ilova ochilganda
+  darhol drain boshlanganini ko'rsatishi yanada muhimroq; «kutilmoqda» holati iOS'da
+  uzoqroq davom etishi normal deb ko'rsatiladi, xavotir uslubisiz.
+- **SMS autofill:** iOS'da OTP klaviatura ustida taklif sifatida keladi (`textContentType
+  = .oneTimeCode`) — A2 kataklari shunga tayyor; qo'lda kiritish baribir asosiy yo'l.
+- **Orqaga navigatsiya:** Android'ning tizim «orqaga»si o'rniga iOS edge-swipe/Navigation —
+  «xato maydonni tozalamaydi» va «kiritilgan saqlanadi» qoidalari swipe'da ham amal qiladi.
+- Portrait-lock (OPEN-013), 48/56dp nishonlar (pt ekvivalenti), uz+ru parity — o'zgarishsiz.
