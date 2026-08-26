@@ -48,7 +48,7 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   faqat OWNER; siyosat o'rnatilmagan kompaniyada konservativ default — hamma xarajat OWNER
   tasdig'ini talab qiladi. Standart threshold kiritilmaydi, ikki daraja yetarli. Valyuta kursi
   masalasi OPEN-007 bilan birga hal qilindi: MANUAL snapshot qoladi, CBU provayderi keyinroq.
-- **OPEN-010 — Operator xarajat kiritishi. YOPILDI (egasi, 2026-08-26).** Egasining ko'rsatmasi:
+- **OPEN-020 — Operator xarajat kiritishi. YOPILDI (egasi, 2026-08-26).** Egasining ko'rsatmasi:
   xarajatni haydovchidan tashqari operator ham kirita olishi kerak. Yozma javoblar: (1) operator =
   mavjud MANAGER (va OWNER) roli, yangi rol kiritilmaydi; (2) operator kiritgan xarajat har doim
   aniq bir haydovchiga bog'lanadi (ledger o'sha haydovchi hisobiga yoziladi), haydovchisiz
