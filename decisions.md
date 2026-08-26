@@ -19,14 +19,14 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   validatsiya); mock adapter DC-03 ga pinlangan: 0-asosli pagination, kodlar katalogi
   (`FIN_/TRP_/FLT_/ORG_/VALIDATION_FAILED`), `fieldErrors` massiv parsing, kategoriya
   lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-022.
-- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`) yo'q.** Kanon qoida
-  (`architecture/system.md` §Web, DS-03 §2/§5.1): server har yozuv uchun mavjud harakatlarni
-  e'lon qiladi (`available` / `disabled+sabab`), klient status yoki rol nomidan xulosa
-  chiqarmaydi. `api/contract-v1.md` javob shakllari (TripResponse, ExpenseResponse) bunday
-  maydonni tashimaydi. Web mock kanon bo'yicha `actions` e'lon qiladi; jonli integratsiya (B4)
-  dan oldin kontrakt/backend `actions[]` (yoki ekvivalent) bilan kengaytirilishi yoki qoidaning
-  amaliy shakli egasining qarori bilan aniqlanishi kerak. DS-03 §5.1 `disabled+sabab` shakli ham
-  shu qarorga kiradi.
+- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`). YOPILDI (egasi,
+  2026-08-26: «hozir qo'shilsin»).** **Bajarildi (BK-15):** Trip/Expense javoblari
+  `actions[]: [{code, available, reason?}]` tashiydi. Expense: SUBMITTED'da approve/reject,
+  ixtiyoriy `?actorMemberId=` bilan aniq availability va barqaror rad sabablari
+  (`NOT_A_MEMBER`/`OWN_EXPENSE`/`OWNER_REQUIRED`/`ROLE_FORBIDDEN`); Trip: holatdan
+  (PLANNED→start/cancel, ACTIVE→complete/cancel), haydovchi read-modelida bo'sh (OPEN-017).
+  Operator-auth bayrog'i yoqilgach aktyor sessiyadan olinadi va parametr chiqib ketadi.
+  DS-03 §5.1 `disabled+sabab` shakli — `reason` kodi orqali. Kontrakt yangilandi (DC-03 §4).
 
 ## Yopilgan (egasining yozma qarori bilan)
 
@@ -128,7 +128,13 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
   nomzodi.
 - **OPEN-018 — Operator kirish oqimi. YOPILDI: email + parol**, «parolni unutdim» email orqali;
   2FA keyingi bosqichda. (Main OPEN-005 dagi «operator autentifikatsiyasi kelganda» shu
-  mexanizmda keladi.)
+  mexanizmda keladi.) **Bajarildi (BK-14, 2026-08-26; egasi: «hozir, flag bilan»):**
+  akkaunt (email kichik harfda, parol PBKDF2), uniform login xatosi + per-email 5/15daq blok,
+  24 soat sessiya, grant modeli (akkaunt↔kompaniya, rol jonli o'qiladi), OPEN-019 oqimi
+  (`POST /operator/companies` — kompaniya+OWNER+grant bitta tranzaksiya), parol tiklash
+  port ortida (provayder yo'q — uxlab turadi, xavfsiz). Majburlash
+  `logicontrol.operator-auth.enforced` bayrog'i bilan (default off) — web login oqimini
+  ulagach yoqiladi; yoqilgan rejim integratsion test bilan isbotlangan.
 - **OPEN-019 — Kompaniya yaratish/onboarding. YOPILDI: konsol ichida, birinchi kirishda** —
   kompaniyasiz foydalanuvchi kirgach «Kompaniya yaratish» oqimi (STIR → ihamkor.uz autofill →
   tasdiqlash; xatoda bo'sh forma). Alohida signup sayti MVP dan tashqari.

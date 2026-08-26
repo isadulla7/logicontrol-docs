@@ -53,7 +53,9 @@ Har xato `application/problem+json`:
 `AUTH_TARGET_NOT_ELIGIBLE` (409), `AUTH_INVALID_VALUE` (400),
 `AUTH_RATE_LIMITED` (429 — javobda `retryAfterSeconds`; klient kutish vaqtini serverdan oladi,
 o'zi hisoblamaydi. Chegaralar: 5 noto'g'ri urinish → 15 daqiqa blok; kod so'rovi telefon
-boshiga 3/soat, 10/kun).
+boshiga 3/soat, 10/kun; operator login uchun ham xuddi shu blok — identifikator email),
+`AUTH_LOGIN_FAILED` (401 — operator login, noto'g'ri email va parol uchun bitta javob),
+`AUTH_EMAIL_TAKEN` (409 — signup'da band email).
 
 **Organization:** `ORG_COMPANY_NOT_FOUND` (404), `ORG_MEMBER_NOT_FOUND` (404),
 `ORG_MEMBER_PHONE_TAKEN` (409), `ORG_MEMBER_ILLEGAL_TRANSITION` (409),
@@ -95,18 +97,47 @@ Barchasi Bearer talab qiladi, `activate` dan tashqari.
 `category`: lug'atni server e'lon qiladi (OPEN-015) — `GET /expense-categories` (autentifikatsiyasiz)
 → `{items:[{code}]}`; joriy kodlar: `FUEL, TOLL, PARKING, REPAIR, FOOD, LODGING, FINE, OTHER`.
 Klient kodga qarab o'z uz/ru yorlig'ini ko'rsatadi; noma'lum kod — matn, xato emas.
-`fxRate` — valyuta kompaniya bazaviy valyutasidan farq qilsa **majburiy** (aks holda
-`FIN_FX_RATE_REQUIRED`); bazaviy valyutada yuborilsa **taqiqlangan**.
+`fxRate` — bazaviy valyutada yuborilsa **taqiqlangan**; chet valyutada **ixtiyoriy**
+(ADR-004): kiritilsa MANUAL sifatida g'olib, kiritilmasa server CBU'dan kiritilgan sananing
+kursini oladi (`fx.source: "CBU"`); hech bir manba bilmasa `FIN_FX_RATE_REQUIRED` (400) —
+qo'lda kiritiladi.
 `enteredAt` (ISO-8601 UTC, ixtiyoriy) — xarajat kiritilgan lahza (OPEN-016): FX sanasi shu
 lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara: kelajakka
 +5 daqiqagacha skew toleransi, 31 kundan eski — `FIN_INVALID_VALUE` (400). ExpenseResponse
 `enteredAt` (biznes lahzasi) va `createdAt` (server yozgan vaqt) ni alohida tashiydi.
 
+## 3a. Operator autentifikatsiyasi (BK-14, OPEN-018)
+
+- `POST /operator/auth/signup` `{email, password}` → 201 (parol ≥8 belgi; band email —
+  `AUTH_EMAIL_TAKEN`)
+- `POST /operator/auth/login` `{email, password}` → `{token, expiresAt}` (sessiya 24 soat;
+  noto'g'ri email/parol — bitta `AUTH_LOGIN_FAILED`; 5 xato → 15 daq blok, 429)
+- `POST /operator/auth/logout` (Bearer) · `GET /operator/me` (Bearer) →
+  `{accountId, email, companies:[{companyId, memberId, role}]}` — rol jonli o'qiladi
+- `POST /operator/companies` (Bearer) `{name, baseCurrency, owner{fullName, phoneNumber}}` →
+  201 `{companyId, memberId, role}` — kompaniya + OWNER a'zo + grant bitta tranzaksiyada
+  (OPEN-019)
+- `POST /operator/auth/password-reset-request` `{email}` → har doim 200 (email mavjudligi
+  oshkor qilinmaydi; yetkazish email-provayder ulanmaguncha uxlab turadi) ·
+  `POST /operator/auth/password-reset` `{token, newPassword}`
+- **Majburlash bayrog'i:** `logicontrol.operator-auth.enforced` (default `false`). Yoqilganda
+  har `/companies/**` so'rovi jonli operator sessiyasi + o'sha kompaniya uchun grant talab
+  qiladi (a'zolik jonli o'qiladi); yalang'och `POST /companies` sessiya talab qiladi. Web
+  konsol login oqimini ulagach bayroq yoqiladi — bu konfiguratsiya, deploy emas.
+
 ## 4. Operator endpointlari (kompaniya doirasida)
 
-> Operator autentifikatsiyasi web-konsol bosqichida qo'shiladi; hozir endpointlar ochiq va
-> harakat qiluvchi a'zo so'rov tanasida (`approverMemberId`, `issuedBy`, `closedBy`,
-> `requestedBy`) ko'rsatiladi — rol va faollik serverda jonli tekshiriladi.
+> Bayroq o'chiq turganda endpointlar ochiq va harakat qiluvchi a'zo so'rov tanasida
+> (`approverMemberId`, `issuedBy`, `closedBy`, `requestedBy`) ko'rsatiladi — rol va faollik
+> serverda jonli tekshiriladi. Bayroq yoqilgach aktyor sessiyadan keladi.
+>
+> **OPEN-022 — server harakatlarni e'lon qiladi:** Trip/Expense javoblari `actions[]`
+> tashiydi: `[{code, available, reason?}]`. Expense (operator ro'yxati/detali): SUBMITTED'da
+> `approve`/`reject`; ixtiyoriy `?actorMemberId=` bilan aniqlik — rad sabab kodlari:
+> `NOT_A_MEMBER`, `OWN_EXPENSE`, `OWNER_REQUIRED`, `ROLE_FORBIDDEN`. Trip: PLANNED →
+> `start`/`cancel`, ACTIVE → `complete`/`cancel`, terminal → bo'sh; haydovchi read-modelida
+> har doim bo'sh (OPEN-017 — haydovchi faqat ko'radi). Klient e'lon qilinganini chizadi,
+> hech qachon status/roldan xulosa chiqarmaydi.
 
 **Organization**
 - `POST /companies` `{name, baseCurrency, owner{fullName, phoneNumber}}` → 201 `{companyId, ownerMemberId}`
