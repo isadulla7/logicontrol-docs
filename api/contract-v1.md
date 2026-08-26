@@ -111,8 +111,10 @@ lahzaga muzlaydi, navbat kechiksa ham; yuborilmasa server vaqti olinadi. Chegara
 - `POST /companies/{c}/members` `{fullName, phoneNumber, role}` → 201 MemberResponse
 - `GET /companies/{c}/members?page&size`
 - `POST /companies/{c}/members/{m}/suspend` | `/activate` → MemberResponse
-- `GET /company-registry/{taxId}` → `{found, taxId, officialName}` (STIR 9 raqam; reestr
-  ishlamasa `found:false` — forma qo'lda to'ldiriladi)
+- `GET /company-registry/{taxId}` → `{found, taxId, officialName, address?, stateTitle?,
+  registrationDate?}` (STIR 9 raqam; reestr ishlamasa `found:false` — forma qo'lda
+  to'ldiriladi). Faqat aniq `tin` mosligi olinadi (qidiruv fuzzy); `stateTitle` — faqat
+  axborot bandi, hech qanday qaror unga bog'lanmaydi (`integrations/ihamkor.md`)
 
 **Identity (operator tomoni)**
 - `POST /companies/{c}/members/{m}/activation-codes` → 201 `{code, expiresAt}` (kod faqat shu

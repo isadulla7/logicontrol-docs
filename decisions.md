@@ -8,8 +8,10 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   Real javob `integrations/ihamkor-sample.json` da, tahlili `integrations/ihamkor.md` da.
   Asosiy topilmalar: qidiruv fuzzy (aniq `tin` filtri shart) va holat maydonlari o'zaro zid
   bo'lishi mumkin (`state` ≠ `stateid`) — holatga biznes qaror bog'lanmaydi. Kurs manbai
-  MANUAL qoladi, CBU provayderi keyingi bosqichda. Parserга pinlash + real-namunali regressiya
-  testi — `BK-09` davomi sifatida qolgan ishlar ro'yxatida.
+  MANUAL qoladi, CBU provayderi keyingi bosqichda. **Bajarildi (BK-12, 2026-08-26):** parser
+  aniq shaklga pinlandi (`data.company[]` + aniq `tin` filtri; nom/manzil/statetitle/
+  registrationdate olinadi, `statetitle` faqat axborot), eski universal yo'l zaxira sifatida
+  qoldi; regressiya testlari verbatim namuna bilan; lookup javobi kengaydi (DC-03).
 
 - **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash.** Web yo'nalishi (WB-01..03)
   OPEN-003/004 qarorlaridan oldin qurilgan: UI matnlari vaqtincha faqat o'zbekcha
