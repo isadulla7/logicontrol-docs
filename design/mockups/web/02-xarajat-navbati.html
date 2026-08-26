@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>DS-03 · W1+W2 — Xarajat tasdiqlash navbati</title>
+<style>
+  :root{
+    --kok-50:#EFF4FB;--kok-100:#DCE7F6;--kok-200:#B9CFED;--kok-300:#8FB4E8;--kok-500:#3A6DB6;
+    --kok-600:#1B4F9C;--kok-700:#15407F;--kok-800:#113363;--kok-900:#0C2546;--kok-950:#07172D;
+    --amber-400:#E8862D;--amber-200:#F5CC96;--amber-900:#331B04;
+    --n-0:#FFFFFF;--n-50:#F7F8FA;--n-100:#EFF1F5;--n-200:#E3E6EB;--n-300:#CDD2DA;--n-400:#A8AFBB;
+    --n-500:#808896;--n-600:#5F6672;--n-700:#474D58;--n-800:#31363F;--n-900:#1F232A;--n-950:#121417;
+    --qizil-50:#FCEEED;--qizil-100:#F7D5D3;--qizil-200:#F2B8B5;--qizil-600:#B3261E;--qizil-800:#6E1713;--qizil-900:#421210;
+    --yashil-50:#ECF5ED;--yashil-200:#A9D2AC;--yashil-300:#7DBB82;--yashil-600:#2E7D32;--yashil-800:#1C4E1F;--yashil-900:#12331A;
+    --sariq-50:#FBF4E1;--sariq-200:#E9CC7C;--sariq-300:#DDB23E;--sariq-500:#B07B00;--sariq-700:#6E4D00;
+    --font-ui:Inter,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  .app{
+    --surface-page:var(--n-50);--surface-raised:var(--n-0);--surface-sunken:var(--n-100);
+    --text-primary:var(--n-900);--text-secondary:var(--n-700);--text-muted:var(--n-500);
+    --border-default:var(--n-200);--border-strong:var(--n-400);
+    --act-bg:var(--kok-600);--act-text:var(--n-0);
+    --st-info-bg:var(--kok-50);--st-info-tx:var(--kok-800);--st-info-bd:var(--kok-200);
+    --st-ok-bg:var(--yashil-50);--st-ok-tx:var(--yashil-800);--st-ok-bd:var(--yashil-200);
+    --st-warn-bg:var(--sariq-50);--st-warn-tx:var(--sariq-700);--st-warn-bd:var(--sariq-200);
+    --e1:0 1px 2px rgb(15 23 42/.06),0 1px 3px rgb(15 23 42/.08);
+  }
+  .app.dark{
+    --surface-page:var(--n-950);--surface-raised:var(--n-900);--surface-sunken:#0C0E11;
+    --text-primary:var(--n-100);--text-secondary:var(--n-300);--text-muted:var(--n-500);
+    --border-default:var(--n-800);--border-strong:var(--n-600);
+    --act-bg:var(--kok-300);--act-text:var(--kok-950);
+    --st-info-bg:var(--kok-900);--st-info-tx:var(--kok-200);--st-info-bd:var(--kok-800);
+    --st-ok-bg:var(--yashil-900);--st-ok-tx:var(--yashil-200);--st-ok-bd:#1C4E1F;
+    --st-warn-bg:#2E2510;--st-warn-tx:var(--sariq-200);--st-warn-bd:#4D3600;
+    --e1:none;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#DDE0E6;font-family:var(--font-ui);-webkit-font-smoothing:antialiased;padding:48px 24px 80px}
+  .pagehead{max-width:1440px;margin:0 auto 32px}
+  .pagehead h1{font-size:22px;font-weight:700;color:#1F232A;letter-spacing:-.3px}
+  .pagehead p{font-size:14px;color:#5F6672;margin-top:6px;line-height:1.55;max-width:900px}
+  .canvas{display:flex;flex-direction:column;gap:48px;align-items:center}
+  .unit>figcaption{font-size:13px;font-weight:600;color:#474D58;margin-bottom:12px}
+  .unit>figcaption small{font-weight:400;color:#808896;margin-left:8px}
+  .frame{width:1440px;height:900px;border-radius:14px;overflow:hidden;display:flex;
+    box-shadow:0 24px 60px rgb(15 23 42/.28),0 0 0 1px rgb(15 23 42/.08);background:var(--surface-page)}
+
+  /* Sidebar */
+  .side{width:232px;background:var(--kok-950);color:#fff;display:flex;flex-direction:column;flex:none}
+  .slogo{display:flex;align-items:center;gap:10px;padding:20px 18px 22px}
+  .mark{width:32px;height:32px;border-radius:9px;background:var(--kok-600);position:relative;flex:none}
+  .mark::before{content:"";position:absolute;left:7px;top:21px;width:6px;height:6px;border-radius:50%;background:var(--amber-400)}
+  .mark::after{content:"";position:absolute;left:9px;bottom:8px;width:16px;height:16px;border-left:2.5px solid #fff;border-top:2.5px solid #fff;transform:rotate(45deg) skew(4deg,4deg);border-radius:2px}
+  .slogo b{font-size:17px;font-weight:700}
+  .slogo b span{font-weight:400;color:var(--kok-200)}
+  .nav{flex:1;padding:4px 10px}
+  .ni{display:flex;align-items:center;gap:11px;height:42px;padding:0 12px;border-radius:9px;
+    font-size:14px;font-weight:500;color:var(--kok-200);margin-bottom:2px;position:relative}
+  .ni i{font-style:normal;font-size:16px;width:20px;text-align:center}
+  .ni.on{background:rgb(255 255 255/.09);color:#fff;font-weight:600}
+  .ni.on::before{content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--amber-400)}
+  .ni .bdg{margin-left:auto;background:var(--amber-400);color:var(--amber-900);font-size:11.5px;
+    font-weight:700;border-radius:999px;padding:2px 8px}
+  .suser{border-top:1px solid rgb(255 255 255/.12);padding:14px 16px;display:flex;gap:10px;align-items:center}
+  .sav{width:34px;height:34px;border-radius:50%;background:var(--kok-600);display:flex;align-items:center;
+    justify-content:center;font-size:13px;font-weight:700;flex:none}
+  .suser .n{font-size:13.5px;font-weight:600}
+  .suser .r{font-size:11.5px;color:var(--kok-300)}
+
+  /* Main */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{height:56px;border-bottom:1px solid var(--border-default);background:var(--surface-raised);
+    display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex:none}
+  .co{font-size:14.5px;font-weight:600;color:var(--text-primary)}
+  .co small{color:var(--text-muted);font-weight:400;margin-left:8px}
+  .tb-r{display:flex;align-items:center;gap:16px}
+  .langsw{display:flex;border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;font-size:12.5px;font-weight:600}
+  .langsw span{padding:5px 10px;color:var(--text-muted)}
+  .langsw span.on{background:var(--surface-sunken);color:var(--text-primary)}
+  .who{font-size:13.5px;color:var(--text-secondary)}
+
+  .body2{flex:1;display:flex;min-height:0}
+  .listcol{flex:1;display:flex;flex-direction:column;min-width:0}
+  .toolbar{padding:18px 22px 0;flex:none}
+  .toolbar h2{font-size:22px;font-weight:700;color:var(--text-primary);letter-spacing:-.3px}
+  .toolbar .cnt{font-size:13.5px;color:var(--text-muted);margin-top:3px}
+  .filters{display:flex;gap:8px;margin-top:14px;align-items:center}
+  .fc{height:32px;padding:0 13px;border-radius:999px;border:1.5px solid var(--border-strong);
+    display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-secondary)}
+  .fc.on{background:var(--act-bg);border-color:var(--act-bg);color:var(--act-text);font-weight:600}
+  .fc.dd::after{content:"▾";font-size:10px;color:inherit}
+
+  .twrap{flex:1;overflow:hidden;padding:14px 0 0 22px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--surface-raised);
+    border:1px solid var(--border-default);border-bottom:none;border-radius:12px 0 0 0}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);text-align:left;
+    padding:10px 14px;border-bottom:1px solid var(--border-default);font-weight:600;background:var(--surface-raised)}
+  th.r,td.r{text-align:right}
+  td{padding:0 14px;height:46px;border-bottom:1px solid var(--border-default);color:var(--text-primary);white-space:nowrap}
+  tr.focus td{background:var(--surface-sunken)}
+  tr.focus td:first-child{box-shadow:inset 3px 0 0 var(--amber-400)}
+  .money{font-variant-numeric:tabular-nums;font-weight:600}
+  .money small{font-weight:500;color:var(--text-muted);font-size:11px;margin-left:3px}
+  .sub2{display:block;font-size:11.5px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+  .mut{color:var(--text-muted)}
+  .chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:999px;
+    font-size:11.5px;font-weight:500;border:1px solid}
+  .chip.info{background:var(--st-info-bg);color:var(--st-info-tx);border-color:var(--st-info-bd)}
+  .chip.ok{background:var(--st-ok-bg);color:var(--st-ok-tx);border-color:var(--st-ok-bd)}
+  .chip.warn{background:var(--st-warn-bg);color:var(--st-warn-tx);border-color:var(--st-warn-bd)}
+
+  .foot{flex:none;border-top:1px solid var(--border-default);background:var(--surface-raised);
+    display:flex;align-items:center;justify-content:space-between;padding:10px 22px;font-size:13px;color:var(--text-secondary)}
+  kbd{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--surface-sunken);
+    border:1px solid var(--border-strong);border-radius:4px;padding:1px 6px;color:var(--text-secondary)}
+  .pg{display:flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums}
+  .pg b{color:var(--text-primary)}
+  .pgb{width:28px;height:28px;border-radius:7px;border:1px solid var(--border-strong);display:inline-flex;
+    align-items:center;justify-content:center;color:var(--text-secondary)}
+
+  /* Detal panel (W2) */
+  .panel{width:400px;flex:none;border-left:1px solid var(--border-default);background:var(--surface-raised);
+    display:flex;flex-direction:column;min-height:0}
+  .phd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;flex:none}
+  .phd .t{font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted)}
+  .phd .esc{font-size:12px;color:var(--text-muted)}
+  .pbody{flex:1;overflow:hidden;padding:8px 20px 0}
+  .amt{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text-primary)}
+  .amt small{font-size:15px;color:var(--text-muted);font-weight:600}
+  .base{font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-top:2px}
+  .fxcard{margin-top:12px;background:var(--surface-sunken);border-radius:10px;padding:10px 13px;
+    font-size:12.5px;color:var(--text-secondary);line-height:1.6;font-variant-numeric:tabular-nums}
+  .frow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--border-default);font-size:13.5px}
+  .frow .l{color:var(--text-muted);flex:none}
+  .frow .v{color:var(--text-primary);font-weight:500;text-align:right;line-height:1.45}
+  .frow .v small{display:block;font-weight:400;font-size:11.5px;color:var(--text-muted)}
+  .flag{display:flex;gap:8px;margin-top:12px;font-size:12.5px;line-height:1.5;border-radius:10px;
+    padding:9px 12px;background:var(--st-warn-bg);color:var(--st-warn-tx);border:1px solid var(--st-warn-bd)}
+  .ctx{margin-top:12px;font-size:13px}
+  .ctx a{color:var(--kok-600);text-decoration:none;font-weight:500}
+  .app.dark .ctx a{color:var(--kok-300)}
+  .pact{flex:none;border-top:1px solid var(--border-default);padding:14px 20px 18px}
+  .abtn{width:100%;height:44px;border:none;border-radius:10px;font:inherit;font-size:14.5px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;gap:10px}
+  .abtn.ok{background:var(--act-bg);color:var(--act-text)}
+  .abtn.rej{background:transparent;color:var(--qizil-600);border:1.5px solid var(--qizil-200);margin-top:8px}
+  .app.dark .abtn.rej{color:var(--qizil-200);border-color:var(--qizil-800)}
+  .pnote{font-size:12px;color:var(--text-muted);margin-top:10px;text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="pagehead">
+  <h1>DS-03 · W1 — Tasdiqlash navbati + W2 — Detal panel</h1>
+  <p>Spetsifikatsiya: <b>ds-03-ekranlar.md §W1, §W2</b>; naqsh: <b>ds-03-konsol.md §3</b>.
+  Jadval-navbat: qator → o'ng panel → qaror → keyingisi; ro'yxat ko'rinib turadi. Klaviatura:
+  <b>↑/↓ · Enter · A · R</b>. Harakat tugmalari faqat server e'lonidan (`actions[]`, OPEN-022).
+  Summa asl valyutada birinchi, bazaviy ekvivalent ikkilamchi; kiritilgan va yetib kelgan vaqt
+  alohida — katta farq operatorga belgilanadi (OPEN-016). Optimistik yangilanish yo'q.</p>
+</div>
+<div class="canvas">
+
+  <figure class="unit">
+    <figcaption>W1+W2 · HAP — light<small>fokus qatori ochiq; USD xarajat FX snapshot bilan; 12 soatlik offline farq belgilangan</small></figcaption>
+    <div class="frame app">
+      <aside class="side">
+        <div class="slogo"><span class="mark"></span><b>Logi<span>Control</span></b></div>
+        <nav class="nav">
+          <div class="ni on"><i>🧾</i>Xarajatlar<span class="bdg">23</span></div>
+          <div class="ni"><i>🛣</i>Reyslar</div>
+          <div class="ni"><i>🚛</i>Flot</div>
+          <div class="ni"><i>📒</i>Haydovchi hisobi</div>
+          <div class="ni"><i>🤝</i>Hisob-kitob</div>
+          <div class="ni"><i>⚙</i>Sozlamalar</div>
+        </nav>
+        <div class="suser"><span class="sav">DK</span><div><div class="n">Dilnoza Karimova</div><div class="r">MANAGER</div></div></div>
+      </aside>
+      <div class="main">
+        <div class="topbar">
+          <span class="co">Samarqand Trans MChJ<small>operator konsoli</small></span>
+          <div class="tb-r">
+            <span class="langsw"><span class="on">UZ</span><span>РУ</span></span>
+            <span class="who">dilnoza@samarqandtrans.uz</span>
+          </div>
+        </div>
+        <div class="body2">
+          <div class="listcol">
+            <div class="toolbar">
+              <h2>Xarajat tasdiqlash navbati</h2>
+              <div class="cnt">Ko'rib chiqilmagan: <b>23</b> · saralash: kiritilgan vaqt, eskisi birinchi</div>
+              <div class="filters">
+                <span class="fc on">Ko'rib chiqilmagan</span>
+                <span class="fc">Hammasi</span>
+                <span class="fc dd">Haydovchi </span>
+                <span class="fc dd">Tur </span>
+                <span class="fc dd">Sana </span>
+                <span class="fc dd">Summa </span>
+              </div>
+            </div>
+            <div class="twrap">
+              <table>
+                <thead><tr><th>Haydovchi</th><th class="r">Summa</th><th>Tur</th><th>Reys</th><th>Kiritilgan</th><th>Holat</th></tr></thead>
+                <tbody>
+                  <tr><td>Baxtiyor Ergashev</td><td class="r"><span class="money">480 000<small>UZS</small></span></td><td>Yoqilg'i</td><td>Toshkent → Andijon</td><td class="mut">Bugun 09:12</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr class="focus"><td>Olimjon Rasulov</td><td class="r"><span class="money">240<small>USD</small></span><span class="sub2">≈ 3 026 400 UZS</span></td><td>Yo'l haqi</td><td>Toshkent → Termiz</td><td class="mut">Kecha 18:40 <span title="offline kiritilgan">⌁</span></td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Sherzod Qodirov</td><td class="r"><span class="money">1 250 000<small>UZS</small></span></td><td>Ta'mirlash</td><td class="mut">— umumiy</td><td class="mut">Kecha 11:05</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Akmal To'xtayev</td><td class="r"><span class="money">55 000<small>UZS</small></span></td><td>Yo'l haqi</td><td>Toshkent → Andijon</td><td class="mut">Kecha 08:31</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Jasur Nazarov</td><td class="r"><span class="money">12 500<small>RUB</small></span><span class="sub2">≈ 1 918 750 UZS</span></td><td>Yoqilg'i</td><td>Toshkent → Moskva</td><td class="mut">24-avg 21:15 ⌁</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Rustam Xoliqov</td><td class="r"><span class="money">90 000<small>UZS</small></span></td><td>Ovqat</td><td>Buxoro → Toshkent</td><td class="mut">24-avg 13:02</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Baxtiyor Ergashev</td><td class="r"><span class="money">390 000<small>UZS</small></span></td><td>Yoqilg'i</td><td>Toshkent → Andijon</td><td class="mut">24-avg 09:47</td><td><span class="chip ok">✓ Tasdiqlandi</span></td></tr>
+                  <tr><td>Olimjon Rasulov</td><td class="r"><span class="money">75 000<small>UZS</small></span></td><td>Ovqat</td><td>Toshkent → Termiz</td><td class="mut">23-avg 19:20</td><td><span class="chip warn">🕐 Sinxron kutilmoqda</span></td></tr>
+                  <tr><td>Sherzod Qodirov</td><td class="r"><span class="money">210 000<small>UZS</small></span></td><td>Yoqilg'i</td><td class="mut">— umumiy</td><td class="mut">23-avg 08:44</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="foot">
+              <span>Navbat rejimi: <kbd>↑</kbd><kbd>↓</kbd> qator · <kbd>Enter</kbd> ochish · <kbd>A</kbd> tasdiqlash · <kbd>R</kbd> rad etish</span>
+              <span class="pg"><span class="pgb">‹</span><b>1–10</b> / 23<span class="pgb">›</span></span>
+            </div>
+          </div>
+          <aside class="panel">
+            <div class="phd"><span class="t">Xarajat · EXP-2145</span><span class="esc">yopish <kbd>Esc</kbd></span></div>
+            <div class="pbody">
+              <div class="amt">240 <small>USD</small></div>
+              <div class="base">≈ 3 026 400 UZS — bazaviy ekvivalent</div>
+              <div class="fxcard">FX surati: 1 USD = 12 610 UZS · sana 25-avg (kiritish lahzasi) · manba: MANUAL</div>
+              <div class="frow"><span class="l">Haydovchi</span><span class="v">Olimjon Rasulov</span></div>
+              <div class="frow"><span class="l">Tur</span><span class="v">Yo'l haqi</span></div>
+              <div class="frow"><span class="l">Reys</span><span class="v">Toshkent → Termiz<small>TRP-0482 · yo'lda</small></span></div>
+              <div class="frow"><span class="l">Izoh</span><span class="v">«Alat posti, tranzit to'lov, kvitansiya №047»</span></div>
+              <div class="frow"><span class="l">Kiritilgan</span><span class="v">25-avg 18:40<small>haydovchi qurilmasida</small></span></div>
+              <div class="frow"><span class="l">Ofisga yetgan</span><span class="v">26-avg 07:02<small>sinxron vaqti</small></span></div>
+              <div class="flag">⌁ Offline kiritilgan — kiritish va yetib kelish orasida 12 soat farq. Kurs kiritish sanasiga muzlatilgan.</div>
+              <div class="ctx"><a href="#">Olimjonning shu davrdagi boshqa xarajatlari (4) →</a></div>
+            </div>
+            <div class="pact">
+              <button class="abtn ok">Tasdiqlash <kbd style="background:rgb(255 255 255/.2);border-color:transparent;color:#fff">A</kbd></button>
+              <button class="abtn rej">Rad etish… <kbd>R</kbd></button>
+              <div class="pnote">Tasdiqlangach yozuv haydovchi hisobiga (ledger) postlanadi. Rad etishda sabab majburiy.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="unit">
+    <figcaption>W1+W2 · dark<small>bir xil markup — semantik aliaslar qayta belgilangan; operator kechki smena</small></figcaption>
+    <div class="frame app dark">
+      <aside class="side">
+        <div class="slogo"><span class="mark"></span><b>Logi<span>Control</span></b></div>
+        <nav class="nav">
+          <div class="ni on"><i>🧾</i>Xarajatlar<span class="bdg">23</span></div>
+          <div class="ni"><i>🛣</i>Reyslar</div>
+          <div class="ni"><i>🚛</i>Flot</div>
+          <div class="ni"><i>📒</i>Haydovchi hisobi</div>
+          <div class="ni"><i>🤝</i>Hisob-kitob</div>
+          <div class="ni"><i>⚙</i>Sozlamalar</div>
+        </nav>
+        <div class="suser"><span class="sav">DK</span><div><div class="n">Dilnoza Karimova</div><div class="r">MANAGER</div></div></div>
+      </aside>
+      <div class="main">
+        <div class="topbar">
+          <span class="co">Samarqand Trans MChJ<small>operator konsoli</small></span>
+          <div class="tb-r">
+            <span class="langsw"><span class="on">UZ</span><span>РУ</span></span>
+            <span class="who">dilnoza@samarqandtrans.uz</span>
+          </div>
+        </div>
+        <div class="body2">
+          <div class="listcol">
+            <div class="toolbar">
+              <h2>Xarajat tasdiqlash navbati</h2>
+              <div class="cnt">Ko'rib chiqilmagan: <b>23</b> · saralash: kiritilgan vaqt, eskisi birinchi</div>
+              <div class="filters">
+                <span class="fc on">Ko'rib chiqilmagan</span>
+                <span class="fc">Hammasi</span>
+                <span class="fc dd">Haydovchi </span>
+                <span class="fc dd">Tur </span>
+                <span class="fc dd">Sana </span>
+                <span class="fc dd">Summa </span>
+              </div>
+            </div>
+            <div class="twrap">
+              <table>
+                <thead><tr><th>Haydovchi</th><th class="r">Summa</th><th>Tur</th><th>Reys</th><th>Kiritilgan</th><th>Holat</th></tr></thead>
+                <tbody>
+                  <tr><td>Baxtiyor Ergashev</td><td class="r"><span class="money">480 000<small>UZS</small></span></td><td>Yoqilg'i</td><td>Toshkent → Andijon</td><td class="mut">Bugun 09:12</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr class="focus"><td>Olimjon Rasulov</td><td class="r"><span class="money">240<small>USD</small></span><span class="sub2">≈ 3 026 400 UZS</span></td><td>Yo'l haqi</td><td>Toshkent → Termiz</td><td class="mut">Kecha 18:40 ⌁</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Sherzod Qodirov</td><td class="r"><span class="money">1 250 000<small>UZS</small></span></td><td>Ta'mirlash</td><td class="mut">— umumiy</td><td class="mut">Kecha 11:05</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Akmal To'xtayev</td><td class="r"><span class="money">55 000<small>UZS</small></span></td><td>Yo'l haqi</td><td>Toshkent → Andijon</td><td class="mut">Kecha 08:31</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Jasur Nazarov</td><td class="r"><span class="money">12 500<small>RUB</small></span><span class="sub2">≈ 1 918 750 UZS</span></td><td>Yoqilg'i</td><td>Toshkent → Moskva</td><td class="mut">24-avg 21:15 ⌁</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Rustam Xoliqov</td><td class="r"><span class="money">90 000<small>UZS</small></span></td><td>Ovqat</td><td>Buxoro → Toshkent</td><td class="mut">24-avg 13:02</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                  <tr><td>Baxtiyor Ergashev</td><td class="r"><span class="money">390 000<small>UZS</small></span></td><td>Yoqilg'i</td><td>Toshkent → Andijon</td><td class="mut">24-avg 09:47</td><td><span class="chip ok">✓ Tasdiqlandi</span></td></tr>
+                  <tr><td>Olimjon Rasulov</td><td class="r"><span class="money">75 000<small>UZS</small></span></td><td>Ovqat</td><td>Toshkent → Termiz</td><td class="mut">23-avg 19:20</td><td><span class="chip warn">🕐 Sinxron kutilmoqda</span></td></tr>
+                  <tr><td>Sherzod Qodirov</td><td class="r"><span class="money">210 000<small>UZS</small></span></td><td>Yoqilg'i</td><td class="mut">— umumiy</td><td class="mut">23-avg 08:44</td><td><span class="chip info">◉ Ko'rib chiqilmoqda</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="foot">
+              <span>Navbat rejimi: <kbd>↑</kbd><kbd>↓</kbd> qator · <kbd>Enter</kbd> ochish · <kbd>A</kbd> tasdiqlash · <kbd>R</kbd> rad etish</span>
+              <span class="pg"><span class="pgb">‹</span><b>1–10</b> / 23<span class="pgb">›</span></span>
+            </div>
+          </div>
+          <aside class="panel">
+            <div class="phd"><span class="t">Xarajat · EXP-2145</span><span class="esc">yopish <kbd>Esc</kbd></span></div>
+            <div class="pbody">
+              <div class="amt">240 <small>USD</small></div>
+              <div class="base">≈ 3 026 400 UZS — bazaviy ekvivalent</div>
+              <div class="fxcard">FX surati: 1 USD = 12 610 UZS · sana 25-avg (kiritish lahzasi) · manba: MANUAL</div>
+              <div class="frow"><span class="l">Haydovchi</span><span class="v">Olimjon Rasulov</span></div>
+              <div class="frow"><span class="l">Tur</span><span class="v">Yo'l haqi</span></div>
+              <div class="frow"><span class="l">Reys</span><span class="v">Toshkent → Termiz<small>TRP-0482 · yo'lda</small></span></div>
+              <div class="frow"><span class="l">Izoh</span><span class="v">«Alat posti, tranzit to'lov, kvitansiya №047»</span></div>
+              <div class="frow"><span class="l">Kiritilgan</span><span class="v">25-avg 18:40<small>haydovchi qurilmasida</small></span></div>
+              <div class="frow"><span class="l">Ofisga yetgan</span><span class="v">26-avg 07:02<small>sinxron vaqti</small></span></div>
+              <div class="flag">⌁ Offline kiritilgan — kiritish va yetib kelish orasida 12 soat farq. Kurs kiritish sanasiga muzlatilgan.</div>
+              <div class="ctx"><a href="#">Olimjonning shu davrdagi boshqa xarajatlari (4) →</a></div>
+            </div>
+            <div class="pact">
+              <button class="abtn ok">Tasdiqlash <kbd style="background:rgb(7 23 45/.2);border-color:transparent;color:var(--kok-950)">A</kbd></button>
+              <button class="abtn rej">Rad etish… <kbd>R</kbd></button>
+              <div class="pnote">Tasdiqlangach yozuv haydovchi hisobiga (ledger) postlanadi. Rad etishda sabab majburiy.</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+</div>
+</body>
+</html>

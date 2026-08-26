@@ -12,6 +12,14 @@ majburiy holatlar katalogi (`LOAD / EMPTY / OFF / ERR / DIS / RLT`).
 | DS-03 | [`ds-03-ekranlar.md`](ds-03-ekranlar.md) | Xarajat tasdiqlash ekranlari, holatlar matritsasi, komponentlar |
 | DS-04 | [`ds-04-konsol-kengaytma.md`](ds-04-konsol-kengaytma.md) | Kengaytma: operator kirish/onboarding, operator xarajati (BK-10), reys/flot/hisob/hisob-kitob (WB-04..07), WB-08 kelishuvi |
 
+## Vizual qatlam
+
+Token manbasi: [`../system/tokens.md`](../system/tokens.md) (+ jonli ko'rinish
+[`../system/preview.html`](../system/preview.html)). Konsol maketlari — brauzerda ochiladigan
+mustaqil HTML fayllar: [`../mockups/README.md`](../mockups/README.md) §Operator. WB-08
+provisional uslublari shu tokenlarga almashtiriladi (keyingi web taski); maket
+spetsifikatsiyaga ergashadi, uni almashtirmaydi.
+
 ## Operator konteksti
 
 [FAKT: sessiya prompti] Operator kompyuterda ishlaydi. [TAKLIF] Dizayn bazasi: klaviatura

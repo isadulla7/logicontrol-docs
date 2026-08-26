@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>DS-03 · W1/W2 holatlari — rad etish, DIS, 409, EMPTY, OFF, ERR</title>
+<style>
+  :root{
+    --kok-50:#EFF4FB;--kok-100:#DCE7F6;--kok-200:#B9CFED;--kok-300:#8FB4E8;--kok-500:#3A6DB6;
+    --kok-600:#1B4F9C;--kok-800:#113363;--kok-950:#07172D;
+    --amber-400:#E8862D;
+    --n-0:#FFFFFF;--n-50:#F7F8FA;--n-100:#EFF1F5;--n-200:#E3E6EB;--n-300:#CDD2DA;--n-400:#A8AFBB;
+    --n-500:#808896;--n-600:#5F6672;--n-700:#474D58;--n-900:#1F232A;
+    --qizil-50:#FCEEED;--qizil-100:#F7D5D3;--qizil-200:#F2B8B5;--qizil-600:#B3261E;--qizil-800:#6E1713;
+    --yashil-50:#ECF5ED;--yashil-200:#A9D2AC;--yashil-600:#2E7D32;--yashil-800:#1C4E1F;
+    --sariq-50:#FBF4E1;--sariq-200:#E9CC7C;--sariq-500:#B07B00;--sariq-700:#6E4D00;
+    --font-ui:Inter,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --e1:0 1px 2px rgb(15 23 42/.06),0 1px 3px rgb(15 23 42/.08);
+    --e2:0 4px 12px rgb(15 23 42/.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#DDE0E6;font-family:var(--font-ui);-webkit-font-smoothing:antialiased;padding:48px 24px 80px;color:var(--n-900)}
+  .pagehead{max-width:1280px;margin:0 auto 32px}
+  .pagehead h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
+  .pagehead p{font-size:14px;color:#5F6672;margin-top:6px;line-height:1.55;max-width:900px}
+  .grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  @media(max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+  .cardu>figcaption{font-size:13px;font-weight:600;color:#474D58;margin-bottom:10px}
+  .cardu>figcaption small{display:block;font-weight:400;color:#808896;margin-top:2px}
+  .pnl{background:#fff;border:1px solid var(--n-200);border-radius:14px;box-shadow:var(--e2);overflow:hidden}
+
+  .phd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 0}
+  .phd .t{font-size:11.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--n-500)}
+  kbd{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--n-100);
+    border:1px solid var(--n-400);border-radius:4px;padding:1px 6px;color:var(--n-600)}
+  .pb{padding:8px 18px 18px}
+  .amt{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+  .amt small{font-size:13px;color:var(--n-500);font-weight:600}
+  .base{font-size:12.5px;color:var(--n-500);margin-top:2px;font-variant-numeric:tabular-nums}
+  .who{font-size:13.5px;color:var(--n-700);margin-top:6px}
+
+  label{display:block;font-size:13px;font-weight:600;color:var(--n-700);margin:14px 0 6px}
+  label small{font-weight:400;color:var(--qizil-800)}
+  textarea.rf{width:100%;min-height:84px;border:1.5px solid var(--n-400);border-radius:10px;
+    font:inherit;font-size:14px;padding:10px 12px;color:var(--n-900);resize:none}
+  textarea.rf.err{border:2px solid var(--qizil-600)}
+  .hint{font-size:12.5px;color:var(--n-500);margin-top:6px;line-height:1.5}
+  .hint b{color:var(--n-700)}
+  .inlinemsg{display:flex;gap:7px;margin-top:8px;font-size:13px;color:var(--qizil-800)}
+  .inlinemsg::before{content:"⚠";color:var(--qizil-600)}
+  .abtn{width:100%;height:42px;border:none;border-radius:10px;font:inherit;font-size:14px;font-weight:600;margin-top:12px;
+    display:flex;align-items:center;justify-content:center;gap:8px}
+  .abtn.rej{background:var(--qizil-600);color:#fff}
+  .abtn.ghost{background:transparent;color:var(--n-600);border:1px solid var(--n-300);margin-top:8px}
+  .abtn.ok{background:var(--kok-600);color:#fff}
+  .abtn.dis{background:var(--n-200);color:var(--n-500);cursor:not-allowed}
+  .abtn.loading{position:relative;color:transparent}
+  .abtn.loading::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;
+    border:2.5px solid rgb(255 255 255/.4);border-top-color:#fff;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .disreason{display:flex;gap:8px;margin-top:10px;font-size:13px;line-height:1.5;border-radius:10px;
+    padding:10px 12px;background:var(--sariq-50);color:var(--sariq-700);border:1px solid var(--sariq-200)}
+  .conflict{display:flex;gap:8px;margin-top:10px;font-size:13px;line-height:1.55;border-radius:10px;
+    padding:10px 12px;background:var(--kok-50);color:var(--kok-800);border:1px solid var(--kok-200)}
+  .savenote{display:flex;gap:7px;margin-top:10px;font-size:12.5px;color:var(--yashil-800)}
+
+  /* Ro'yxat holat kartalari */
+  .lst{padding:22px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .lst .ic{width:64px;height:64px;border-radius:18px;background:var(--n-100);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px}
+  .lst .ic.good{background:var(--yashil-50)}
+  .lst h4{font-size:16px;font-weight:700}
+  .lst p{font-size:13.5px;color:var(--n-600);margin-top:6px;line-height:1.55;max-width:300px}
+  .lst .lb{margin-top:12px;height:36px;padding:0 16px;border:1.5px solid var(--n-400);border-radius:9px;
+    background:#fff;font:inherit;font-size:13.5px;font-weight:600;color:var(--kok-600)}
+  .offbar{display:flex;align-items:center;gap:8px;background:var(--n-100);border-bottom:1px solid var(--n-200);
+    padding:9px 14px;font-size:13px;font-weight:500;color:var(--n-700)}
+  .rowsk{padding:10px 14px;border-bottom:1px solid var(--n-100);display:flex;gap:12px;align-items:center}
+  .sk{background:var(--n-100);border-radius:6px;height:12px;position:relative;overflow:hidden}
+  .rowmut{padding:10px 14px;border-bottom:1px solid var(--n-100);display:flex;justify-content:space-between;
+    font-size:13px;color:var(--n-500)}
+  .dis-inline{font-size:12px;color:var(--n-500)}
+</style>
+</head>
+<body>
+<div class="pagehead">
+  <h1>DS-03 · Qaror va ro'yxat holatlari</h1>
+  <p>Spetsifikatsiya: <b>ds-03-ekranlar.md §W1/§W2</b>, naqsh §3. Panel holatlari: rad etish sababi
+  majburiy («haydovchi shu matnni ko'radi»), xatoda matn saqlanadi; server `disabled+sabab` —
+  ko'rinadi, o'chiq, sabab bilan; 409 — kim o'zgartirgani + harakatlar yangi e'londan. Ro'yxat
+  holatlari: EMPTY ikki matn (haqiqiy bo'sh — yaxshi holat; filtr bo'sh — tozalash), OFF (qaror
+  tugmalari DIS), ERR (ma'lumot yashirilmaydi), LOAD skeleton.</p>
+</div>
+<div class="grid">
+
+  <figure class="cardu">
+    <figcaption>W2 · Rad etish — sabab majburiy<small>bo'sh yuborilgan urinish; matn maydoni hech qachon tozalanmaydi</small></figcaption>
+    <div class="pnl">
+      <div class="phd"><span class="t">Rad etish · EXP-2145</span><span class="dis-inline">orqaga <kbd>Esc</kbd></span></div>
+      <div class="pb">
+        <div class="amt">240 <small>USD</small></div>
+        <div class="base">≈ 3 026 400 UZS · Olimjon Rasulov · Yo'l haqi</div>
+        <label>Rad etish sababi <small>· majburiy</small></label>
+        <textarea class="rf err" aria-invalid="true"></textarea>
+        <div class="inlinemsg">Sabab yozilmagunча rad etib bo'lmaydi — audit talabi.</div>
+        <div class="hint"><b>Haydovchi aynan shu matnni ko'radi.</b> Nimani tuzatishi kerakligini aniq yozing: sana, summa, chek…</div>
+        <button class="abtn rej">Rad etishni tasdiqlash</button>
+        <button class="abtn ghost">Bekor qilish</button>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="cardu">
+    <figcaption>W2 · LOAD + xatoda matn saqlanadi<small>qaror tugmasi o'z ichida progress; panel yopilmaydi</small></figcaption>
+    <div class="pnl">
+      <div class="phd"><span class="t">Rad etish · EXP-2145</span><span class="dis-inline">orqaga <kbd>Esc</kbd></span></div>
+      <div class="pb">
+        <div class="amt">240 <small>USD</small></div>
+        <div class="base">≈ 3 026 400 UZS · Olimjon Rasulov · Yo'l haqi</div>
+        <label>Rad etish sababi</label>
+        <textarea class="rf">Kvitansiya raqami reys hujjatiga mos emas. Alat posti kvitansiyasini tekshirib qaytadan kiriting.</textarea>
+        <div class="savenote">✓ Server xatosida ham bu matn saqlanadi — qayta terilmaydi.</div>
+        <button class="abtn rej loading" aria-label="Yuborilmoqda">Rad etishni tasdiqlash</button>
+        <button class="abtn ghost">Bekor qilish</button>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="cardu">
+    <figcaption>W2 · DIS (server sababi) + 409 konflikt<small>klient hech narsa chiqarmaydi — sabab serverdan (OPEN-022)</small></figcaption>
+    <div class="pnl">
+      <div class="phd"><span class="t">Xarajat · EXP-2139</span><span class="dis-inline">orqaga <kbd>Esc</kbd></span></div>
+      <div class="pb">
+        <div class="amt">9 800 000 <small>UZS</small></div>
+        <div class="base">Sherzod Qodirov · Ta'mirlash · umumiy</div>
+        <button class="abtn dis" title="Bu summa OWNER darajasini talab qiladi">Tasdiqlash</button>
+        <div class="disreason">🔒 Server: «Bu summa OWNER darajasini talab qiladi» — siz MANAGER sifatida kirgansiz.</div>
+        <div class="conflict">↻ Bu yozuvni <b>&nbsp;Akbar Salimov&nbsp;</b> hozirgina tasdiqladi (26-avg 10:32). Qator yangi holatda — harakatlar server e'loniga ko'ra qayta chizildi.</div>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="cardu">
+    <figcaption>W1 · EMPTY (haqiqiy bo'sh)<small>yaxshi holat — xato uslubida emas</small></figcaption>
+    <div class="pnl">
+      <div class="lst">
+        <div class="ic good">✓</div>
+        <h4>Ko'rib chiqilmagan xarajat yo'q</h4>
+        <p>Hammasi joyida. Haydovchilar yangi xarajat kiritganda shu yerda paydo bo'ladi.</p>
+        <button class="lb">Hammasini ko'rish</button>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="cardu">
+    <figcaption>W1 · EMPTY (filtr natijasi)<small>alohida matn + filtrni tozalash</small></figcaption>
+    <div class="pnl">
+      <div class="lst">
+        <div class="ic">🔍</div>
+        <h4>Bu filtrga mos yozuv topilmadi</h4>
+        <p>«Jasur Nazarov · Ta'mirlash · 20–24 avg» bo'yicha hech narsa yo'q.</p>
+        <button class="lb">Filtrni tozalash</button>
+      </div>
+    </div>
+  </figure>
+
+  <figure class="cardu">
+    <figcaption>W1 · OFF + ERR<small>ma'lumot yashirilmaydi; qaror tugmalari DIS «aloqa yo'q» bilan</small></figcaption>
+    <div class="pnl">
+      <div class="offbar">⌁ Aloqa yo'q — ro'yxat 10:12 holati bo'yicha. Qarorlar aloqa qaytganda ochiladi.</div>
+      <div class="rowmut"><span>Baxtiyor Ergashev · Yoqilg'i</span><span>480 000 UZS</span></div>
+      <div class="rowmut"><span>Olimjon Rasulov · Yo'l haqi</span><span>240 USD</span></div>
+      <div class="rowmut"><span>Sherzod Qodirov · Ta'mirlash</span><span>1 250 000 UZS</span></div>
+      <div class="pb">
+        <div class="inlinemsg">Yangilab bo'lmadi (FIN_UPSTREAM_TIMEOUT · korrelyatsiya a1f4-09c2). Ro'yxat joyida qoladi.</div>
+        <button class="abtn ok" style="margin-top:10px">Qayta urinish</button>
+      </div>
+    </div>
+  </figure>
+
+</div>
+</body>
+</html>

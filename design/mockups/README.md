@@ -30,4 +30,12 @@ Kontent — realistik namuna (haqiqiy shaxs emas): haydovchi *Baxtiyor Ergashev*
 
 ## Operator (web, 1440px frame)
 
-DS-03 maketlari `web/` papkasida (keyingi bosqichda to'ldiriladi).
+| Fayl | Ekranlar | Holatlar |
+|---|---|---|
+| [`web/01-login.html`](web/01-login.html) | W-L | HAP · ERR-S (neytral) + RLT (server vaqti) |
+| [`web/02-xarajat-navbati.html`](web/02-xarajat-navbati.html) | W1 + W2 | to'liq konsol: jadval-navbat, detal panel, klaviatura rejimi · light + dark |
+| [`web/03-qaror-holatlari.html`](web/03-qaror-holatlari.html) | W1/W2 holatlari | rad sababi (majburiy) · LOAD · DIS+server sababi · 409 · EMPTY×2 · OFF · ERR |
+| [`web/04-onboarding.html`](web/04-onboarding.html) | W-O | HAP (STIR autofill) · reestr yiqildi · «faol emas» axborot |
+
+`W3`/`W4` (reyslar/flot) — jadval-navbat naqshining nusxalari (ds-03-ekranlar.md §3):
+alohida maket chizilmagan, `02-xarajat-navbati.html` naqsh etaloni bo'lib xizmat qiladi.
