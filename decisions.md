@@ -13,3 +13,18 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   va Android matnlari ko'payishidan oldin.
 - **OPEN-004 — Ko'rsatiladigan vaqt mintaqasi.** Saqlash `TIMESTAMPTZ`; ko'rsatish qoidasi
   ochiq. B2 dan oldin hal qilinsa arzon.
+- **OPEN-005 — Haydovchi bir vaqtda bir nechta kompaniyaga a'zo bo'la oladimi?** (`DS-01`
+  taklifi.) Kanon jim: `CompanyMember` bor, lekin bir identifikatsiya → ko'p a'zolik hech qaerda
+  tasdiqlanmagan ham, taqiqlanmagan ham. Kirish oqimidagi kompaniya tanlash ekrani (`A3`) ikkala
+  javobga chidamli qilib chizilgan: «yo'q» javobi bitta ekranni o'chiradi. `DC-01`/`BK-03` dan
+  oldin hal qilinsa arzon.
+- **OPEN-006 — Umumiy qurilma va identifikatsiya almashish.** (`DS-01` taklifi.) Bitta mashina
+  telefonini ikki haydovchi ishlatganda: A haydovchining yuborilmagan navbati turganda B kirsa,
+  A ning ishi kim sessiyasi ostida ketadi? Dizayn taklifi: almashish A navbati hal bo'lguncha
+  bloklanadi (moliyaviy fakt noto'g'ri attributsiya qilinmasligi uchun — biznes qoida #9 audit
+  talabi). Backend siyosati ochiq; OPEN-002 bilan birga qaralsa arzon.
+- **OPEN-007 — Landscape/form-faktor siyosati.** (`DS-01` taklifi.) Kabinadagi kronshteynda
+  telefon ko'pincha landscape'da; qulf/qayta tasdiqlash ekranlari aynan shu holatda ochilishi
+  mumkin. Landscape qo'llab-quvvatlash narxi butun ilovaga tegishli — mahsulot qarori. `AN-01`
+  va `AN-04` dan oldin hal qilinsa arzon; portrait-lock tanlansa kronshteyn stsenariysiga
+  alohida dizayn javobi kerak.

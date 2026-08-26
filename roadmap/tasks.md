@@ -76,4 +76,5 @@ Bog'liqlik ustunida faqat *haqiqiy* bloklar; bo'sh bo'lsa — darhol boshlanadi.
 | Task | Holat |
 |---|---|
 | B0 poydevor (docs, backend skeleti, android skeleti) | ✅ DONE — backend `mvn clean verify` lokal yashil; Android CI gate |
+| `DS-01` haydovchi kirish oqimi UX | ✅ DONE — `design/driver/ds-01-*.md` (oqim, ekranlar+holatlar matritsasi, komponentlar); ochiq qiymatlar OPEN-001 ga, yangi savollar OPEN-005..007 sifatida `decisions.md` da |
 | Boshqa hammasi | Boshlanmagan |
