@@ -13,12 +13,20 @@ Faqat qabul qilingan ADR yoki egasining yozma qarori yopadi.
   registrationdate olinadi, `statetitle` faqat axborot), eski universal yo'l zaxira sifatida
   qoldi; regressiya testlari verbatim namuna bilan; lookup javobi kengaydi (DC-03).
 
-- **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash.** Web yo'nalishi (WB-01..03)
-  OPEN-003/004 qarorlaridan oldin qurilgan: UI matnlari vaqtincha faqat o'zbekcha
-  (`logicontrol-web/src/lib/i18n/strings.ts`), vaqt brauzer lokalida
-  (`logicontrol-web/src/lib/format/datetime.ts`). Endi qarorlar bor: til — uz+ru, vaqt —
-  Asia/Tashkent. Web moduli markazlashtirilgani uchun moslash arzon; DC-03 kontrakti ham chiqdi —
-  mock adapter kontraktga pinlanishi kerak. Web yo'nalishining keyingi taskiga kiradi.
+- **OPEN-009 — Web konsolni qabul qilingan qarorlarga moslash. BAJARILDI (WB-09, 2026-08-26).**
+  Til uz+ru (ikki lug'at, almashtirgich, tanlov saqlanadi); vaqt hamma joyda qat'iy
+  Asia/Tashkent (`src/lib/format/datetime.ts`); rad etish sababi majburiy (UI + mock
+  validatsiya); mock adapter DC-03 ga pinlangan: 0-asosli pagination, kodlar katalogi
+  (`FIN_/TRP_/FLT_/ORG_/VALIDATION_FAILED`), `fieldErrors` massiv parsing, kategoriya
+  lug'ati, ledger `memberId` bo'yicha, settlement bir qadamli. Qolgan farq — OPEN-022.
+- **OPEN-022 — DC-03 da server-e'lon-qilgan harakatlar (`actions[]`) yo'q.** Kanon qoida
+  (`architecture/system.md` §Web, DS-03 §2/§5.1): server har yozuv uchun mavjud harakatlarni
+  e'lon qiladi (`available` / `disabled+sabab`), klient status yoki rol nomidan xulosa
+  chiqarmaydi. `api/contract-v1.md` javob shakllari (TripResponse, ExpenseResponse) bunday
+  maydonni tashimaydi. Web mock kanon bo'yicha `actions` e'lon qiladi; jonli integratsiya (B4)
+  dan oldin kontrakt/backend `actions[]` (yoki ekvivalent) bilan kengaytirilishi yoki qoidaning
+  amaliy shakli egasining qarori bilan aniqlanishi kerak. DS-03 §5.1 `disabled+sabab` shakli ham
+  shu qarorga kiradi.
 
 ## Yopilgan (egasining yozma qarori bilan)
 
@@ -127,3 +135,10 @@ registriga moslab berilgan (dizayn hujjatlaridagi havolalar shu raqamlarga yangi
 - **Vaqt mintaqasi aniqlashtirildi (egasi, tie-break):** main OPEN-004 qarori qoladi — MVP da
   qat'iy `Asia/Tashkent`, sozlama yo'q; kompaniya-sozlanadigan mintaqa kelajak kengaytma
   sifatida qayd etildi.
+- **OPEN-021 — MVP valyutalar ro'yxati. YOPILDI (egasi, 2026-08-26).** Kutiladigan
+  valyutalar: **UZS (bazaviy) + USD, RUB, KZT, CNY, TRY** — asosiy yo'nalishlar (Rossiya,
+  Qozog'iston, Xitoy, Turkiya) bo'yicha. Ro'yxatni server e'lon qiladi (klientga qotirilmaydi,
+  biznes qoida #10); keyin valyuta qo'shish server lug'atini kengaytirish, klient o'zgarmaydi.
+  Barchasi CBU rasmiy API'sida mavjud — kelajak CBU provayderi testlari shu beshtasi bilan
+  yoziladi (KZT nominal masalasiga alohida e'tibor). Haydovchi formasida (X1) standart tanlov —
+  oxirgi ishlatilgan valyuta [TAKLIF].

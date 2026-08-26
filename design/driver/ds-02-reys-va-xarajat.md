@@ -189,6 +189,6 @@ MVP da faqat operator).
 Keyinchalik yopilgan (2026-08-26 qarorlari): terminal-xato siyosati (OPEN-002 — 5-bo'lim),
 vaqt mintaqasi (OPEN-004 — kompaniya mintaqasi, standart Asia/Tashkent).
 
-Ochiq qolgan: [SAVOL → `DC-03`] valyutalar ro'yxati va standart valyuta manbai (kompaniya
-bazaviy valyutasimi, oxirgi ishlatilganmi — server aytadi); terminal kodlar ro'yxati ham
-kontraktda sanab o'tiladi.
+Keyinchalik yopilgan: valyutalar ro'yxati — [FAKT: OPEN-021, egasi 2026-08-26] UZS (bazaviy)
++ USD, RUB, KZT, CNY, TRY; server e'lon qiladi. Standart tanlov — oxirgi ishlatilgan valyuta
+[TAKLIF]. Ochiq qolgan: [SAVOL → `DC-03`] terminal kodlar ro'yxati kontraktda sanab o'tiladi.
